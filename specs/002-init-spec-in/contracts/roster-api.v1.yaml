@@ -1,0 +1,269 @@
+openapi: 3.1.0
+info:
+  title: Northstar LMS Roster API v1 (Plan Delta)
+  version: 0.1.0-plan
+  description: >-
+    Contract-first interface derived from LMS roster authority spec.
+    Describes primary endpoints required for tenant provisioning,
+    roster CRUD, assignments, enrollments, coarse reads, and bulk jobs.
+servers:
+  - url: https://{env}.northstar.local/api
+    variables:
+      env:
+        default: dev
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    TenantId:
+      name: X-Tenant-Id
+      in: header
+      required: true
+      schema:
+        type: string
+        format: uuid
+    CorrelationId:
+      name: X-Correlation-Id
+      in: header
+      required: true
+      schema:
+        type: string
+    CausationId:
+      name: X-Causation-Id
+      in: header
+      required: false
+      schema:
+        type: string
+paths:
+  /v1/tenants:
+    post:
+      summary: Provision a district tenant
+      operationId: CreateTenant
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/CausationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, region]
+              properties:
+                name:
+                  type: string
+                region:
+                  type: string
+                capabilities:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: Tenant provisioned
+          headers:
+            X-Tenant-Id:
+              schema:
+                type: string
+                format: uuid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '409': { $ref: '#/components/responses/Conflict' }
+  /v1/schools:
+    post:
+      summary: Create a school in tenant context
+      operationId: CreateSchool
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                externalRefs:
+                  type: object
+      responses:
+        '201':
+          description: School created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/School'
+        '409': { $ref: '#/components/responses/Conflict' }
+  /v1/classes:
+    post:
+      summary: Create a class
+      operationId: CreateClass
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [schoolId, name, term]
+              properties:
+                schoolId:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+                term:
+                  type: string
+                subject:
+                  type: string
+                externalRefs:
+                  type: object
+      responses:
+        '201':
+          description: Class created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+  /v1/enrollments:
+    post:
+      summary: Add a student to a class
+      operationId: AddEnrollment
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [studentId, classId]
+              properties:
+                studentId:
+                  type: string
+                  format: uuid
+                classId:
+                  type: string
+                  format: uuid
+                effectiveDate:
+                  type: string
+                  format: date
+      responses:
+        '201':
+          description: Enrollment added
+  /v1/bulk/students:upsert:
+    post:
+      summary: Bulk upsert students for tenant
+      operationId: BulkStudentsUpsert
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rows]
+              properties:
+                rows:
+                  type: array
+                  maxItems: 50000
+                  items:
+                    type: object
+                    required: [givenName, familyName]
+                    properties:
+                      studentId:
+                        type: string
+                        format: uuid
+                      givenName:
+                        type: string
+                      familyName:
+                        type: string
+                      externalRefs:
+                        type: object
+                      status:
+                        type: string
+                        enum: [Active, Deactivated]
+      responses:
+        '202':
+          description: Accepted for asynchronous processing
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+
+components:
+  schemas:
+    Tenant:
+      type: object
+      required: [tenantId, name, status]
+      properties:
+        tenantId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+    School:
+      type: object
+      required: [schoolId, name, status]
+      properties:
+        schoolId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+    Class:
+      type: object
+      required: [classId, schoolId, name, term, status]
+      properties:
+        classId:
+          type: string
+          format: uuid
+        schoolId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        term:
+          type: string
+        subject:
+          type: string
+        status:
+          type: string
+  responses:
+    Conflict:
+      description: Conflict due to duplicate request
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            required: [type, title, status]
+            properties:
+              type:
+                type: string
+              title:
+                type: string
+              status:
+                type: integer
+              detail:
+                type: string
+              conflictId:
+                type: string
