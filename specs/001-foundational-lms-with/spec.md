@@ -5,6 +5,15 @@
 **Status**: Draft  
 **Input**: User description: "Foundational LMS supporting strict tenant isolation by SchoolDistrict, lifecycle management, RBAC, and compliance features"
 
+## Clarifications
+
+### Session 2024-12-19
+- Q: What types of quotas should PlatformAdmins be able to set for districts? → A: User count limits (max students, staff, admins per district)
+- Q: What should be the default retention periods for different entity types? → A: FERPA-aligned: Students 7 years, Staff 5 years, Assessments 3 years
+- Q: What should be the assessment PDF file size and storage limits? → A: Large files: 100MB max per PDF, 10GB total per district
+- Q: How should the system handle partial failures during bulk operations? → A: User-choice: Allow operation initiator to choose strategy per import
+- Q: What actions should the system take when security alerts are generated? → A: Multi-tier: Log + notify for minor issues, auto-suspend for severe threats
+
 ## Scope & Overview
 
 This specification defines a foundational Learning Management System (LMS) that provides:
@@ -121,7 +130,7 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **District Deletion**: What happens when a district has active legal holds or hasn't met retention requirements?
 - **Staff Suspension**: How does the system handle access to classes and students when a staff member is suspended mid-year?
 - **Academic Year Overlap**: How does the system prevent scheduling conflicts when SchoolYears have overlapping date ranges?
-- **Bulk Operation Failures**: How are partial failures handled during large enrollment imports?
+- **Bulk Operation Failures**: How are partial failures handled during large enrollment imports? → User-configurable strategies (all-or-nothing, best-effort, threshold-based)
 - **External ID Conflicts**: What happens when multiple users claim the same Entra External ID?
 
 ## Requirements
@@ -130,6 +139,7 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 
 #### Platform Administration
 - **FR-001**: System MUST allow PlatformAdmins to create districts with unique slug and display name
+- **FR-001a**: System MUST allow PlatformAdmins to set user count quotas (max students, staff, admins) per district
 - **FR-002**: System MUST automatically grant DistrictAdmin rights to PlatformAdmin upon district creation
 - **FR-003**: System MUST support district lifecycle management (activate, suspend, reactivate, delete)
 - **FR-004**: System MUST prevent district deletion when retention policies or legal holds are active
@@ -175,7 +185,7 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **FR-032**: System MUST provide read-only assessment access to Teachers/SchoolUsers via RBAC
 
 #### Bulk Operations & Integration
-- **FR-033**: System MUST support bulk import of Students, Staff, Classes, and Enrollments via CSV/JSON
+- **FR-033**: System MUST support bulk import of Students, Staff, Classes, and Enrollments via CSV/JSON with user-selectable error handling (all-or-nothing, best-effort, or threshold-based rollback)
 - **FR-034**: System MUST provide bulk rollover capabilities for grade promotion
 - **FR-035**: System MUST support bulk reassignment operations for school closure scenarios
 - **FR-036**: System MUST export roster and assessment data in CSV format
@@ -183,7 +193,7 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **FR-038**: System MUST support idempotency keys to prevent duplicate operations
 
 #### Retention & Legal Compliance
-- **FR-039**: System MUST support configurable retention policies per entity type
+- **FR-039**: System MUST support configurable retention policies per entity type with FERPA-aligned defaults (Students: 7 years, Staff: 5 years, Assessments: 3 years)
 - **FR-040**: System MUST implement legal holds that prevent data purging
 - **FR-041**: System MUST run scheduled purge jobs that enforce retention policies
 - **FR-042**: System MUST audit all retention and purge activities
@@ -193,7 +203,7 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **FR-044**: System MUST audit all CRUD operations, RBAC changes, lifecycle events, and bulk jobs
 - **FR-045**: System MUST support audit queries by actor, entity, timeframe, and school_year
 - **FR-046**: System MUST provide audit export functionality for compliance reporting
-- **FR-047**: System MUST detect access anomalies and generate security alerts
+- **FR-047**: System MUST detect access anomalies and generate multi-tier security alerts (log + notify for minor issues, auto-suspend for severe threats)
 - **FR-048**: System MUST implement tamper-evident chaining for audit logs
 - **FR-049**: System MUST track repeated authorization failures and suspicious access patterns
 
@@ -202,7 +212,7 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **FR-051**: System MUST scope all operations by appropriate SchoolYear context
 - **FR-052**: System MUST implement deny-by-default RBAC resolution
 - **FR-053**: System MUST enforce least privilege access principles
-- **FR-054**: System MUST provide secure, scoped access to assessment PDF files with expiring URLs
+- **FR-054**: System MUST provide secure, scoped access to assessment PDF files with expiring URLs and enforce limits (100MB max per PDF, 10GB total per district)
 
 ### Performance Requirements
 - **PR-001**: CRUD operations MUST complete within 200ms at 95th percentile
