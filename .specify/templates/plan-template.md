@@ -47,7 +47,15 @@
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**BDD-First Testing**: Are complete Reqnroll feature files with scenarios written before any code? Step definitions MUST be implemented first and fail.
+
+**TDD Red-Green Cycle**: Will tests be written first and shown to fail before implementation? Red-Green-Refactor cycle MUST be strictly enforced with >90% coverage.
+
+**Clean Architecture**: Does design maintain proper layer separation (Domain → Application → Infrastructure → Presentation)? Domain layer MUST have zero external dependencies.
+
+**Aspire Orchestration**: Are services orchestrated using .NET Aspire? Service discovery, configuration, and health checks MUST use Aspire abstractions.
+
+**Feature Specification Completeness**: Is there a complete specification with user scenarios, acceptance criteria, and edge cases? All requirements MUST be testable and unambiguous.
 
 ## Project Structure
 
@@ -216,4 +224,4 @@ directories captured above]
 - [ ] Complexity deviations documented
 
 ---
-*Based on Constitution v2.1.1 - See `/memory/constitution.md`*
+*Based on Constitution v1.0.0 - See `.specify/memory/constitution.md`*

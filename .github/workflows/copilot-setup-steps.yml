@@ -1,0 +1,60 @@
+name: "Copilot Setup Steps"
+
+on:
+  workflow_dispatch
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.x'
+        
+    - name: Setup Node.js (for UI components)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+          
+    - name: Cache Node modules
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+        
+    - name: Install PowerShell .NET tool
+      id: dotnet-install-powershell
+      continue-on-error: true
+      run: dotnet tool install --global PowerShell
+
+    - name: Restore .NET dependencies
+      id: dotnet-restore
+      continue-on-error: true
+      run: dotnet restore
+           
+    - name: Install Aspire workload
+      id: dotnet-install-aspire
+      continue-on-error: true
+      run: dotnet workload install aspire
+
+    - name: Install Node.js dependencies
+      id: npm-install
+      continue-on-error: true
+      run: npm install

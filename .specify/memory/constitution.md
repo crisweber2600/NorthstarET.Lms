@@ -1,50 +1,108 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 1.0.0 → 1.0.0 (major principle replacement)
+- Modified principles: All 5 core principles completely replaced
+  * Tenant-First Architecture → BDD-First Testing (NON-NEGOTIABLE)
+  * Event-Driven State Changes → TDD Red-Green Cycle (NON-NEGOTIABLE)  
+  * Test-First Development → Clean Architecture (NON-NEGOTIABLE)
+  * API Contract Governance → Aspire Orchestration
+  * Observability & Performance → Feature Specification Completeness
+- Added sections: Technology Standards, Development Workflow, Compliance Verification, Definition of Done
+- Removed sections: Security & Compliance (reorganized into Compliance Verification), Development Standards (reorganized into Development Workflow)
+- Templates requiring updates: ✅ plan-template.md updated, ✅ tasks-template.md updated
+- Follow-up TODOs: None - all placeholders filled
+-->
+
+# NorthstarET.Lms Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. BDD-First Testing (NON-NEGOTIABLE)
+Every functional requirement MUST be fully described in Reqnroll feature files with complete scenarios before any code is written. Step definition files MUST be implemented first and MUST be shown to fail as part of the red-green cycle. All business logic MUST be testable through Given-When-Then scenarios that map directly to user value.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. TDD Red-Green Cycle (NON-NEGOTIABLE)
+All implementation MUST follow strict Test-Driven Development: Write failing test → Make test pass → Refactor. Every layer of clean architecture MUST have unit tests written before implementation. Integration tests MUST fail before services are connected. Contract tests MUST fail before APIs are implemented.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Clean Architecture (NON-NEGOTIABLE)
+Application MUST be organized in layers: Domain (entities, value objects), Application (use cases, interfaces), Infrastructure (data access, external services), and Presentation (API controllers, UI). Dependencies MUST point inward only. Domain layer MUST have zero external dependencies. Each layer MUST be independently testable.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Aspire Orchestration
+All services and dependencies MUST be orchestrated using .NET Aspire. Service discovery, configuration, and health checks MUST use Aspire abstractions. Local development environment MUST be fully reproducible through Aspire app host. All external dependencies (databases, message queues, etc.) MUST be managed through Aspire components.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Feature Specification Completeness
+Every feature MUST start with a complete specification including user scenarios, acceptance criteria, and edge cases. All requirements MUST be testable and unambiguous. No implementation MUST begin until feature specification is reviewed and approved. Feature files MUST map directly to specification requirements.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Technology Standards
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### .NET 9 and Modern Practices
+- Target framework: .NET 9 with latest language features
+- Dependency injection using Microsoft.Extensions.DependencyInjection
+- Configuration through IConfiguration with strong typing
+- Logging through ILogger with structured logging
+- HTTP clients through IHttpClientFactory
+- Background services through IHostedService
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### Testing Framework Requirements
+- Reqnroll for BDD testing with feature files in Features/ directory
+- Step definitions organized by domain in StepDefinitions/ directory
+- xUnit for unit and integration tests
+- FluentAssertions for readable test assertions
+- Testcontainers for integration testing with real dependencies
+- Aspire testing framework for service orchestration tests
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### Code Quality Gates
+- All code MUST pass static analysis (nullable reference types enabled)
+- Test coverage MUST be >90% for domain and application layers
+- Integration tests MUST cover all API endpoints and workflows
+- Performance tests MUST validate SLA requirements
+- Security analysis MUST pass with zero high-severity findings
+
+## Development Workflow
+
+### Feature Development Process
+1. Create feature specification with complete scenarios
+2. Write Reqnroll feature files mapping to specification
+3. Implement step definitions that fail (red phase)
+4. Write unit tests for domain/application layers that fail
+5. Implement domain entities and value objects
+6. Implement application services and use cases
+7. Implement infrastructure services
+8. Implement presentation layer
+9. All tests pass (green phase)
+10. Refactor while maintaining test coverage
+
+### Code Review Requirements
+- All PRs MUST include feature files and step definitions
+- Unit test coverage MUST not decrease
+- Architecture dependency rules MUST be validated
+- Performance impact MUST be assessed
+- Security considerations MUST be documented
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other development practices. All code changes MUST comply with these principles. Deviations require explicit justification and approval documented in the PR description.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### Amendment Process
+- Minor clarifications: Single maintainer approval + 48h review period
+- Major principle changes: Team consensus + migration plan + breaking change protocol
+- Emergency exceptions: Document in `CONSTITUTION_EXCEPTIONS.md` with timeline for compliance
+
+### Compliance Verification
+All pull requests MUST verify:
+- [ ] BDD feature files exist and scenarios pass
+- [ ] TDD red-green cycle evidence provided (screenshots/test output)
+- [ ] Clean architecture boundaries maintained (dependency analysis)
+- [ ] Aspire orchestration properly configured
+- [ ] Complete feature specifications linked
+- [ ] Performance requirements met (<200ms p95 for APIs)
+- [ ] Security scan passes with zero high-severity findings
+
+### Definition of Done
+A feature is complete when:
+- All BDD scenarios pass in CI/CD
+- Test coverage >90% for domain/application layers
+- API documentation updated
+- Performance benchmarks meet SLA
+- Security review completed
+
+**Version**: 1.0.0 | **Ratified**: 2025-01-09 | **Last Amended**: 2025-01-09

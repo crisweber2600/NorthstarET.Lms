@@ -47,53 +47,80 @@
 - [ ] T002 Initialize [language] project with [framework] dependencies
 - [ ] T003 [P] Configure linting and formatting tools
 
-## Phase 3.2: Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
-**CRITICAL: These tests MUST be written and MUST FAIL before ANY implementation**
-- [ ] T004 [P] Contract test POST /api/users in tests/contract/test_users_post.py
-- [ ] T005 [P] Contract test GET /api/users/{id} in tests/contract/test_users_get.py
-- [ ] T006 [P] Integration test user registration in tests/integration/test_registration.py
-- [ ] T007 [P] Integration test auth flow in tests/integration/test_auth.py
+## Phase 3.2: BDD Features & Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
+**CRITICAL: Constitutional requirement - BDD feature files MUST be complete before any code**
+**Tests MUST be written and MUST FAIL before ANY implementation**
+**Coverage requirement: Minimum 90% for domain and application layers**
+- [ ] T004 [P] Feature file for user registration in Features/UserRegistration.feature
+- [ ] T005 [P] Feature file for user authentication in Features/UserAuthentication.feature  
+- [ ] T006 [P] Step definitions for user registration in StepDefinitions/UserRegistrationSteps.cs
+- [ ] T007 [P] Step definitions for user authentication in StepDefinitions/UserAuthenticationSteps.cs
+- [ ] T008 [P] Unit tests for User domain entity in Tests/Unit/Domain/UserTests.cs
+- [ ] T009 [P] Unit tests for UserService application service in Tests/Unit/Application/UserServiceTests.cs
+- [ ] T010 [P] Integration tests for user API endpoints in Tests/Integration/UserApiTests.cs
 
-## Phase 3.3: Core Implementation (ONLY after tests are failing)
-- [ ] T008 [P] User model in src/models/user.py
-- [ ] T009 [P] UserService CRUD in src/services/user_service.py
-- [ ] T010 [P] CLI --create-user in src/cli/user_commands.py
-- [ ] T011 POST /api/users endpoint
-- [ ] T012 GET /api/users/{id} endpoint
-- [ ] T013 Input validation
-- [ ] T014 Error handling and logging
+## Phase 3.3: Clean Architecture Implementation (ONLY after BDD features and tests are failing)
+**All implementations MUST follow Clean Architecture layers with proper dependency flow**
+**Domain layer MUST have zero external dependencies**
+- [ ] T011 [P] Domain entities and value objects in Domain/Entities/
+- [ ] T012 [P] Domain interfaces in Domain/Interfaces/
+- [ ] T013 [P] Application use cases in Application/UseCases/
+- [ ] T014 [P] Application interfaces in Application/Interfaces/
+- [ ] T015 [P] Infrastructure data access in Infrastructure/Data/
+- [ ] T016 [P] Infrastructure external services in Infrastructure/Services/
+- [ ] T017 [P] API controllers in Presentation/Controllers/
+- [ ] T018 [P] Aspire service registration and orchestration in Program.cs
+- [ ] T019 Dependency injection configuration with proper layer separation
 
-## Phase 3.4: Integration
-- [ ] T015 Connect UserService to DB
-- [ ] T016 Auth middleware
-- [ ] T017 Request/response logging
-- [ ] T018 CORS and security headers
+## Phase 3.4: Integration & Aspire Orchestration
+**All integrations MUST use Aspire components and abstractions**
+**Structured logging with ILogger and performance monitoring required**
+- [ ] T020 Aspire app host configuration for service orchestration
+- [ ] T021 Database integration using Aspire components
+- [ ] T022 HTTP client configuration using IHttpClientFactory
+- [ ] T023 Background services using IHostedService
+- [ ] T024 Configuration management with IConfiguration
+- [ ] T025 Structured logging implementation with ILogger
+- [ ] T026 Health checks configuration using Aspire abstractions
+- [ ] T027 Service discovery setup for microservices communication
 
-## Phase 3.5: Polish
-- [ ] T019 [P] Unit tests for validation in tests/unit/test_validation.py
-- [ ] T020 Performance tests (<200ms)
-- [ ] T021 [P] Update docs/api.md
-- [ ] T022 Remove duplication
-- [ ] T023 Run manual-testing.md
+## Phase 3.5: Polish & Quality Gates
+- [ ] T028 [P] Additional unit tests to achieve >90% coverage
+- [ ] T029 [P] Performance tests to validate SLA requirements (<200ms p95 for APIs)
+- [ ] T030 [P] Security analysis and vulnerability scanning
+- [ ] T031 [P] Static analysis and nullable reference types compliance  
+- [ ] T032 [P] Update API documentation
+- [ ] T033 Code quality review and refactoring
+- [ ] T034 BDD scenario validation and acceptance testing
 
 ## Dependencies
-- Tests (T004-T007) before implementation (T008-T014)
-- T008 blocks T009, T015
-- T016 blocks T018
-- Implementation before polish (T019-T023)
+- BDD Features (T004-T005) before step definitions (T006-T007)
+- Step definitions and tests (T006-T010) before implementation (T011-T019)
+- Domain entities (T011-T012) before application services (T013-T014)
+- Application services before infrastructure (T015-T016)
+- Infrastructure before presentation (T017)
+- Implementation before integration (T020-T027)
+- Integration before polish (T028-T034)
 
 ## Parallel Example
 ```
-# Launch T004-T007 together:
-Task: "Contract test POST /api/users in tests/contract/test_users_post.py"
-Task: "Contract test GET /api/users/{id} in tests/contract/test_users_get.py"
-Task: "Integration test registration in tests/integration/test_registration.py"
-Task: "Integration test auth in tests/integration/test_auth.py"
+# Launch T004-T005 together (different feature files):
+Task: "Feature file for user registration in Features/UserRegistration.feature"
+Task: "Feature file for user authentication in Features/UserAuthentication.feature"
+
+# Then launch T006-T010 together (different files):
+Task: "Step definitions for user registration in StepDefinitions/UserRegistrationSteps.cs"
+Task: "Step definitions for user authentication in StepDefinitions/UserAuthenticationSteps.cs"
+Task: "Unit tests for User domain entity in Tests/Unit/Domain/UserTests.cs"
+Task: "Unit tests for UserService application service in Tests/Unit/Application/UserServiceTests.cs"
 ```
 
 ## Notes
 - [P] tasks = different files, no dependencies
-- Verify tests fail before implementing
+- Verify BDD feature files are complete and step definitions fail before implementing
+- Verify all tests fail before implementing
+- Maintain Clean Architecture layer boundaries
+- Use Aspire for all service orchestration
 - Commit after each task
 - Avoid: vague tasks, same file conflicts
 
@@ -105,23 +132,29 @@ Task: "Integration test auth in tests/integration/test_auth.py"
    - Each endpoint → implementation task
    
 2. **From Data Model**:
-   - Each entity → model creation task [P]
-   - Relationships → service layer tasks
+   - Each entity → domain entity creation task [P]
+   - Each entity → application service task [P]
+   - Relationships → use case implementation tasks
    
 3. **From User Stories**:
-   - Each story → integration test [P]
-   - Quickstart scenarios → validation tasks
+   - Each story → BDD feature file [P] 
+   - Each story → step definitions [P]
+   - Integration tests for end-to-end validation
 
 4. **Ordering**:
-   - Setup → Tests → Models → Services → Endpoints → Polish
+   - Setup → BDD Features → Step Definitions → Unit Tests → Domain → Application → Infrastructure → Presentation → Integration → Polish
    - Dependencies block parallel execution
+   - Clean Architecture layer dependencies must be respected
 
 ## Validation Checklist
 *GATE: Checked by main() before returning*
 
-- [ ] All contracts have corresponding tests
-- [ ] All entities have model tasks
-- [ ] All tests come before implementation
+- [ ] All user stories have BDD feature files  
+- [ ] All feature files have corresponding step definitions
+- [ ] All entities have domain layer tasks
+- [ ] All use cases have application layer tasks
+- [ ] BDD features and tests come before implementation
+- [ ] Clean Architecture dependencies respected
 - [ ] Parallel tasks truly independent
 - [ ] Each task specifies exact file path
 - [ ] No task modifies same file as another [P] task
