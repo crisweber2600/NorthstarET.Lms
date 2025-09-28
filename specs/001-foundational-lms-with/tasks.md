@@ -47,12 +47,16 @@
 - [ ] **T017** [P] BDD feature file for retention policies in `tests/Features/Compliance/RetentionPolicies.feature`
 - [ ] **T018** [P] BDD feature file for legal holds in `tests/Features/Compliance/LegalHolds.feature`
 
+### Assessment Management Features
+- [X] **T018a** [P] BDD feature file for assessment management in `tests/Features/Assessments/AssessmentManagement.feature`
+
 ### Step Definitions (Must Fail Initially)
 - [X] **T019** [P] Step definitions for district management in `tests/StepDefinitions/DistrictSteps.cs`
 - [X] **T020** [P] Step definitions for student management in `tests/StepDefinitions/StudentSteps.cs`
 - [ ] **T021** [P] Step definitions for calendar management in `tests/StepDefinitions/CalendarSteps.cs`
 - [X] **T022** [P] Step definitions for RBAC in `tests/StepDefinitions/RbacSteps.cs`
 - [X] **T023** [P] Step definitions for compliance in `tests/StepDefinitions/ComplianceSteps.cs`
+- [X] **T023a** [P] Step definitions for assessments in `tests/StepDefinitions/AssessmentSteps.cs`
 
 ## Phase 3.3: Unit Tests (TDD - Must Fail Before Implementation)
 

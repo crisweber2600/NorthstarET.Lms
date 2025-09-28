@@ -31,6 +31,7 @@
     <Reqnroll Include="..\Features\Students\*.feature" />
     <Reqnroll Include="..\Features\RBAC\*.feature" />
     <Reqnroll Include="..\Features\Compliance\*.feature" />
+    <Reqnroll Include="..\Features\Assessments\*.feature" />
   </ItemGroup>
 
   <ItemGroup>
