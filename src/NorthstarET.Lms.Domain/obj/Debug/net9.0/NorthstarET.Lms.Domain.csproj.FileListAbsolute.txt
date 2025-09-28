@@ -1,0 +1,14 @@
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/bin/Debug/net9.0/NorthstarET.Lms.Domain.deps.json
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/bin/Debug/net9.0/NorthstarET.Lms.Domain.dll
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/bin/Debug/net9.0/NorthstarET.Lms.Domain.pdb
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/bin/Debug/net9.0/NorthstarET.Lms.Domain.xml
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.AssemblyInfoInputs.cache
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.AssemblyInfo.cs
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.csproj.CoreCompileInputs.cache
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.sourcelink.json
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.dll
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/refint/NorthstarET.Lms.Domain.dll
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.xml
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.pdb
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/ref/NorthstarET.Lms.Domain.dll

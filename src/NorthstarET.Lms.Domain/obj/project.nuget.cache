@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ORIIazUxcI8=",
+  "success": true,
+  "projectFilePath": "/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/NorthstarET.Lms.Domain.csproj",
+  "expectedPackageFiles": [
+    "/Users/cris/.nuget/packages/microsoft.codeanalysis.analyzers/3.11.0/microsoft.codeanalysis.analyzers.3.11.0.nupkg.sha512",
+    "/Users/cris/.nuget/packages/microsoft.codeanalysis.netanalyzers/8.0.0/microsoft.codeanalysis.netanalyzers.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
