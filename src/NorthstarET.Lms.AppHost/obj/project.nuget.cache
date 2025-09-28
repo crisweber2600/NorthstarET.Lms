@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4Lj3lREn/5I=",
+  "dgSpecHash": "55u9ynDMeOA=",
   "success": true,
   "projectFilePath": "/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.AppHost/NorthstarET.Lms.AppHost.csproj",
   "expectedPackageFiles": [
@@ -8,8 +8,6 @@
     "/Users/cris/.nuget/packages/aspire.hosting/8.2.2/aspire.hosting.8.2.2.nupkg.sha512",
     "/Users/cris/.nuget/packages/aspire.hosting.apphost/8.2.2/aspire.hosting.apphost.8.2.2.nupkg.sha512",
     "/Users/cris/.nuget/packages/aspire.hosting.orchestration.osx-arm64/8.2.2/aspire.hosting.orchestration.osx-arm64.8.2.2.nupkg.sha512",
-    "/Users/cris/.nuget/packages/aspire.hosting.redis/8.2.2/aspire.hosting.redis.8.2.2.nupkg.sha512",
-    "/Users/cris/.nuget/packages/aspire.hosting.sqlserver/8.2.2/aspire.hosting.sqlserver.8.2.2.nupkg.sha512",
     "/Users/cris/.nuget/packages/fractions/7.3.0/fractions.7.3.0.nupkg.sha512",
     "/Users/cris/.nuget/packages/google.protobuf/3.28.2/google.protobuf.3.28.2.nupkg.sha512",
     "/Users/cris/.nuget/packages/grpc.aspnetcore/2.66.0/grpc.aspnetcore.2.66.0.nupkg.sha512",
@@ -60,7 +58,10 @@
     "/Users/cris/.nuget/packages/polly.core/8.4.2/polly.core.8.4.2.nupkg.sha512",
     "/Users/cris/.nuget/packages/system.diagnostics.eventlog/8.0.1/system.diagnostics.eventlog.8.0.1.nupkg.sha512",
     "/Users/cris/.nuget/packages/system.identitymodel.tokens.jwt/7.1.2/system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512",
-    "/Users/cris/.nuget/packages/yamldotnet/16.0.0/yamldotnet.16.0.0.nupkg.sha512"
+    "/Users/cris/.nuget/packages/yamldotnet/16.0.0/yamldotnet.16.0.0.nupkg.sha512",
+    "/Users/cris/.nuget/packages/microsoft.netcore.app.ref/8.0.20/microsoft.netcore.app.ref.8.0.20.nupkg.sha512",
+    "/Users/cris/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.20/microsoft.aspnetcore.app.ref.8.0.20.nupkg.sha512",
+    "/Users/cris/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.20/microsoft.netcore.app.host.osx-arm64.8.0.20.nupkg.sha512"
   ],
   "logs": []
 }

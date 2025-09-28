@@ -499,15 +499,6 @@ public class BulkRolloverPreviewDto
     public Dictionary<string, int> PromotionsByGrade { get; set; } = new();
 }
 
-public class GuardianRelationshipDto
-{
-    public Guid RelationshipId { get; set; }
-    public Guid StudentId { get; set; }
-    public Guid GuardianId { get; set; }
-    public string GuardianName { get; set; } = string.Empty;
-    public RelationshipType RelationshipType { get; set; }
-    public DateTime CreatedDate { get; set; }
-}
 
 public class StaffSummaryDto
 {

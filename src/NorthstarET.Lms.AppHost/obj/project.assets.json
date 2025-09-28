@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net9.0": {
+    "net8.0": {
       "Aspire.Dashboard.Sdk.osx-arm64/8.2.2": {
         "type": "package",
         "build": {
@@ -132,68 +132,6 @@
           "buildMultiTargeting/Aspire.Hosting.Orchestration.osx-arm64.targets": {}
         }
       },
-      "Aspire.Hosting.Redis/8.2.2": {
-        "type": "package",
-        "dependencies": {
-          "Aspire.Hosting": "8.2.2",
-          "Google.Protobuf": "3.28.2",
-          "Grpc.AspNetCore": "2.66.0",
-          "Grpc.Net.ClientFactory": "2.66.0",
-          "Grpc.Tools": "2.67.0",
-          "KubernetesClient": "15.0.1",
-          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Configuration.Binder": "8.0.2",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
-          "Microsoft.Extensions.Hosting": "8.0.1",
-          "Microsoft.Extensions.Hosting.Abstractions": "8.0.1",
-          "Microsoft.Extensions.Http": "8.0.1",
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
-          "Microsoft.Extensions.Options": "8.0.2",
-          "Microsoft.Extensions.Primitives": "8.0.0",
-          "Polly.Core": "8.4.2"
-        },
-        "compile": {
-          "lib/net8.0/Aspire.Hosting.Redis.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Aspire.Hosting.Redis.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Aspire.Hosting.SqlServer/8.2.2": {
-        "type": "package",
-        "dependencies": {
-          "Aspire.Hosting": "8.2.2",
-          "Google.Protobuf": "3.28.2",
-          "Grpc.AspNetCore": "2.66.0",
-          "Grpc.Net.ClientFactory": "2.66.0",
-          "Grpc.Tools": "2.67.0",
-          "KubernetesClient": "15.0.1",
-          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Configuration.Binder": "8.0.2",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2",
-          "Microsoft.Extensions.Hosting": "8.0.1",
-          "Microsoft.Extensions.Hosting.Abstractions": "8.0.1",
-          "Microsoft.Extensions.Http": "8.0.1",
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.2",
-          "Microsoft.Extensions.Options": "8.0.2",
-          "Microsoft.Extensions.Primitives": "8.0.0",
-          "Polly.Core": "8.4.2"
-        },
-        "compile": {
-          "lib/net8.0/Aspire.Hosting.SqlServer.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Aspire.Hosting.SqlServer.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "Fractions/7.3.0": {
         "type": "package",
         "compile": {
@@ -228,10 +166,10 @@
           "Grpc.Tools": "2.66.0"
         },
         "compile": {
-          "lib/net9.0/_._": {}
+          "lib/net8.0/_._": {}
         },
         "runtime": {
-          "lib/net9.0/_._": {}
+          "lib/net8.0/_._": {}
         }
       },
       "Grpc.AspNetCore.Server/2.66.0": {
@@ -240,12 +178,12 @@
           "Grpc.Net.Common": "2.66.0"
         },
         "compile": {
-          "lib/net9.0/Grpc.AspNetCore.Server.dll": {
+          "lib/net8.0/Grpc.AspNetCore.Server.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/net9.0/Grpc.AspNetCore.Server.dll": {
+          "lib/net8.0/Grpc.AspNetCore.Server.dll": {
             "related": ".pdb;.xml"
           }
         },
@@ -260,12 +198,12 @@
           "Grpc.Net.ClientFactory": "2.66.0"
         },
         "compile": {
-          "lib/net9.0/Grpc.AspNetCore.Server.ClientFactory.dll": {
+          "lib/net8.0/Grpc.AspNetCore.Server.ClientFactory.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/net9.0/Grpc.AspNetCore.Server.ClientFactory.dll": {
+          "lib/net8.0/Grpc.AspNetCore.Server.ClientFactory.dll": {
             "related": ".pdb;.xml"
           }
         },
@@ -1335,38 +1273,6 @@
         "tools/dcp",
         "tools/ext/bin/dcpproc",
         "tools/ext/dcpctrl"
-      ]
-    },
-    "Aspire.Hosting.Redis/8.2.2": {
-      "sha512": "MvIRF6BuLYmsznnl37bwa5ypFK6+rkY2hktoMhsmt2rTfuMqG4THx8Sz9x9Z8CZC4e7GwIy8cxTab9NKvAld7w==",
-      "type": "package",
-      "path": "aspire.hosting.redis/8.2.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "README.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "aspire.hosting.redis.8.2.2.nupkg.sha512",
-        "aspire.hosting.redis.nuspec",
-        "lib/net8.0/Aspire.Hosting.Redis.dll",
-        "lib/net8.0/Aspire.Hosting.Redis.xml"
-      ]
-    },
-    "Aspire.Hosting.SqlServer/8.2.2": {
-      "sha512": "u/NvbJP5EiIvUSY9Voep85F9y2AoF2cQif+lap5NJWK+znaTq+lfU2jpOwLYLhcmQjHNR9lEffNNdnfGiMe65w==",
-      "type": "package",
-      "path": "aspire.hosting.sqlserver/8.2.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "README.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "aspire.hosting.sqlserver.8.2.2.nupkg.sha512",
-        "aspire.hosting.sqlserver.nuspec",
-        "lib/net8.0/Aspire.Hosting.SqlServer.dll",
-        "lib/net8.0/Aspire.Hosting.SqlServer.xml"
       ]
     },
     "Fractions/7.3.0": {
@@ -4176,12 +4082,10 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net9.0": [
+    "net8.0": [
       "Aspire.Dashboard.Sdk.osx-arm64 >= 8.2.2",
       "Aspire.Hosting.AppHost >= 8.2.2",
       "Aspire.Hosting.Orchestration.osx-arm64 >= 8.2.2",
-      "Aspire.Hosting.Redis >= 8.2.2",
-      "Aspire.Hosting.SqlServer >= 8.2.2",
       "Microsoft.CodeAnalysis.Analyzers >= 3.11.0",
       "Microsoft.CodeAnalysis.NetAnalyzers >= 8.0.0"
     ]
@@ -4202,15 +4106,15 @@
         "/Users/cris/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
-        "net9.0"
+        "net8.0"
       ],
       "sources": {
         "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "projectReferences": {}
         }
       },
@@ -4228,8 +4132,8 @@
       "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
-      "net9.0": {
-        "targetAlias": "net9.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
         "dependencies": {
           "Aspire.Dashboard.Sdk.osx-arm64": {
             "target": "Package",
@@ -4244,14 +4148,6 @@
             "target": "Package",
             "version": "[8.2.2, )",
             "autoReferenced": true
-          },
-          "Aspire.Hosting.Redis": {
-            "target": "Package",
-            "version": "[8.2.2, )"
-          },
-          "Aspire.Hosting.SqlServer": {
-            "target": "Package",
-            "version": "[8.2.2, )"
           },
           "Microsoft.CodeAnalysis.Analyzers": {
             "suppressParent": "All",
@@ -4275,6 +4171,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.20, 8.0.20]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.osx-arm64",
+            "version": "[8.0.20, 8.0.20]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.20, 8.0.20]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"

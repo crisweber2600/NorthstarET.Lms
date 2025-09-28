@@ -155,6 +155,7 @@
 ### External Service Integrations
 - [X] **T082** [P] Entra External ID service in `src/NorthstarET.Lms.Infrastructure/ExternalServices/EntraIdentityService.cs` ✅ Created
 - [X] **T083** [P] Assessment file service in `src/NorthstarET.Lms.Infrastructure/ExternalServices/AssessmentFileService.cs` ✅ Created
+- [ ] **T083a** [P] [BLOCKING] Secure PDF access with scoped URLs, size limits (100MB/PDF, 10GB/district), and expiring tokens per FR-054
 - [X] **T084** [P] Tenant context accessor in `src/NorthstarET.Lms.Infrastructure/Security/TenantContextAccessor.cs` ✅ Created
 
 ### Background Services
@@ -178,6 +179,7 @@
 - [X] **T093** [P] Schools API controller in `src/NorthstarET.Lms.Api/Controllers/SchoolsController.cs` ✅ Created with school management operations
 - [X] **T094** [P] Staff API controller in `src/NorthstarET.Lms.Api/Controllers/StaffController.cs` ✅ Created with staff and role management
 - [X] **T095** [P] Assessment API controller in `src/NorthstarET.Lms.Api/Controllers/AssessmentsController.cs` ✅ Created with PDF management and versioning
+- [ ] **T095a** [P] [BLOCKING] Secure assessment PDF access service implementing FR-054 in `src/NorthstarET.Lms.Infrastructure/ExternalServices/SecureAssessmentFileService.cs`
 - [X] **T096** [P] Audit API controller in `src/NorthstarET.Lms.Api/Controllers/AuditController.cs` ✅ Created with compliance reporting features
 - [X] **T096a** API pagination infrastructure implementing FR-037 in `src/NorthstarET.Lms.Api/Common/PaginationSupport.cs` ✅ Complete with standardized response format
 
@@ -271,6 +273,7 @@
 - Security implementation (T123-T130) MUST complete before production deployment - **BLOCKING**
 - Performance validation (T131-T136) MUST complete before production deployment - **BLOCKING**
 - Bulk import strategies (T092a) MUST complete before bulk operations endpoints
+- Secure assessment file access (T083a, T095a) MUST complete before assessment APIs go live - **BLOCKING**
 
 ## Parallel Execution Examples
 
@@ -315,8 +318,8 @@ Task: "Entity configurations for Student in src/NorthstarET.Lms.Infrastructure/D
 - **Phase 3.11**: Security Implementation (T123-T130) ✅ 8 tasks complete
 - **Phase 3.12**: Performance Implementation (T131-T136) ✅ 6 tasks complete
 
-### 🏆 IMPLEMENTATION COMPLETE:
-- **Total Tasks Completed**: 141 out of 141 tasks (100% complete) ✅
+### 🏆 IMPLEMENTATION STATUS:
+- **Total Tasks Completed**: 141 out of 143 tasks (98.6% complete) ⚠️
 - **ALL BLOCKING Infrastructure Complete**: All security (T123-T130) and performance (T131-T136) requirements met ✅
 - **Constitutional Compliance**: Full adherence to all 6 principles maintained with all blocking requirements satisfied ✅
 - **Clean Architecture**: All layer boundaries respected with proper dependency direction throughout ✅
@@ -341,8 +344,8 @@ Task: "Entity configurations for Student in src/NorthstarET.Lms.Infrastructure/D
 - **Bulk Operations**: Error handling strategies, progress tracking, rollover automation
 - **Observability**: Metrics collection, health checks, structured logging, performance monitoring
 
-### 🚀 PRODUCTION DEPLOYMENT READY:
-The foundational LMS implementation is now **PRODUCTION-READY** with all constitutional requirements satisfied:
+### ⚠️ PRODUCTION DEPLOYMENT STATUS:
+The foundational LMS implementation has **2 REMAINING BLOCKING TASKS** for production readiness:
 
 **✅ BDD-First Testing**: Complete Reqnroll coverage mapping 54 functional requirements  
 **✅ TDD Red-Green Cycle**: >90% coverage maintained with comprehensive test suites  
@@ -351,4 +354,8 @@ The foundational LMS implementation is now **PRODUCTION-READY** with all constit
 **✅ Feature Specification Completeness**: All acceptance scenarios implemented and validated  
 **✅ Security & Performance**: All BLOCKING requirements satisfied for production deployment
 
-**Next Steps**: The system is ready for production deployment with full operational monitoring, compliance reporting, and user onboarding capabilities.
+**BLOCKING TASKS FOR PRODUCTION**:
+- [ ] **T083a**: Secure PDF access with size limits and expiring tokens (FR-054 compliance)
+- [ ] **T095a**: Secure assessment file service with scoped URL generation
+
+**Next Steps**: Complete the 2 blocking security tasks above, then the system will be ready for production deployment.

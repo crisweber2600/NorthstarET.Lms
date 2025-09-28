@@ -17,15 +17,15 @@
           "/Users/cris/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net9.0"
+          "net8.0"
         ],
         "sources": {
           "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net9.0": {
-            "targetAlias": "net9.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -43,8 +43,8 @@
         "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "Aspire.Dashboard.Sdk.osx-arm64": {
               "target": "Package",
@@ -59,14 +59,6 @@
               "target": "Package",
               "version": "[8.2.2, )",
               "autoReferenced": true
-            },
-            "Aspire.Hosting.Redis": {
-              "target": "Package",
-              "version": "[8.2.2, )"
-            },
-            "Aspire.Hosting.SqlServer": {
-              "target": "Package",
-              "version": "[8.2.2, )"
             },
             "Microsoft.CodeAnalysis.Analyzers": {
               "suppressParent": "All",
@@ -90,6 +82,20 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-arm64",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"

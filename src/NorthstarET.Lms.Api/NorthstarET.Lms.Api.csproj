@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NorthstarET.Lms.Infrastructure\NorthstarET.Lms.Infrastructure.csproj" />
+    <ProjectReference Include="..\NorthstarET.Lms.ServiceDefaults\NorthstarET.Lms.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

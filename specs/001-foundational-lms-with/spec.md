@@ -207,7 +207,10 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **FR-044**: System MUST audit all CRUD operations, RBAC changes, lifecycle events, and bulk jobs
 - **FR-045**: System MUST support audit queries by actor, entity, timeframe, and school_year
 - **FR-046**: System MUST provide audit export functionality for compliance reporting
-- **FR-047**: System MUST detect access anomalies and generate multi-tier security alerts (log + notify for minor issues, auto-suspend for severe threats)
+- **FR-047**: System MUST detect access anomalies and generate multi-tier security alerts:
+  - **Tier 1 (Minor)**: Failed login attempts, unusual access times → Log + notify administrators
+  - **Tier 2 (Major)**: Repeated authorization failures, suspicious data access patterns → Auto-suspend user + alert
+  - **Tier 3 (Critical)**: Potential data breach indicators, privilege escalation attempts → Auto-suspend + immediate security team alert
 - **FR-048**: System MUST implement tamper-evident chaining for audit logs
 - **FR-049**: System MUST track repeated authorization failures and suspicious access patterns
 
@@ -216,7 +219,12 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **FR-051**: System MUST scope all operations by appropriate SchoolYear context
 - **FR-052**: System MUST implement deny-by-default RBAC resolution
 - **FR-053**: System MUST enforce least privilege access principles
-- **FR-054**: System MUST provide secure, scoped access to assessment PDF files with expiring URLs and enforce limits (100MB max per PDF, 10GB total per district)
+- **FR-054**: System MUST provide secure, scoped access to assessment PDF files with the following requirements:
+  - **Scoped URLs**: Generate tenant-isolated, time-limited access URLs (default 1-hour expiry)
+  - **File Size Limits**: 100MB maximum per individual PDF file
+  - **Storage Quotas**: 10GB total assessment storage per district
+  - **Access Control**: URLs MUST validate user authorization and tenant context before serving files
+  - **Audit Trail**: All file access requests MUST be logged for compliance monitoring
 
 ### Performance Requirements
 - **PR-001**: CRUD operations MUST complete within 200ms at 95th percentile

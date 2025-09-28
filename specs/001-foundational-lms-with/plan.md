@@ -68,8 +68,26 @@ The system implements four user-selectable strategies for bulk import operations
 ### Technical Implementation
 - **Service**: `BulkOperationService` in Application layer
 - **Strategy Pattern**: Pluggable error handlers per import type
-- **Progress Tracking**: Real-time progress reports with correlation IDs
+- **Progress Tracking**: Real-time student progression reports with correlation IDs
 - **Audit Trail**: All strategies generate audit records for compliance
+
+### Assessment File Security Implementation
+Per FR-054, the system implements secure PDF access through:
+
+1. **Scoped URL Generation**
+   - Service: `SecureAssessmentFileService` in Infrastructure layer
+   - Pattern: Signed URLs with embedded tenant context and expiration
+   - Technology: JWT-based tokens with file path and tenant claims
+
+2. **Storage Quota Management**
+   - Real-time quota tracking per district (10GB limit)
+   - Individual file validation (100MB per PDF)
+   - Quota exceeded prevention with user feedback
+
+3. **Access Control Validation**
+   - Middleware: `AssessmentFileAccessMiddleware`
+   - Validation: User authentication, tenant isolation, RBAC permissions
+   - Audit: All access attempts logged with user, file, and result
 
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
