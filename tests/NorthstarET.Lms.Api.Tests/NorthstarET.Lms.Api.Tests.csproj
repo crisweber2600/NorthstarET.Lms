@@ -26,4 +26,13 @@
     <ProjectReference Include="..\..\src\NorthstarET.Lms.Api\NorthstarET.Lms.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reqnroll Include="..\Features\Districts\*.feature" />
+    <Reqnroll Include="..\Features\Students\*.feature" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\StepDefinitions\*.cs" LinkBase="StepDefinitions" />
+  </ItemGroup>
+
 </Project>

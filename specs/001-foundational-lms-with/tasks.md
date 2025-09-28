@@ -27,13 +27,13 @@
 **CRITICAL: Constitutional requirement - All BDD feature files and step definitions MUST fail before any implementation**
 
 ### District Management Features
-- [ ] **T006** [P] BDD feature file for district provisioning in `tests/Features/Districts/CreateDistrict.feature`
-- [ ] **T007** [P] BDD feature file for district lifecycle in `tests/Features/Districts/DistrictLifecycle.feature` 
-- [ ] **T008** [P] BDD feature file for quota management in `tests/Features/Districts/QuotaManagement.feature`
+- [X] **T006** [P] BDD feature file for district provisioning in `tests/Features/Districts/CreateDistrict.feature`
+- [X] **T007** [P] BDD feature file for district lifecycle in `tests/Features/Districts/DistrictLifecycle.feature` 
+- [X] **T008** [P] BDD feature file for quota management in `tests/Features/Districts/QuotaManagement.feature`
 
 ### Student Management Features  
-- [ ] **T009** [P] BDD feature file for student creation in `tests/Features/Students/CreateStudent.feature`
-- [ ] **T010** [P] BDD feature file for student enrollment in `tests/Features/Students/StudentEnrollment.feature`
+- [X] **T009** [P] BDD feature file for student creation in `tests/Features/Students/CreateStudent.feature`
+- [X] **T010** [P] BDD feature file for student enrollment in `tests/Features/Students/StudentEnrollment.feature`
 - [ ] **T011** [P] BDD feature file for grade progression in `tests/Features/Students/GradeProgression.feature`
 - [ ] **T012** [P] BDD feature file for bulk rollover in `tests/Features/Students/BulkRollover.feature`
 
@@ -48,8 +48,8 @@
 - [ ] **T018** [P] BDD feature file for legal holds in `tests/Features/Compliance/LegalHolds.feature`
 
 ### Step Definitions (Must Fail Initially)
-- [ ] **T019** [P] Step definitions for district management in `tests/StepDefinitions/DistrictSteps.cs`
-- [ ] **T020** [P] Step definitions for student management in `tests/StepDefinitions/StudentSteps.cs`
+- [X] **T019** [P] Step definitions for district management in `tests/StepDefinitions/DistrictSteps.cs`
+- [X] **T020** [P] Step definitions for student management in `tests/StepDefinitions/StudentSteps.cs`
 - [ ] **T021** [P] Step definitions for calendar management in `tests/StepDefinitions/CalendarSteps.cs`
 - [ ] **T022** [P] Step definitions for RBAC in `tests/StepDefinitions/RbacSteps.cs`
 - [ ] **T023** [P] Step definitions for compliance in `tests/StepDefinitions/ComplianceSteps.cs`
