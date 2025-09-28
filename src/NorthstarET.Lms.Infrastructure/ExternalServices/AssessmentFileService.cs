@@ -1,5 +1,6 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using Microsoft.Extensions.Logging;
 using NorthstarET.Lms.Application.Interfaces;
 using System.Security.Cryptography;
@@ -103,11 +104,11 @@ public class AssessmentFileService : IAssessmentFileService
             }
 
             // Download blob content
-            var downloadResponse = await blobClient.DownloadContentAsync(cancellationToken);
+            var downloadResponse = await blobClient.DownloadContentAsync();
             var content = downloadResponse.Value.Content.ToArray();
 
             // Get blob properties and metadata
-            var properties = await blobClient.GetPropertiesAsync(cancellationToken);
+            var properties = await blobClient.GetPropertiesAsync();
             var contentType = properties.Value.ContentType;
             var originalFileName = properties.Value.Metadata.GetValueOrDefault("OriginalFileName", "unknown");
 
@@ -205,7 +206,7 @@ public class AssessmentFileService : IAssessmentFileService
             var containerClient = _blobServiceClient.GetBlobContainerClient(AssessmentContainerName);
             var blobClient = containerClient.GetBlobClient(blobName);
 
-            var properties = await blobClient.GetPropertiesAsync(cancellationToken);
+            var properties = await blobClient.GetPropertiesAsync();
             return properties.Value.ContentLength;
         }
         catch (Exception ex)

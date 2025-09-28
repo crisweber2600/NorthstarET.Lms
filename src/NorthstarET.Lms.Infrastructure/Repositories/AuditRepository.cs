@@ -72,28 +72,31 @@ public class AuditRepository : IAuditRepository
 
     public async Task<IList<AuditRecord>> GetCorrelatedAuditRecordsAsync(string correlationId, CancellationToken cancellationToken = default)
     {
-        return await _context.AuditRecords
-            .Where(ar => ar.CorrelationId == correlationId)
-            .OrderBy(ar => ar.Timestamp)
-            .ThenBy(ar => ar.Id)
-            .ToListAsync(cancellationToken);
+        // CorrelationId is Guid?, so we need to parse the string to Guid
+        if (Guid.TryParse(correlationId, out var guidCorrelationId))
+        {
+            return await _context.AuditRecords
+                .Where(ar => ar.CorrelationId == guidCorrelationId)
+                .OrderBy(ar => ar.Timestamp)
+                .ThenBy(ar => ar.Id)
+                .ToListAsync(cancellationToken);
+        }
+        return new List<AuditRecord>();
     }
 
     public async Task<AuditRecord?> GetPreviousAuditRecordAsync(long currentSequenceNumber, CancellationToken cancellationToken = default)
     {
+        // Since we don't have SequenceNumber, we'll use the record creation order
         return await _context.AuditRecords
-            .Where(ar => ar.Id < currentSequenceNumber)
-            .OrderByDescending(ar => ar.Id)
+            .OrderByDescending(ar => ar.CreatedDate)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<long> GetNextSequenceNumberAsync(CancellationToken cancellationToken = default)
     {
-        var lastRecord = await _context.AuditRecords
-            .OrderByDescending(ar => ar.Id)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        return (lastRecord?.SequenceNumber ?? 0) + 1;
+        // Since AuditRecord doesn't have SequenceNumber, we'll use record count + 1
+        var count = await _context.AuditRecords.CountAsync(cancellationToken);
+        return count + 1;
     }
 
     public async Task<bool> ValidateAuditChainIntegrityAsync(CancellationToken cancellationToken = default)

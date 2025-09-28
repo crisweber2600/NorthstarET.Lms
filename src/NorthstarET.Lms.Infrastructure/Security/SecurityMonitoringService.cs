@@ -149,21 +149,23 @@ public class SecurityMonitoringService : BackgroundService, ISecurityMonitoringS
         {
             // Query audit records for security-related events
             var securityAuditRecords = await auditRepository.QueryAsync(
-                new Application.DTOs.AuditQueryDto
-                {
-                    EventType = "SecurityAlert",
-                    Page = 1,
-                    Size = count
-                }, cancellationToken);
+                entityType: null,
+                entityId: null,
+                userId: null,
+                eventType: "SecurityAlert",
+                startDate: null,
+                endDate: null,
+                page: 1,
+                pageSize: count);
 
             return securityAuditRecords.Items.Select(record => new SecurityAlert
             {
                 Id = record.Id,
                 AlertType = ParseAlertType(record.AuditData),
-                Message = ParseAlertMessage(record.AuditData),
-                Severity = ParseSeverity(record.AuditData),
+                Message = ParseAlertMessage(record.Details),
+                Severity = ParseSeverity(record.Details),
                 Timestamp = record.Timestamp,
-                UserId = record.ActingUserId,
+                UserId = record.UserId,
                 IsResolved = false
             });
         }
@@ -271,16 +273,17 @@ public class SecurityMonitoringService : BackgroundService, ISecurityMonitoringS
             using var scope = _serviceProvider.CreateScope();
             var auditService = scope.ServiceProvider.GetRequiredService<IAuditService>();
             
-            await auditService.LogSecurityEventAsync(
+            await auditService.LogAsync(
                 securityEvent.EventType.ToString(),
+                "SecurityEvent",
+                Guid.NewGuid(),
                 securityEvent.UserId ?? "system",
-                securityEvent.Details,
                 new { 
+                    Details = securityEvent.Details,
                     IpAddress = securityEvent.IpAddress,
                     Severity = securityEvent.Severity.ToString(),
                     Resource = securityEvent.Resource
-                },
-                cancellationToken);
+                });
 
             // Check for patterns that require alerting
             if (RequiresAlert(securityEvent))
@@ -336,12 +339,16 @@ public class SecurityMonitoringService : BackgroundService, ISecurityMonitoringS
         using var scope = _serviceProvider.CreateScope();
         var auditService = scope.ServiceProvider.GetRequiredService<IAuditService>();
         
-        await auditService.LogSecurityEventAsync(
+        await auditService.LogAsync(
             "AutomaticSecurityResponse",
+            "SecurityEvent",
+            Guid.NewGuid(),
             "system",
-            $"Automatic response considered for user {securityEvent.UserId} due to {securityEvent.EventType}",
-            new { Trigger = securityEvent, UserMetrics = userMetrics },
-            cancellationToken);
+            new { 
+                Details = $"Automatic response considered for user {securityEvent.UserId} due to {securityEvent.EventType}",
+                Trigger = securityEvent, 
+                UserMetrics = userMetrics 
+            });
     }
 
     private bool IsFromSuspiciousLocation(string ipAddress, UserSecurityMetrics userMetrics)
@@ -374,12 +381,15 @@ public class SecurityMonitoringService : BackgroundService, ISecurityMonitoringS
             RequiresImediateAttention = isCritical
         };
 
-        await auditService.LogSecurityEventAsync(
+        await auditService.LogAsync(
             "SecurityAlert",
+            "SecurityEvent",
+            Guid.NewGuid(),
             "system",
-            $"{(isCritical ? "CRITICAL" : "")}: {securityEvent.EventType} detected",
-            alertData,
-            cancellationToken);
+            new {
+                Details = $"{(isCritical ? "CRITICAL" : "")}: {securityEvent.EventType} detected",
+                AlertData = alertData
+            });
     }
 
     private double CalculateUserRiskLevel(UserSecurityMetrics userMetrics)
@@ -421,7 +431,7 @@ public class SecurityMonitoringService : BackgroundService, ISecurityMonitoringS
         return indicators;
     }
 
-    private async Task<List<string>> AnalyzeSystemThreatsAsync(CancellationToken cancellationToken)
+    private Task<List<string>> AnalyzeSystemThreatsAsync(CancellationToken cancellationToken)
     {
         var threats = new List<string>();
 
@@ -444,7 +454,7 @@ public class SecurityMonitoringService : BackgroundService, ISecurityMonitoringS
             threats.Add($"Potential coordinated attack from IP: {ip}");
         }
 
-        return threats;
+        return Task.FromResult(threats);
     }
 
     private void AnalyzeSecurityMetrics(object? state)

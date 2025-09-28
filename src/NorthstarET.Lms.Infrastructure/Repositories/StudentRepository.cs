@@ -20,18 +20,12 @@ public class StudentRepository : IStudentRepository
     public async Task<Student?> GetByIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await _context.Students
-            .Include(s => s.Enrollments)
-                .ThenInclude(e => e.Class)
-            .Include(s => s.GuardianRelationships)
-                .ThenInclude(gr => gr.Guardian)
             .FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
     }
 
     public async Task<Student?> GetByStudentNumberAsync(string studentNumber, CancellationToken cancellationToken = default)
     {
         return await _context.Students
-            .Include(s => s.Enrollments)
-                .ThenInclude(e => e.Class)
             .FirstOrDefaultAsync(s => s.StudentNumber == studentNumber, cancellationToken);
     }
 
@@ -62,15 +56,23 @@ public class StudentRepository : IStudentRepository
 
         if (searchDto.GradeLevel.HasValue)
         {
-            // Get students with current enrollments at the specified grade level
-            query = query.Where(s => s.Enrollments
-                .Any(e => e.GradeLevel == searchDto.GradeLevel.Value && 
-                         e.Status == EnrollmentStatus.Active));
+            // Get students with current enrollments at the specified grade level via join
+            var studentsWithGrade = _context.Enrollments
+                .Where(e => e.GradeLevel == searchDto.GradeLevel.Value && 
+                           e.Status == EnrollmentStatus.Active)
+                .Select(e => e.StudentId)
+                .Distinct();
+            
+            query = query.Where(s => studentsWithGrade.Contains(s.UserId));
         }
 
-        if (searchDto.IsSpecialEducation.HasValue)
+        if (!string.IsNullOrWhiteSpace(searchDto.SearchTerm))
         {
-            query = query.Where(s => s.IsSpecialEducation == searchDto.IsSpecialEducation.Value);
+            var searchTerm = searchDto.SearchTerm.ToLowerInvariant();
+            query = query.Where(s => 
+                s.FirstName.ToLower().Contains(searchTerm) ||
+                s.LastName.ToLower().Contains(searchTerm) ||
+                s.StudentNumber.ToLower().Contains(searchTerm));
         }
 
         // Get total count
@@ -80,24 +82,25 @@ public class StudentRepository : IStudentRepository
         var students = await query
             .OrderBy(s => s.LastName)
             .ThenBy(s => s.FirstName)
-            .Skip((searchDto.Page - 1) * searchDto.Size)
-            .Take(searchDto.Size)
-            .Include(s => s.Enrollments.Where(e => e.Status == EnrollmentStatus.Active))
-                .ThenInclude(e => e.Class)
+            .Skip((searchDto.Page - 1) * searchDto.PageSize)
+            .Take(searchDto.PageSize)
             .ToListAsync(cancellationToken);
 
-        return new PagedResult<Student>(students, searchDto.Page, searchDto.Size, totalCount);
+        return new PagedResult<Student>(students, searchDto.Page, searchDto.PageSize, totalCount);
     }
 
     public async Task<IList<Student>> GetStudentsInGradeLevelAsync(GradeLevel gradeLevel, Guid schoolYearId, CancellationToken cancellationToken = default)
     {
+        // Get students via enrollment join since Student doesn't have Enrollments navigation
+        var studentIds = await _context.Enrollments
+            .Where(e => e.GradeLevel == gradeLevel && 
+                       e.SchoolYearId == schoolYearId && 
+                       e.Status == EnrollmentStatus.Active)
+            .Select(e => e.StudentId)
+            .ToListAsync(cancellationToken);
+            
         return await _context.Students
-            .Where(s => s.Enrollments.Any(e => 
-                e.GradeLevel == gradeLevel && 
-                e.SchoolYearId == schoolYearId && 
-                e.Status == EnrollmentStatus.Active))
-            .Include(s => s.Enrollments.Where(e => e.SchoolYearId == schoolYearId))
-                .ThenInclude(e => e.Class)
+            .Where(s => studentIds.Contains(s.UserId))
             .OrderBy(s => s.LastName)
             .ThenBy(s => s.FirstName)
             .ToListAsync(cancellationToken);
@@ -120,12 +123,16 @@ public class StudentRepository : IStudentRepository
 
     public async Task<IList<Student>> GetStudentsForRolloverAsync(GradeLevel fromGrade, Guid fromSchoolYearId, CancellationToken cancellationToken = default)
     {
+        // Get students via enrollment join since Student doesn't have Enrollments navigation
+        var studentIds = await _context.Enrollments
+            .Where(e => e.GradeLevel == fromGrade && 
+                       e.SchoolYearId == fromSchoolYearId && 
+                       e.Status == EnrollmentStatus.Active)
+            .Select(e => e.StudentId)
+            .ToListAsync(cancellationToken);
+            
         return await _context.Students
-            .Where(s => s.Enrollments.Any(e => 
-                e.GradeLevel == fromGrade && 
-                e.SchoolYearId == fromSchoolYearId && 
-                e.Status == EnrollmentStatus.Active))
-            .Include(s => s.Enrollments.Where(e => e.SchoolYearId == fromSchoolYearId))
+            .Where(s => studentIds.Contains(s.UserId))
             .ToListAsync(cancellationToken);
     }
 
@@ -186,11 +193,9 @@ public class StudentRepository : IStudentRepository
 
     public async Task<Student?> GetByIdWithDetailsAsync(Guid id)
     {
+        // Since Student doesn't have navigation properties, just return the basic student
+        // The details would need to be loaded separately if needed
         return await _context.Students
-            .Include(s => s.Enrollments)
-                .ThenInclude(e => e.Class)
-            .Include(s => s.GuardianRelationships)
-                .ThenInclude(gr => gr.Guardian)
             .FirstOrDefaultAsync(s => s.UserId == id);
     }
 

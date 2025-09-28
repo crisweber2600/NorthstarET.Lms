@@ -67,7 +67,7 @@ public class RbacEnforcer : IRbacEnforcer
         try
         {
             // Get user's role assignments
-            var roleAssignments = await _roleAssignmentRepository.GetUserRoleAssignmentsAsync(
+            var roleAssignments = await _roleAssignmentRepository.GetActiveRolesByUserIdAsync(
                 userId, cancellationToken);
 
             if (!roleAssignments.Any())
@@ -173,7 +173,7 @@ public class RbacEnforcer : IRbacEnforcer
 
         try
         {
-            var roleAssignments = await _roleAssignmentRepository.GetUserRoleAssignmentsAsync(
+            var roleAssignments = await _roleAssignmentRepository.GetActiveRolesByUserIdAsync(
                 userId, cancellationToken);
 
             var effectivePermissions = new List<EffectivePermission>();
@@ -224,7 +224,7 @@ public class RbacEnforcer : IRbacEnforcer
         {
             // Check if role definition exists
             var roleDefinition = await _roleDefinitionRepository.GetByIdAsync(
-                assignment.RoleDefinitionId, cancellationToken);
+                assignment.RoleDefinitionId);
 
             if (roleDefinition == null)
             {
@@ -239,7 +239,7 @@ public class RbacEnforcer : IRbacEnforcer
             }
 
             // Check for conflicting assignments
-            var existingAssignments = await _roleAssignmentRepository.GetUserRoleAssignmentsAsync(
+            var existingAssignments = await _roleAssignmentRepository.GetActiveRolesByUserIdAsync(
                 assignment.UserId, cancellationToken);
 
             var conflicts = DetectRoleConflicts(roleDefinition, existingAssignments);
@@ -267,7 +267,7 @@ public class RbacEnforcer : IRbacEnforcer
     {
         // Get role definition
         var roleDefinition = await _roleDefinitionRepository.GetByIdAsync(
-            assignment.RoleDefinitionId, cancellationToken);
+            assignment.RoleDefinitionId);
 
         if (roleDefinition == null)
         {
@@ -288,7 +288,7 @@ public class RbacEnforcer : IRbacEnforcer
         }
 
         // Check temporal constraints (if role assignment has expiry)
-        if (assignment.ExpiresAt.HasValue && assignment.ExpiresAt.Value < DateTime.UtcNow)
+        if (assignment.ExpirationDate.HasValue && assignment.ExpirationDate.Value < DateTime.UtcNow)
         {
             return AuthorizationResult.Forbidden("Role assignment expired");
         }

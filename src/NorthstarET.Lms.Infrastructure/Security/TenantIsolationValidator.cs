@@ -2,6 +2,8 @@ using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace NorthstarET.Lms.Infrastructure.Security;
 

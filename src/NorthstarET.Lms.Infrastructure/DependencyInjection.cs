@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using Azure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -84,7 +85,7 @@ public static class DependencyInjection
                     throw new InvalidOperationException("Microsoft Graph configuration is incomplete");
                 }
 
-                var options = new ClientSecretCredentialOptions
+                var options = new Azure.Identity.ClientSecretCredentialOptions
                 {
                     AuthorityHost = Azure.Identity.AzureAuthorityHosts.AzurePublicCloud,
                 };

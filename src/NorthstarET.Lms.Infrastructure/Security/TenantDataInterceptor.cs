@@ -2,6 +2,7 @@ using NorthstarET.Lms.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using System.Data.Common;
 using System.Text.Json;
 
