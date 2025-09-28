@@ -1,16 +1,12 @@
 <!--
 Sync Impact Report:
-- Version change: 1.0.0 → 1.0.0 (major principle replacement)
-- Modified principles: All 5 core principles completely replaced
-  * Tenant-First Architecture → BDD-First Testing (NON-NEGOTIABLE)
-  * Event-Driven State Changes → TDD Red-Green Cycle (NON-NEGOTIABLE)  
-  * Test-First Development → Clean Architecture (NON-NEGOTIABLE)
-  * API Contract Governance → Aspire Orchestration
-  * Observability & Performance → Feature Specification Completeness
-- Added sections: Technology Standards, Development Workflow, Compliance Verification, Definition of Done
-- Removed sections: Security & Compliance (reorganized into Compliance Verification), Development Standards (reorganized into Development Workflow)
-- Templates requiring updates: ✅ plan-template.md updated, ✅ tasks-template.md updated
-- Follow-up TODOs: None - all placeholders filled
+- Version change: 1.0.0 → 1.1.0 (minor version bump - new principle added)
+- Modified principles: None
+- Added principles: VI. Documentation-First Architecture (NON-NEGOTIABLE)
+- Added sections: README Management Requirements, Documentation Synchronization Rules
+- Removed sections: None
+- Templates requiring updates: ✅ All templates validated for README requirements
+- Follow-up TODOs: Generate README files for all directories missing them
 -->
 
 # NorthstarET.Lms Constitution
@@ -31,6 +27,9 @@ All services and dependencies MUST be orchestrated using .NET Aspire. Service di
 
 ### V. Feature Specification Completeness
 Every feature MUST start with a complete specification including user scenarios, acceptance criteria, and edge cases. All requirements MUST be testable and unambiguous. No implementation MUST begin until feature specification is reviewed and approved. Feature files MUST map directly to specification requirements.
+
+### VI. Documentation-First Architecture (NON-NEGOTIABLE)
+Every directory MUST contain a README.md file describing its purpose, contents, and relationships. Any time a file is created, modified, or deleted, the corresponding directory's README.md MUST be updated to reflect current state. README files MUST provide architectural context, usage examples, and navigation guidance. Documentation MUST be maintained as code with the same rigor as implementation.
 
 ## Technology Standards
 
@@ -56,6 +55,13 @@ Every feature MUST start with a complete specification including user scenarios,
 - Integration tests MUST cover all API endpoints and workflows
 - Performance tests MUST validate SLA requirements
 - Security analysis MUST pass with zero high-severity findings
+
+### README Management Requirements
+- Every directory with source files MUST have a README.md file
+- README files MUST be updated immediately when directory contents change
+- README files MUST include: Purpose, Architecture context, File inventory, Usage examples
+- README files MUST follow standard template with consistent formatting
+- Missing or outdated README files block PR approval
 
 ## Development Workflow
 
@@ -94,6 +100,8 @@ All pull requests MUST verify:
 - [ ] Clean architecture boundaries maintained (dependency analysis)
 - [ ] Aspire orchestration properly configured
 - [ ] Complete feature specifications linked
+- [ ] README files updated for all modified directories
+- [ ] Documentation matches current code structure
 - [ ] Performance requirements met (<200ms p95 for APIs)
 - [ ] Security scan passes with zero high-severity findings
 
@@ -105,4 +113,4 @@ A feature is complete when:
 - Performance benchmarks meet SLA
 - Security review completed
 
-**Version**: 1.0.0 | **Ratified**: 2025-01-09 | **Last Amended**: 2025-01-09
+**Version**: 1.1.0 | **Ratified**: 2025-01-09 | **Last Amended**: 2025-01-09
