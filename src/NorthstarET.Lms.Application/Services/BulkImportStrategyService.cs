@@ -1,6 +1,9 @@
 using NorthstarET.Lms.Application.Common;
 using NorthstarET.Lms.Application.DTOs;
-using Microsoft.EntityFrameworkCore;
+using NorthstarET.Lms.Application.Interfaces;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 
 namespace NorthstarET.Lms.Application.Services;
@@ -102,9 +105,9 @@ public class AllOrNothingStrategy : IBulkImportStrategy
         CancellationToken cancellationToken) where T : class
     {
         using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<DbContext>();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         
-        using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        await unitOfWork.BeginTransactionAsync();
         
         try
         {
@@ -116,11 +119,11 @@ public class AllOrNothingStrategy : IBulkImportStrategy
             });
 
             var validationResults = await Task.WhenAll(validationTasks);
-            var failedValidations = validationResults.Where(r => !r.Validation.IsValid).ToList();
+            var failedValidations = validationResults.Where(r => r.Validation != ValidationResult.Success).ToList();
 
             if (failedValidations.Any())
             {
-                await transaction.RollbackAsync(cancellationToken);
+                await unitOfWork.RollbackTransactionAsync();
                 
                 return new BulkImportResult<T>
                 {
@@ -139,7 +142,7 @@ public class AllOrNothingStrategy : IBulkImportStrategy
 
             // Process all valid items
             var processedCount = await processor(request.Items, cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
+            await unitOfWork.CommitTransactionAsync();
 
             return new BulkImportResult<T>
             {
@@ -152,7 +155,7 @@ public class AllOrNothingStrategy : IBulkImportStrategy
         }
         catch (Exception ex)
         {
-            await transaction.RollbackAsync(cancellationToken);
+            await unitOfWork.RollbackTransactionAsync();
             _logger.LogError(ex, "All-or-Nothing bulk import failed");
             
             return new BulkImportResult<T>
@@ -199,7 +202,7 @@ public class BestEffortStrategy : IBulkImportStrategy
             try
             {
                 var validation = await validator(item, cancellationToken);
-                if (validation.IsValid)
+                if (validation == ValidationResult.Success)
                 {
                     validItems.Add(item);
                 }
@@ -281,9 +284,9 @@ public class ThresholdBasedStrategy : IBulkImportStrategy
         var maxAllowedErrors = (int)Math.Floor(totalItems * threshold / 100.0);
 
         using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<DbContext>();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         
-        using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        await unitOfWork.BeginTransactionAsync();
 
         try
         {
@@ -296,7 +299,7 @@ public class ThresholdBasedStrategy : IBulkImportStrategy
                 try
                 {
                     var validation = await validator(item, cancellationToken);
-                    if (validation.IsValid)
+                    if (validation == ValidationResult.Success)
                     {
                         validItems.Add(item);
                     }
@@ -312,7 +315,7 @@ public class ThresholdBasedStrategy : IBulkImportStrategy
                         // Check if we've exceeded the error threshold
                         if (failedItems.Count > maxAllowedErrors)
                         {
-                            await transaction.RollbackAsync(cancellationToken);
+                            await unitOfWork.RollbackTransactionAsync();
                             
                             return new BulkImportResult<T>
                             {
@@ -338,7 +341,7 @@ public class ThresholdBasedStrategy : IBulkImportStrategy
 
             // Process valid items if within threshold
             var processedCount = validItems.Any() ? await processor(validItems, cancellationToken) : 0;
-            await transaction.CommitAsync(cancellationToken);
+            await unitOfWork.CommitTransactionAsync();
 
             return new BulkImportResult<T>
             {
@@ -351,7 +354,7 @@ public class ThresholdBasedStrategy : IBulkImportStrategy
         }
         catch (Exception ex)
         {
-            await transaction.RollbackAsync(cancellationToken);
+            await unitOfWork.RollbackTransactionAsync();
             _logger.LogError(ex, "Threshold-based bulk import failed");
             
             return new BulkImportResult<T>
@@ -398,7 +401,7 @@ public class PreviewModeStrategy : IBulkImportStrategy
             try
             {
                 var validation = await validator(item, cancellationToken);
-                if (validation.IsValid)
+                if (validation == ValidationResult.Success)
                 {
                     validItems.Add(item);
                 }

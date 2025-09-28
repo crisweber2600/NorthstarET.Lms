@@ -1,4 +1,6 @@
 using NorthstarET.Lms.Api.Common;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace NorthstarET.Lms.Api.Middleware;
