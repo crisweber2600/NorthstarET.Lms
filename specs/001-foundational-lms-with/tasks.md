@@ -74,10 +74,10 @@
 
 ### Application Service Tests
 - [X] **T032** [P] Unit tests for DistrictService in `tests/NorthstarET.Lms.Application.Tests/Services/DistrictServiceTests.cs` ✅ Created - FAILING (RED phase)
-- [ ] **T033** [P] Unit tests for StudentService in `tests/NorthstarET.Lms.Application.Tests/Services/StudentServiceTests.cs`
-- [ ] **T034** [P] Unit tests for EnrollmentService in `tests/NorthstarET.Lms.Application.Tests/Services/EnrollmentServiceTests.cs`
-- [ ] **T035** [P] Unit tests for RoleAuthorizationService in `tests/NorthstarET.Lms.Application.Tests/Services/RoleAuthorizationServiceTests.cs`
-- [ ] **T036** [P] Unit tests for AuditService in `tests/NorthstarET.Lms.Application.Tests/Services/AuditServiceTests.cs`
+- [X] **T033** [P] Unit tests for StudentService in `tests/NorthstarET.Lms.Application.Tests/Services/StudentServiceTests.cs` ✅ Created - FAILING (RED phase)
+- [X] **T034** [P] Unit tests for EnrollmentService in `tests/NorthstarET.Lms.Application.Tests/Services/EnrollmentServiceTests.cs` ✅ Created - FAILING (RED phase)
+- [X] **T035** [P] Unit tests for RoleAuthorizationService in `tests/NorthstarET.Lms.Application.Tests/Services/RoleAuthorizationServiceTests.cs` ✅ Created - FAILING (RED phase)
+- [X] **T036** [P] Unit tests for AuditService in `tests/NorthstarET.Lms.Application.Tests/Services/AuditServiceTests.cs` ✅ Created - FAILING (RED phase)
 
 ### Integration Tests
 - [ ] **T037** [P] Integration tests for district API endpoints in `tests/NorthstarET.Lms.Api.Tests/Controllers/DistrictsControllerTests.cs`
