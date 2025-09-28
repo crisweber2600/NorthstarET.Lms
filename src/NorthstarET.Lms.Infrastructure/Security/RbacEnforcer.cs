@@ -311,7 +311,7 @@ public class RbacEnforcer : IRbacEnforcer
         }
 
         // Check School-scoped access
-        if (assignment.SchoolId.HasValue && resource?.ToLower().Contains("school") == true)
+        if (assignment.SchoolId != Guid.Empty && resource?.ToLower().Contains("school") == true)
         {
             return resourceId == null || resourceId == assignment.SchoolId;
         }
@@ -334,9 +334,9 @@ public class RbacEnforcer : IRbacEnforcer
     private AuthorizationResult ValidateRoleScope(RoleDefinition roleDefinition, RoleAssignment assignment)
     {
         // Validate that role assignment scope matches role definition constraints
-        var requiredScope = roleDefinition.RequiredScope;
+        var requiredScope = roleDefinition.Scope; // Use Scope instead of RequiredScope
 
-        if (requiredScope.HasFlag(RoleScope.School) && !assignment.SchoolId.HasValue)
+        if (requiredScope.HasFlag(RoleScope.School) && assignment.SchoolId == Guid.Empty)
         {
             return AuthorizationResult.Forbidden("Role requires school scope");
         }
@@ -402,7 +402,7 @@ public class RbacEnforcer : IRbacEnforcer
     {
         if (assignment.ClassId.HasValue)
             return $"Class:{assignment.ClassId}";
-        if (assignment.SchoolId.HasValue)
+        if (assignment.SchoolId != Guid.Empty)
             return $"School:{assignment.SchoolId}";
         if (assignment.SchoolYearId.HasValue)
             return $"SchoolYear:{assignment.SchoolYearId}";

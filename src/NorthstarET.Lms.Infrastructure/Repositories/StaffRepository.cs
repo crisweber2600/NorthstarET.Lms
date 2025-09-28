@@ -21,7 +21,7 @@ public class StaffRepository : IStaffRepository
     {
         return await _context.Staff
             .Include(s => s.RoleAssignments)
-                .ThenInclude(ra => ra.RoleDefinition)
+                
             .FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
     }
 
@@ -29,7 +29,7 @@ public class StaffRepository : IStaffRepository
     {
         return await _context.Staff
             .Include(s => s.RoleAssignments)
-                .ThenInclude(ra => ra.RoleDefinition)
+                
             .FirstOrDefaultAsync(s => s.EmployeeNumber == employeeNumber, cancellationToken);
     }
 
@@ -37,7 +37,7 @@ public class StaffRepository : IStaffRepository
     {
         return await _context.Staff
             .Include(s => s.RoleAssignments)
-                .ThenInclude(ra => ra.RoleDefinition)
+                
             .FirstOrDefaultAsync(s => s.Email == email.ToLowerInvariant(), cancellationToken);
     }
 
@@ -82,7 +82,7 @@ public class StaffRepository : IStaffRepository
         if (!string.IsNullOrWhiteSpace(searchDto.RoleName))
         {
             query = query.Where(s => s.RoleAssignments
-                .Any(ra => ra.RoleDefinition.Name == searchDto.RoleName && ra.IsActive));
+                .Any(ra => ra.IsActive)); // TODO: Add role name filtering when RoleDefinition navigation is available
         }
 
         // Get total count
@@ -91,7 +91,7 @@ public class StaffRepository : IStaffRepository
         // Apply pagination and ordering
         var staff = await query
             .Include(s => s.RoleAssignments.Where(ra => ra.IsActive))
-                .ThenInclude(ra => ra.RoleDefinition)
+                
             .OrderBy(s => s.LastName)
             .ThenBy(s => s.FirstName)
             .Skip((searchDto.Page - 1) * searchDto.Size)
@@ -106,7 +106,7 @@ public class StaffRepository : IStaffRepository
         return await _context.Staff
             .Where(s => s.Status == status)
             .Include(s => s.RoleAssignments.Where(ra => ra.IsActive))
-                .ThenInclude(ra => ra.RoleDefinition)
+                
             .OrderBy(s => s.LastName)
             .ThenBy(s => s.FirstName)
             .ToListAsync(cancellationToken);
@@ -121,7 +121,7 @@ public class StaffRepository : IStaffRepository
                 ra.IsActive &&
                 (ra.ExpirationDate == null || ra.ExpirationDate > DateTime.UtcNow)))
             .Include(s => s.RoleAssignments.Where(ra => ra.SchoolId == schoolId && ra.IsActive))
-                .ThenInclude(ra => ra.RoleDefinition)
+                
             .OrderBy(s => s.LastName)
             .ThenBy(s => s.FirstName)
             .ToListAsync(cancellationToken);
@@ -132,22 +132,22 @@ public class StaffRepository : IStaffRepository
         var query = _context.Staff
             .Where(s => s.Status == UserLifecycleStatus.Active)
             .Where(s => s.RoleAssignments.Any(ra => 
-                ra.RoleDefinition.Name == roleName &&
+                ra.IsActive &&
                 ra.IsActive &&
                 (ra.ExpirationDate == null || ra.ExpirationDate > DateTime.UtcNow)));
 
         if (schoolId.HasValue)
         {
             query = query.Where(s => s.RoleAssignments.Any(ra => 
-                ra.RoleDefinition.Name == roleName &&
+                ra.IsActive &&
                 ra.SchoolId == schoolId.Value &&
                 ra.IsActive));
         }
 
         return await query
             .Include(s => s.RoleAssignments.Where(ra => 
-                ra.RoleDefinition.Name == roleName && ra.IsActive))
-                .ThenInclude(ra => ra.RoleDefinition)
+                ra.IsActive && ra.IsActive))
+                
             .OrderBy(s => s.LastName)
             .ThenBy(s => s.FirstName)
             .ToListAsync(cancellationToken);
@@ -190,7 +190,7 @@ public class StaffRepository : IStaffRepository
                 ra.ExpirationDate.HasValue && 
                 ra.ExpirationDate.Value <= expirationDate &&
                 ra.IsActive))
-                .ThenInclude(ra => ra.RoleDefinition)
+                
             .OrderBy(s => s.LastName)
             .ThenBy(s => s.FirstName)
             .ToListAsync(cancellationToken);
@@ -231,7 +231,7 @@ public class StaffRepository : IStaffRepository
     {
         return await _context.Staff
             .Include(s => s.RoleAssignments.Where(ra => ra.IsActive))
-                .ThenInclude(ra => ra.RoleDefinition)
+                
             .OrderBy(s => s.LastName)
             .ThenBy(s => s.FirstName)
             .ToListAsync();

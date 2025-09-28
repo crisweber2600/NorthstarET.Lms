@@ -114,7 +114,7 @@ public class PerformanceMonitor : BackgroundService, IPerformanceMonitor
         {
             GeneratedAt = DateTime.UtcNow,
             TotalOperations = _operationMetrics.Values.Sum(m => m.TotalCount),
-            AverageResponseTime = CalculateOverallAverageResponseTime(),
+            AverageResponseTime = TimeSpan.FromMilliseconds(CalculateOverallAverageResponseTime()),
             SlaCompliance = CalculateSlaCompliance()
         };
 
@@ -214,13 +214,19 @@ public class PerformanceMonitor : BackgroundService, IPerformanceMonitor
             
             if (auditService != null)
             {
-                await auditService.LogPerformanceMetricAsync(
-                    dataPoint.OperationType,
-                    dataPoint.OperationName,
-                    dataPoint.Duration.TotalMilliseconds,
-                    dataPoint.Success,
-                    dataPoint.Context,
-                    cancellationToken);
+                // IAuditService doesn't have LogPerformanceMetricAsync, use regular LogAsync
+                await auditService.LogAsync(
+                    "PerformanceMetric",
+                    "PerformanceDataPoint", 
+                    Guid.NewGuid(),
+                    "system",
+                    new { 
+                        OperationType = dataPoint.OperationType,
+                        OperationName = dataPoint.OperationName,
+                        Duration = dataPoint.Duration.TotalMilliseconds,
+                        Success = dataPoint.Success,
+                        Context = dataPoint.Context 
+                    });
             }
         }
         catch (Exception ex)
@@ -263,12 +269,13 @@ public class PerformanceMonitor : BackgroundService, IPerformanceMonitor
         
         if (auditService != null)
         {
-            await auditService.LogSecurityEventAsync(
+            // IAuditService doesn't have LogSecurityEventAsync, use regular LogAsync
+            await auditService.LogAsync(
                 "PerformanceSlaViolation",
+                "SlaViolation",
+                Guid.NewGuid(),
                 "system",
-                "SLA violation detected",
-                violation,
-                cancellationToken);
+                violation);
         }
     }
 

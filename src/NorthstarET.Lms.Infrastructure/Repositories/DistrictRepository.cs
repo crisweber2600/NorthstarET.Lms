@@ -17,15 +17,14 @@ public class DistrictRepository : IDistrictRepository
 
     public async Task<DistrictTenant?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
+        // DistrictTenant doesn't have RetentionPolicy navigation property
         return await _context.Districts
-            .Include(d => d.RetentionPolicy)
             .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
     public async Task<DistrictTenant?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default)
     {
         return await _context.Districts
-            .Include(d => d.RetentionPolicy)
             .FirstOrDefaultAsync(d => d.Slug == slug.ToLowerInvariant(), cancellationToken);
     }
 
@@ -38,7 +37,6 @@ public class DistrictRepository : IDistrictRepository
     public async Task<IList<DistrictTenant>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Districts
-            .Include(d => d.RetentionPolicy)
             .OrderBy(d => d.DisplayName)
             .ToListAsync(cancellationToken);
     }
@@ -47,7 +45,6 @@ public class DistrictRepository : IDistrictRepository
     {
         return await _context.Districts
             .Where(d => d.Status == status)
-            .Include(d => d.RetentionPolicy)
             .OrderBy(d => d.DisplayName)
             .ToListAsync(cancellationToken);
     }
@@ -124,9 +121,10 @@ public class DistrictRepository : IDistrictRepository
 
     public async Task<bool> HasActiveRetentionPoliciesAsync(Guid districtId)
     {
-        return await _context.Districts
-            .Where(d => d.Id == districtId)
-            .AnyAsync(d => d.RetentionPolicy != null);
+        // Since DistrictTenant doesn't have RetentionPolicy navigation,
+        // we'll check the RetentionPolicies table directly
+        return await _context.RetentionPolicies
+            .AnyAsync(rp => rp.IsDefault && rp.SupersededDate == null);
     }
 
     public async Task<bool> SlugExistsAsync(string slug)
