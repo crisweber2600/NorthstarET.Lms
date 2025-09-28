@@ -1,0 +1,713 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NorthstarET.Lms.Infrastructure</name>
+    </assembly>
+    <members>
+        <member name="T:NorthstarET.Lms.Infrastructure.BackgroundServices.AuditProcessorService">
+            <summary>
+            Background service that processes and validates audit chain integrity
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.BackgroundServices.RetentionJobService">
+            <summary>
+            Background service that enforces data retention policies according to FERPA requirements
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Caching.CachingService">
+            <summary>
+            Multi-layer caching service with tenant isolation and intelligent cache management
+            Implements performance optimization with FERPA-compliant data handling
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Caching.CachingService.GetAsync``1(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets a value from cache with tenant isolation
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Caching.CachingService.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},NorthstarET.Lms.Infrastructure.Caching.CacheLayer,System.Threading.CancellationToken)">
+            <summary>
+            Sets a value in cache with appropriate TTL and tenant isolation
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Caching.CachingService.GetOrSetAsync``1(System.String,System.Func{System.Threading.CancellationToken,System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},NorthstarET.Lms.Infrastructure.Caching.CacheLayer,System.Threading.CancellationToken)">
+            <summary>
+            Gets or sets a value using a factory method
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Caching.CachingService.RemoveAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Removes a value from all cache layers
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Caching.CachingService.RemoveByPatternAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Removes all cached values matching a pattern (tenant-scoped)
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Caching.CachingService.ClearTenantCacheAsync(System.Threading.CancellationToken)">
+            <summary>
+            Clears all cache for current tenant
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Caching.CachingService.GetCacheStatisticsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Gets cache statistics
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Caching.CachingService.GetCacheHealthAsync(System.Threading.CancellationToken)">
+            <summary>
+            Validates cache health and performance
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Caching.ICachingService">
+            <summary>
+            Interface for caching service
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Caching.CachingOptions">
+            <summary>
+            Cache configuration options
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Caching.CacheLayer">
+            <summary>
+            Cache layers in order of speed
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Caching.CacheHealth">
+            <summary>
+            Cache health status
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Caching.CacheStats">
+            <summary>
+            Cache statistics per key
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Caching.CacheStatistics">
+            <summary>
+            Overall cache statistics
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Caching.CacheLayerStats">
+            <summary>
+            Cache layer statistics
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Caching.CacheHealthStatus">
+            <summary>
+            Cache health status
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Data.Initialization.DatabaseInitializer">
+            <summary>
+            Database initialization service responsible for:
+            - Platform-level database setup and migrations
+            - Tenant schema provisioning
+            - Initial data seeding for system defaults
+            - Tenant-specific data seeding
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Data.Initialization.DatabaseInitializer.InitializePlatformDatabaseAsync">
+            <summary>
+            Initialize the platform-level database and apply migrations
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Data.Initialization.DatabaseInitializer.ProvisionTenantAsync(System.String,System.String,NorthstarET.Lms.Infrastructure.Data.Initialization.DistrictQuotas)">
+            <summary>
+            Provision a new tenant schema with complete data isolation
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Data.Initialization.DatabaseInitializer.ValidateTenantProvisioningAsync(System.String)">
+            <summary>
+            Validate if a tenant is properly provisioned and accessible
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Data.Initialization.MockTenantContextAccessor">
+            <summary>
+            Mock tenant context accessor for database initialization scenarios
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Data.Initialization.MockTenantContext">
+            <summary>
+            Mock tenant context implementation
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Data.Initialization.DistrictQuotas">
+            <summary>
+            District quota configuration for tenant provisioning
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Data.Initialization.DatabaseInitializerExtensions">
+            <summary>
+            Extension methods for database initialization
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Data.Seeding.RetentionPolicySeeder">
+            <summary>
+            Seeds default FERPA-compliant retention policies for all entity types.
+            These policies define how long data must be retained before it can be purged.
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Data.Seeding.RoleDefinitionSeeder">
+            <summary>
+            Seeds system role definitions for hierarchical RBAC in the educational domain.
+            Defines roles at Platform, District, School, and Class levels with appropriate permissions.
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.ExternalServices.AssessmentFileService">
+            <summary>
+            Implementation of assessment file storage using Azure Blob Storage
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.ExternalServices.EntraIdentityService">
+            <summary>
+            Implementation of Entra External ID integration service for identity mapping
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Observability.MetricsCollector">
+            <summary>
+            Service for collecting real-time performance metrics and system telemetry
+            Implements comprehensive observability for SLA monitoring and capacity planning
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Observability.MetricsCollector.RecordMetricAsync(System.String,System.Double,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Records a custom metric value
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Observability.MetricsCollector.IncrementCounterAsync(System.String,System.Int64,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Records a counter increment
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Observability.MetricsCollector.RecordGaugeAsync(System.String,System.Double,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Records a gauge value (point-in-time measurement)
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Observability.MetricsCollector.RecordHistogramAsync(System.String,System.Double,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Records a histogram value (for measuring distributions)
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Observability.MetricsCollector.RecordTimerAsync(System.String,System.TimeSpan,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Records a timer measurement
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Observability.MetricsCollector.GetMetricSeriesAsync(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Gets current metrics for a specific series
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Observability.MetricsCollector.GetMetricsSnapshotAsync">
+            <summary>
+            Gets a snapshot of all current metrics
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Observability.MetricsCollector.GetPerformanceHealthAsync">
+            <summary>
+            Gets performance health metrics
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Observability.IMetricsCollector">
+            <summary>
+            Interface for metrics collection service
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Observability.MetricsCollectionOptions">
+            <summary>
+            Configuration options for metrics collection
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Observability.MetricDataPoint">
+            <summary>
+            Individual metric data point
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Observability.MetricSeries">
+            <summary>
+            Time series of metric data points
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Observability.SystemMetrics">
+            <summary>
+            System performance metrics
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Observability.MetricsSnapshot">
+            <summary>
+            Complete metrics snapshot
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Observability.PerformanceHealthMetrics">
+            <summary>
+            Performance health metrics
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Observability.HttpMetrics">
+            <summary>
+            HTTP request metrics
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.PerformanceMonitor">
+            <summary>
+            Service for monitoring application performance metrics and SLA compliance
+            Implements performance requirements PR-001, PR-002, PR-003, PR-004
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Performance.PerformanceMonitor.StartMeasurement(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Records the start of a performance measurement
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Performance.PerformanceMonitor.RecordPerformanceAsync(System.String,System.String,System.TimeSpan,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <summary>
+            Records performance data for an operation
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Performance.PerformanceMonitor.GetOperationMetricsAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets current performance metrics for an operation
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Performance.PerformanceMonitor.GetPerformanceSummaryAsync(System.Threading.CancellationToken)">
+            <summary>
+            Gets performance summary across all operations
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Performance.PerformanceMonitor.GetHealthStatusAsync(System.Threading.CancellationToken)">
+            <summary>
+            Gets performance health status
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.PerformanceScope">
+            <summary>
+            Performance measurement scope that automatically records duration
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.IPerformanceMonitor">
+            <summary>
+            Interface for performance monitoring service
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.IPerformanceScope">
+            <summary>
+            Performance measurement scope interface
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.PerformanceOptions">
+            <summary>
+            Configuration options for performance monitoring
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.PerformanceDataPoint">
+            <summary>
+            Performance data point
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.PerformanceMetrics">
+            <summary>
+            Aggregated performance metrics for an operation
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.PerformanceSummary">
+            <summary>
+            Overall performance summary
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.OperationTypeMetrics">
+            <summary>
+            Performance metrics for an operation type
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.SlaViolation">
+            <summary>
+            SLA violation record
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.PerformanceHealthStatus">
+            <summary>
+            Performance health status
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.PerformanceHealth">
+            <summary>
+            Performance health levels
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.QueryOptimizer">
+            <summary>
+            Service that analyzes and optimizes database queries for performance
+            Implements PR-003 (audit queries under 2s on 1M records) optimization
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Performance.QueryOptimizer.AnalyzeQueryAsync(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Analyzes a query and provides optimization suggestions
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Performance.QueryOptimizer.OptimizeQueryAsync(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Optimizes a query automatically where possible
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Performance.QueryOptimizer.GetOptimizationStatsAsync">
+            <summary>
+            Gets optimization statistics
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.IQueryOptimizer">
+            <summary>
+            Interface for query optimization service
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.QueryAnalysisResult">
+            <summary>
+            Query analysis result
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.QueryOptimizationResult">
+            <summary>
+            Query optimization result
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.QueryOptimizationStats">
+            <summary>
+            Query optimization statistics
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.QueryPattern">
+            <summary>
+            Query pattern tracking
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.QueryOptimizationSuggestion">
+            <summary>
+            Query optimization suggestion
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.QueryIssue">
+            <summary>
+            Query issue identification
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.SlowQueryInfo">
+            <summary>
+            Slow query information
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.OptimizationOpportunity">
+            <summary>
+            Optimization opportunity
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.QueryOptimizationOptions">
+            <summary>
+            Query optimization options
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Performance.QueryComplexity">
+            <summary>
+            Enums for query analysis
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.ITenantScoped">
+            <summary>
+            Contract for entities that are tenant-scoped for multi-tenant isolation
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.RbacEnforcer">
+            <summary>
+            Service that enforces Role-Based Access Control (RBAC) with hierarchical permissions
+            Implements deny-by-default with explicit permission granting per FR-052, FR-053
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.RbacEnforcer.HasPermissionAsync(System.Security.Claims.ClaimsPrincipal,System.String,System.String,System.Nullable{System.Guid},System.Threading.CancellationToken)">
+            <summary>
+            Checks if the current user has the specified permission
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.RbacEnforcer.HasAnyPermissionAsync(System.Security.Claims.ClaimsPrincipal,System.String[],System.String,System.Nullable{System.Guid},System.Threading.CancellationToken)">
+            <summary>
+            Checks if the current user has any of the specified permissions (OR logic)
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.RbacEnforcer.HasAllPermissionsAsync(System.Security.Claims.ClaimsPrincipal,System.String[],System.String,System.Nullable{System.Guid},System.Threading.CancellationToken)">
+            <summary>
+            Checks if the current user has all specified permissions (AND logic)
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.RbacEnforcer.GetUserPermissionsAsync(System.Security.Claims.ClaimsPrincipal,System.Threading.CancellationToken)">
+            <summary>
+            Gets all effective permissions for the current user
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.RbacEnforcer.ValidateRoleAssignmentAsync(NorthstarET.Lms.Domain.Entities.RoleAssignment,System.Threading.CancellationToken)">
+            <summary>
+            Validates a role assignment against business rules
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.IRbacEnforcer">
+            <summary>
+            Interface for RBAC enforcement service
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.AuthorizationResult">
+            <summary>
+            Result of authorization check
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.EffectivePermission">
+            <summary>
+            Effective permission with context
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.AuthorizationStatus">
+            <summary>
+            Authorization status types
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.RoleScope">
+            <summary>
+            Role scope flags
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.SecurityMonitoringService">
+            <summary>
+            Service for monitoring security events and detecting anomalies
+            Implements FR-047 (access anomaly detection) and FR-049 (authorization failure tracking)
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.SecurityMonitoringService.RecordSecurityEventAsync(NorthstarET.Lms.Infrastructure.Security.SecurityEvent,System.Threading.CancellationToken)">
+            <summary>
+            Records a security event for analysis
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.SecurityMonitoringService.RecordAuthenticationFailureAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Records an authentication failure
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.SecurityMonitoringService.RecordAuthorizationFailureAsync(System.Security.Claims.ClaimsPrincipal,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Records an authorization failure
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.SecurityMonitoringService.RecordSuspiciousAccessAsync(System.String,System.String,System.String,NorthstarET.Lms.Infrastructure.Security.SecurityEventSeverity,System.Threading.CancellationToken)">
+            <summary>
+            Records suspicious access pattern
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.SecurityMonitoringService.GetUserSecurityMetricsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets security metrics for a user
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.SecurityMonitoringService.GetRecentAlertsAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets recent security alerts
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.SecurityMonitoringService.AnalyzeSecurityPostureAsync(System.Threading.CancellationToken)">
+            <summary>
+            Analyzes current security posture
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.UserSecurityMetrics">
+            <summary>
+            Tracks security metrics for individual users
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.SecurityMonitoringOptions">
+            <summary>
+            Configuration options for security monitoring
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.SecurityEvent">
+            <summary>
+            Represents a security event
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.SecurityEventType">
+            <summary>
+            Security event types
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.SecurityEventSeverity">
+            <summary>
+            Security event severity levels
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.SecurityAlert">
+            <summary>
+            Security alert information
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.UserRiskProfile">
+            <summary>
+            User risk profile
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.SecurityPostureReport">
+            <summary>
+            Security posture analysis report
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.ISecurityMonitoringService">
+            <summary>
+            Interface for security monitoring service
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.TenantContext">
+            <summary>
+            Represents tenant context information for multi-tenant data isolation
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.TenantContextAccessor">
+            <summary>
+            Provides access to the current tenant context in multi-tenant scenarios
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.TenantDataInterceptor">
+            <summary>
+            EF Core interceptor that enforces multi-tenant data access patterns
+            Automatically applies tenant filters and validates query security
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.TenantDataInterceptorOptions">
+            <summary>
+            Configuration options for tenant data interceptor
+            </summary>
+        </member>
+        <member name="P:NorthstarET.Lms.Infrastructure.Security.TenantDataInterceptorOptions.StrictMode">
+            <summary>
+            Whether to enforce strict tenant filtering (throw exceptions on violations)
+            </summary>
+        </member>
+        <member name="P:NorthstarET.Lms.Infrastructure.Security.TenantDataInterceptorOptions.AdditionalTenantScopedTables">
+            <summary>
+            Additional table names to apply tenant filtering to
+            </summary>
+        </member>
+        <member name="P:NorthstarET.Lms.Infrastructure.Security.TenantDataInterceptorOptions.LogAllCommands">
+            <summary>
+            Whether to log all intercepted commands (for debugging)
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.TenantDataInterceptorExtensions">
+            <summary>
+            Extension methods for registering tenant data interceptor
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.TenantDataInterceptorExtensions.AddTenantDataInterceptor(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder,System.IServiceProvider)">
+            <summary>
+            Registers the tenant data interceptor with DbContext
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.TenantIsolationValidator">
+            <summary>
+            Service for validating tenant isolation boundaries and preventing data leakage
+            Implements strict multi-tenant security per FR-050 and FR-053
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.TenantIsolationValidator.ValidateEntityAccessAsync``1(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Validates that an entity belongs to the current tenant
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.TenantIsolationValidator.ValidateBulkEntityAccessAsync``1(System.Collections.Generic.IEnumerable{System.Guid},System.Threading.CancellationToken)">
+            <summary>
+            Validates that all entities in a collection belong to the current tenant
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.TenantIsolationValidator.ValidateQueryTenantFilterAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Validates query filters are properly applied for tenant isolation
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Security.TenantIsolationValidator.PerformTenantIsolationAuditAsync(System.Threading.CancellationToken)">
+            <summary>
+            Performs comprehensive tenant isolation audit
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.ITenantIsolationValidator">
+            <summary>
+            Interface for tenant isolation validation service
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.TenantValidationResult">
+            <summary>
+            Result of tenant validation check
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.TenantValidationType">
+            <summary>
+            Types of tenant validation results
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Security.TenantIsolationAuditResult">
+            <summary>
+            Result of comprehensive tenant isolation audit
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Services.AuditChainIntegrityService">
+            <summary>
+            Service for maintaining tamper-evident audit chain integrity (FR-048)
+            Implements cryptographic chaining to ensure audit log immutability
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Services.AuditChainIntegrityService.AddToChainAsync(NorthstarET.Lms.Domain.Entities.AuditRecord,System.Threading.CancellationToken)">
+            <summary>
+            Adds an audit record to the tamper-evident chain
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Services.AuditChainIntegrityService.ValidateChainIntegrityAsync(System.Threading.CancellationToken)">
+            <summary>
+            Validates the integrity of the entire audit chain
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Services.AuditChainIntegrityService.GetChainSegmentAsync(System.Int64,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Gets audit records within a specific sequence range for compliance export
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Infrastructure.Services.AuditChainIntegrityService.ExportChainAsync(System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Exports the audit chain in a verifiable format for compliance
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Services.IAuditChainIntegrityService">
+            <summary>
+            Interface for audit chain integrity service
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Services.ChainValidationResult">
+            <summary>
+            Result of chain validation operation
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Services.ChainViolation">
+            <summary>
+            Represents a violation in the audit chain
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Services.ViolationType">
+            <summary>
+            Types of chain violations
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Services.AuditChainExport">
+            <summary>
+            Export format for audit chain compliance
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Infrastructure.Services.AuditRecordExport">
+            <summary>
+            Export format for individual audit records
+            </summary>
+        </member>
+    </members>
+</doc>

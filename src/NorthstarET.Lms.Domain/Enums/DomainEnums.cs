@@ -98,3 +98,16 @@ public enum RoleScope
     School,
     Class
 }
+
+public enum GuardianRelationshipType
+{
+    Parent,
+    Guardian,
+    StepParent,
+    Grandparent,
+    Aunt,
+    Uncle,
+    Sibling,
+    FosterParent,
+    Other
+}

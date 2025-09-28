@@ -58,6 +58,10 @@ public class Student : TenantScopedEntity
         : $"{FirstName} {MiddleName} {LastName}";
     public IReadOnlyList<string> AccommodationTags => _accommodationTags.AsReadOnly();
 
+    // Navigation properties for EF Core
+    public virtual ICollection<Enrollment> Enrollments { get; private set; } = new List<Enrollment>();
+    public virtual ICollection<GuardianRelationship> GuardianRelationships { get; private set; } = new List<GuardianRelationship>();
+
     public void UpdateGradeLevel(GradeLevel newGradeLevel, string updatedByUserId)
     {
         var oldGradeLevel = CurrentGradeLevel;

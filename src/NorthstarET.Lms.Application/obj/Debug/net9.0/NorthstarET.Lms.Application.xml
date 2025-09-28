@@ -4,6 +4,26 @@
         <name>NorthstarET.Lms.Application</name>
     </assembly>
     <members>
+        <member name="T:NorthstarET.Lms.Application.Interfaces.ICachingService">
+            <summary>
+            Interface for caching services
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Application.Interfaces.CacheStatistics">
+            <summary>
+            Cache statistics for monitoring
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Application.Interfaces.CacheLayer">
+            <summary>
+            Cache layer enumeration
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Application.Interfaces.LayerStatistics">
+            <summary>
+            Statistics for a specific cache layer
+            </summary>
+        </member>
         <member name="T:NorthstarET.Lms.Application.Interfaces.ITenantContext">
             <summary>
             Represents tenant context for multi-tenant data isolation

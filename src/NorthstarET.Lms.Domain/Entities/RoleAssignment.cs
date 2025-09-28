@@ -52,6 +52,9 @@ public class RoleAssignment : TenantScopedEntity
     public bool IsTemporary => ExpirationDate.HasValue;
     public bool IsExpired => ExpirationDate.HasValue && ExpirationDate.Value <= DateTime.UtcNow;
     public bool IsEffective => Status == RoleAssignmentStatus.Active && !IsExpired;
+    
+    // Navigation properties for EF Core
+    public virtual RoleDefinition RoleDefinition { get; private set; } = null!;
 
     public void Revoke(string reason, string revokedByUserId)
     {

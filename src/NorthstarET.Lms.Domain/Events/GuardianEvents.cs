@@ -214,3 +214,65 @@ public record IdentityRemappedEvent : IDomainEvent
         ReactivatedByUserId = reactivatedByUserId;
     }
 }
+
+// Guardian Relationship Events
+public record GuardianRelationshipCreatedEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid RelationshipId { get; }
+    public Guid StudentId { get; }
+    public Guid GuardianId { get; }
+    public GuardianRelationshipType RelationshipType { get; }
+
+    public GuardianRelationshipCreatedEvent(Guid relationshipId, Guid studentId, Guid guardianId, GuardianRelationshipType relationshipType)
+    {
+        RelationshipId = relationshipId;
+        StudentId = studentId;
+        GuardianId = guardianId;
+        RelationshipType = relationshipType;
+    }
+}
+
+public record GuardianRelationshipDeactivatedEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid RelationshipId { get; }
+    public Guid StudentId { get; }
+    public Guid GuardianId { get; }
+    public string Reason { get; }
+    public string DeactivatedBy { get; }
+
+    public GuardianRelationshipDeactivatedEvent(Guid relationshipId, Guid studentId, Guid guardianId, string reason, string deactivatedBy)
+    {
+        RelationshipId = relationshipId;
+        StudentId = studentId;
+        GuardianId = guardianId;
+        Reason = reason;
+        DeactivatedBy = deactivatedBy;
+    }
+}
+
+public record GuardianRelationshipUpdatedEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid RelationshipId { get; }
+    public Guid StudentId { get; }
+    public Guid GuardianId { get; }
+    public string FieldUpdated { get; }
+    public string UpdatedBy { get; }
+
+    public GuardianRelationshipUpdatedEvent(Guid relationshipId, Guid studentId, Guid guardianId, string fieldUpdated, string updatedBy)
+    {
+        RelationshipId = relationshipId;
+        StudentId = studentId;
+        GuardianId = guardianId;
+        FieldUpdated = fieldUpdated;
+        UpdatedBy = updatedBy;
+    }
+}

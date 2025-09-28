@@ -223,7 +223,7 @@ public class MetricsCollector : BackgroundService, IMetricsCollector
     {
         try
         {
-            var cachingService = scope.ServiceProvider.GetService<Application.Interfaces.ICachingService>();
+            var cachingService = scope.ServiceProvider.GetService<NorthstarET.Lms.Application.Interfaces.ICachingService>();
             if (cachingService != null)
             {
                 var cacheStats = await cachingService.GetCacheStatisticsAsync(cancellationToken);
@@ -473,6 +473,12 @@ public class MetricsCollector : BackgroundService, IMetricsCollector
     private async Task<long> GetActiveStudentCountAsync(IServiceScope scope) { await Task.CompletedTask; return 0; }
     private async Task<long> GetActiveDistrictCountAsync(IServiceScope scope) { await Task.CompletedTask; return 0; }
     private async Task<long> GetDailyEnrollmentCountAsync(IServiceScope scope) { await Task.CompletedTask; return 0; }
+    
+    // Missing helper methods
+    private async Task RecordCounterAsync(string counterName, long value, Dictionary<string, string>? tags = null)
+    {
+        await RecordMetricAsync(counterName, value, tags);
+    }
 
     public override void Dispose()
     {

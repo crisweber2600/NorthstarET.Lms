@@ -65,8 +65,15 @@ public class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
             .HasForeignKey(e => e.ClassId)
             .OnDelete(DeleteBehavior.Restrict);
             
+        // Comment out navigation property since SchoolYear doesn't have Enrollments collection
+        // TODO: Add Enrollments navigation property to SchoolYear domain entity if needed
+        // builder.HasOne(e => e.SchoolYear)
+        //     .WithMany(sy => sy.Enrollments)
+        //     .HasForeignKey(e => e.SchoolYearId)
+        //     .OnDelete(DeleteBehavior.Restrict);
+        
         builder.HasOne(e => e.SchoolYear)
-            .WithMany(sy => sy.Enrollments)
+            .WithMany()
             .HasForeignKey(e => e.SchoolYearId)
             .OnDelete(DeleteBehavior.Restrict);
 

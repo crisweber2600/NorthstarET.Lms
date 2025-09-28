@@ -110,7 +110,9 @@ public class AssessmentFileService : IAssessmentFileService
             // Get blob properties and metadata
             var properties = await blobClient.GetPropertiesAsync();
             var contentType = properties.Value.ContentType;
-            var originalFileName = properties.Value.Metadata.GetValueOrDefault("OriginalFileName", "unknown");
+            var originalFileName = properties.Value.Metadata.ContainsKey("OriginalFileName") 
+                ? properties.Value.Metadata["OriginalFileName"] 
+                : "unknown";
 
             // Verify file integrity if hash is available
             if (properties.Value.Metadata.TryGetValue("FileHash", out var expectedHash))

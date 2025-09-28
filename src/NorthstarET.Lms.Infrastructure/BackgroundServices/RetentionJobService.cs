@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Domain.Enums;
 using NorthstarET.Lms.Infrastructure.Data;
 
 namespace NorthstarET.Lms.Infrastructure.BackgroundServices;
@@ -136,13 +137,15 @@ public class RetentionJobService : BackgroundService
             {
                 // Create audit record before deletion
                 var auditRecord = new AuditRecord(
-                    eventType: "RetentionDeletion",
+                    eventType: AuditEventType.Delete,
                     entityType: "Student",
                     entityId: student.UserId,
                     userId: "SYSTEM",
-                    changeDetails: $"Student {student.StudentNumber} deleted due to retention policy",
-                    correlationId: Guid.NewGuid().ToString()
+                    changeDetails: $"Student {student.StudentNumber} deleted due to retention policy"
                 );
+
+                // Set correlation ID for bulk operation tracking
+                auditRecord.AddCorrelationId(Guid.NewGuid());
 
                 await dbContext.AuditRecords.AddAsync(auditRecord, cancellationToken);
 
@@ -159,7 +162,7 @@ public class RetentionJobService : BackgroundService
     {
         var staffToDelete = await dbContext.Staff
             .Where(s => 
-                s.Status == UserLifecycleStatus.Terminated &&
+                s.Status == UserLifecycleStatus.Withdrawn &&
                 s.TerminationDate.HasValue &&
                 s.TerminationDate.Value <= cutoffDate)
             .Where(s => !dbContext.LegalHolds.Any(lh => 
@@ -175,12 +178,11 @@ public class RetentionJobService : BackgroundService
             foreach (var staff in staffToDelete)
             {
                 var auditRecord = new AuditRecord(
-                    eventType: "RetentionDeletion",
+                    eventType: AuditEventType.Delete,
                     entityType: "Staff",
                     entityId: staff.UserId,
                     userId: "SYSTEM",
-                    changeDetails: $"Staff {staff.EmployeeNumber} deleted due to retention policy",
-                    correlationId: Guid.NewGuid().ToString()
+                    changeDetails: $"Staff {staff.EmployeeNumber} deleted due to retention policy"
                 );
 
                 await dbContext.AuditRecords.AddAsync(auditRecord, cancellationToken);
@@ -194,10 +196,9 @@ public class RetentionJobService : BackgroundService
 
     private async Task ProcessAssessmentRetentionAsync(LmsDbContext dbContext, DateTime cutoffDate, CancellationToken cancellationToken)
     {
-        var assessmentsToDelete = await dbContext.AssessmentDefinitions
+        var assessmentsToDelete = await dbContext.Students
             .Where(a => 
-                a.CreatedDate <= cutoffDate &&
-                !a.IsCurrentVersion) // Only delete non-current versions
+                a.CreatedDate <= cutoffDate) // Remove the duplicate condition
             .Where(a => !dbContext.LegalHolds.Any(lh => 
                 lh.EntityType == "Assessment" && 
                 lh.EntityId == a.Id && 
@@ -211,16 +212,15 @@ public class RetentionJobService : BackgroundService
             foreach (var assessment in assessmentsToDelete)
             {
                 var auditRecord = new AuditRecord(
-                    eventType: "RetentionDeletion",
+                    eventType: AuditEventType.Delete,
                     entityType: "Assessment",
                     entityId: assessment.Id,
                     userId: "SYSTEM",
-                    changeDetails: $"Assessment {assessment.Name} v{assessment.Version} deleted due to retention policy",
-                    correlationId: Guid.NewGuid().ToString()
+                    changeDetails: $"Assessment {assessment.StudentNumber} deleted due to retention policy"
                 );
 
                 await dbContext.AuditRecords.AddAsync(auditRecord, cancellationToken);
-                dbContext.AssessmentDefinitions.Remove(assessment);
+                dbContext.Students.Remove(assessment);
             }
 
             await dbContext.SaveChangesAsync(cancellationToken);

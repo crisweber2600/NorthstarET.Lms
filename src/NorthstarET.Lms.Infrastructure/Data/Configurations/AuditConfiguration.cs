@@ -34,9 +34,6 @@ public class AuditRecordConfiguration : IEntityTypeConfiguration<AuditRecord>
         builder.Property(ar => ar.IpAddress)
             .HasMaxLength(45); // IPv6 support
             
-        builder.Property(ar => ar.UserAgent)
-            .HasMaxLength(500);
-            
         builder.Property(ar => ar.ChangeDetails)
             .HasColumnType("nvarchar(max)");
             
@@ -94,15 +91,15 @@ public class PlatformAuditRecordConfiguration : IEntityTypeConfiguration<Platfor
         
         builder.HasKey(par => par.Id);
         
-        builder.Property(par => par.EventType)
+        builder.Property(par => par.Action)
             .IsRequired()
             .HasMaxLength(50);
             
-        builder.Property(par => par.TenantId)
+        builder.Property(par => par.EntityType)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(50);
             
-        builder.Property(par => par.ActingUserId)
+        builder.Property(par => par.UserId)
             .IsRequired()
             .HasMaxLength(100);
             
@@ -113,31 +110,22 @@ public class PlatformAuditRecordConfiguration : IEntityTypeConfiguration<Platfor
         builder.Property(par => par.Details)
             .HasColumnType("nvarchar(max)");
             
-        builder.Property(par => par.RecordHash)
+        builder.Property(par => par.IpAddress)
             .IsRequired()
-            .HasMaxLength(64);
+            .HasMaxLength(45);
             
-        builder.Property(par => par.SequenceNumber)
-            .IsRequired()
-            .ValueGeneratedOnAdd();
-
-        // Unique constraint on sequence number (platform-wide)
-        builder.HasIndex(par => par.SequenceNumber)
-            .IsUnique()
-            .HasDatabaseName("uk_platform_audit_records_sequence");
+        builder.Property(par => par.UserAgent)
+            .HasMaxLength(500);
 
         // Indexes for platform audit queries
         builder.HasIndex(par => par.Timestamp)
             .HasDatabaseName("ix_platform_audit_records_timestamp");
             
-        builder.HasIndex(par => par.TenantId)
-            .HasDatabaseName("ix_platform_audit_records_tenant");
-            
-        builder.HasIndex(par => par.ActingUserId)
+        builder.HasIndex(par => par.UserId)
             .HasDatabaseName("ix_platform_audit_records_user");
             
-        builder.HasIndex(par => par.EventType)
-            .HasDatabaseName("ix_platform_audit_records_event_type");
+        builder.HasIndex(par => par.Action)
+            .HasDatabaseName("ix_platform_audit_records_action");
     }
 }
 

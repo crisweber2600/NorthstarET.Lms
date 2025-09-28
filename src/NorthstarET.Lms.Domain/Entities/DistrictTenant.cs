@@ -40,6 +40,11 @@ public class DistrictTenant : TenantScopedEntity
     
     // Additional property expected by application services
     public DateTime CreatedAt => CreatedDate;
+    
+    // Navigation properties for EF Core
+    public virtual ICollection<School> Schools { get; private set; } = new List<School>();
+    public virtual ICollection<SchoolYear> SchoolYears { get; private set; } = new List<SchoolYear>();
+    public virtual RetentionPolicy? RetentionPolicy { get; private set; }
 
     private static bool IsValidSlug(string slug)
     {

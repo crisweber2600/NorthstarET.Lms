@@ -213,6 +213,9 @@ public class CachingService : ICachingService
 
         try
         {
+            await Task.CompletedTask; // Fix async warning
+            // TODO: Implement pattern-based cache removal
+            _logger.LogDebug("Pattern-based cache removal not yet implemented for pattern: {Pattern}", tenantPattern);
             // For memory cache, we'd need to track keys or use a different implementation
             // This is a simplified approach
             if (_memoryCache is MemoryCache mc)
@@ -381,7 +384,7 @@ public class CachingService : ICachingService
         var serializedValue = JsonSerializer.Serialize(value, new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         });
 
         var options = new DistributedCacheEntryOptions

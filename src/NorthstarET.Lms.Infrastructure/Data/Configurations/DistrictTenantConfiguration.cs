@@ -52,21 +52,22 @@ public class DistrictTenantConfiguration : IEntityTypeConfiguration<DistrictTena
                 .HasDefaultValue(100);
         });
 
-        // Relationships
-        builder.HasMany(d => d.Schools)
-            .WithOne(s => s.District)
-            .HasForeignKey(s => s.DistrictId)
-            .OnDelete(DeleteBehavior.Restrict);
+        // Relationships - commented out until navigation properties are added to domain entities
+        // TODO: Add DistrictId foreign key to School and SchoolYear entities
+        // builder.HasMany(d => d.Schools)
+        //     .WithOne(s => s.District)
+        //     .HasForeignKey(s => s.DistrictId)
+        //     .OnDelete(DeleteBehavior.Restrict);
             
-        builder.HasMany(d => d.SchoolYears)
-            .WithOne(sy => sy.District)
-            .HasForeignKey(sy => sy.DistrictId)
-            .OnDelete(DeleteBehavior.Restrict);
+        // builder.HasMany(d => d.SchoolYears)
+        //     .WithOne(sy => sy.District)
+        //     .HasForeignKey(sy => sy.DistrictId)
+        //     .OnDelete(DeleteBehavior.Restrict);
             
-        builder.HasOne(d => d.RetentionPolicy)
-            .WithMany()
-            .HasForeignKey("RetentionPolicyId")
-            .OnDelete(DeleteBehavior.Restrict);
+        // builder.HasOne(d => d.RetentionPolicy)
+        //     .WithMany()
+        //     .HasForeignKey("RetentionPolicyId")
+        //     .OnDelete(DeleteBehavior.Restrict);
 
         // Configure inheritance from TenantScopedEntity
         builder.Property<string>("TenantId")

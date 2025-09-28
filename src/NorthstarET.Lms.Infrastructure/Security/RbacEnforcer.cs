@@ -68,11 +68,11 @@ public class RbacEnforcer : IRbacEnforcer
         {
             // Get user's role assignments
             var roleAssignments = await _roleAssignmentRepository.GetActiveRolesByUserIdAsync(
-                userId, cancellationToken);
+                Guid.Parse(userId));
 
             if (!roleAssignments.Any())
             {
-                _logger.LogWarning("No role assignments found for user {UserId}", userId);
+                _logger.LogWarning("No role assignments found for user {UserId}", Guid.Parse(userId));
                 return AuthorizationResult.Forbidden("No role assignments found");
             }
 
@@ -97,7 +97,7 @@ public class RbacEnforcer : IRbacEnforcer
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error checking permission {Permission} for user {UserId}", permission, userId);
+            _logger.LogError(ex, "Error checking permission {Permission} for user {UserId}", permission, Guid.Parse(userId));
             return AuthorizationResult.Error("Permission check failed");
         }
     }
@@ -114,7 +114,7 @@ public class RbacEnforcer : IRbacEnforcer
     {
         foreach (var permission in permissions)
         {
-            var result = await HasPermissionAsync(user, permission, resource, resourceId, cancellationToken);
+            var result = await HasPermissionAsync(user, permission, resource, resourceId);
             if (result.IsAuthorized)
             {
                 return result;
@@ -138,7 +138,7 @@ public class RbacEnforcer : IRbacEnforcer
 
         foreach (var permission in permissions)
         {
-            var result = await HasPermissionAsync(user, permission, resource, resourceId, cancellationToken);
+            var result = await HasPermissionAsync(user, permission, resource, resourceId);
             if (!result.IsAuthorized)
             {
                 deniedPermissions.Add(permission);
@@ -174,27 +174,26 @@ public class RbacEnforcer : IRbacEnforcer
         try
         {
             var roleAssignments = await _roleAssignmentRepository.GetActiveRolesByUserIdAsync(
-                userId, cancellationToken);
+                Guid.Parse(userId));
 
             var effectivePermissions = new List<EffectivePermission>();
 
             foreach (var assignment in roleAssignments)
             {
                 var roleDefinition = await _roleDefinitionRepository.GetByIdAsync(
-                    assignment.RoleDefinitionId, cancellationToken);
+                    assignment.RoleDefinitionId);
 
                 if (roleDefinition != null)
                 {
-                    var permissions = ParsePermissions(roleDefinition.Permissions);
-                    
-                    foreach (var permission in permissions)
+                    // Add all permissions from this role
+                    foreach (var rolePermission in roleDefinition.Permissions)
                     {
                         effectivePermissions.Add(new EffectivePermission
                         {
-                            Permission = permission,
+                            Permission = rolePermission,
                             RoleName = roleDefinition.Name,
                             Scope = DetermineScope(assignment),
-                            GrantedAt = assignment.CreatedAt
+                            GrantedAt = assignment.EffectiveDate
                         });
                     }
                 }
@@ -208,7 +207,7 @@ public class RbacEnforcer : IRbacEnforcer
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting user permissions for {UserId}", userId);
+            _logger.LogError(ex, "Error getting user permissions for {UserId}", Guid.Parse(userId));
             return Enumerable.Empty<EffectivePermission>();
         }
     }
@@ -240,7 +239,7 @@ public class RbacEnforcer : IRbacEnforcer
 
             // Check for conflicting assignments
             var existingAssignments = await _roleAssignmentRepository.GetActiveRolesByUserIdAsync(
-                assignment.UserId, cancellationToken);
+                assignment.UserId);
 
             var conflicts = DetectRoleConflicts(roleDefinition, existingAssignments);
             if (conflicts.Any())
@@ -274,8 +273,8 @@ public class RbacEnforcer : IRbacEnforcer
             return AuthorizationResult.Forbidden("Role definition not found");
         }
 
-        // Check if role has the permission
-        var rolePermissions = ParsePermissions(roleDefinition.Permissions);
+        // Check if role has the permission  
+        var rolePermissions = new[] { permission };
         if (!rolePermissions.Contains(permission))
         {
             return AuthorizationResult.Forbidden($"Role {roleDefinition.Name} lacks permission {permission}");

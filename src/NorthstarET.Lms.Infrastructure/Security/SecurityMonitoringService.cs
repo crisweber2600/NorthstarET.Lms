@@ -161,7 +161,7 @@ public class SecurityMonitoringService : BackgroundService, ISecurityMonitoringS
             return securityAuditRecords.Items.Select(record => new SecurityAlert
             {
                 Id = record.Id,
-                AlertType = ParseAlertType(record.AuditData),
+                AlertType = ParseAlertType(record.Details),
                 Message = ParseAlertMessage(record.Details),
                 Severity = ParseSeverity(record.Details),
                 Timestamp = record.Timestamp,

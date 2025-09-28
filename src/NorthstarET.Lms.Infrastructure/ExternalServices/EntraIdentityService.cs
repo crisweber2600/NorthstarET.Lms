@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 using NorthstarET.Lms.Application.Interfaces;
 
 namespace NorthstarET.Lms.Infrastructure.ExternalServices;
@@ -137,6 +138,8 @@ public class EntraIdentityService : IIdentityProvider
             // This would require custom implementation or directing users to their home tenant's reset process
             
             _logger.LogInformation("Password reset requested for external user {ExternalId}. External users should use their home tenant's password reset process.", externalId);
+            
+            await Task.CompletedTask; // Fix async warning
             
             // In a real implementation, you might send a custom email or notification
             // directing the user to their home tenant's password reset process

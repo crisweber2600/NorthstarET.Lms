@@ -1,10 +1,10 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using NorthstarET.Lms.Domain.Entities;
-using NorthstarET.Lms.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Infrastructure.Data;
 
 namespace NorthstarET.Lms.Infrastructure.Services;
 
@@ -172,9 +172,9 @@ public class AuditChainIntegrityService : IAuditChainIntegrityService
                 RecordHash = r.RecordHash,
                 PreviousRecordHash = r.PreviousRecordHash,
                 EntityType = r.EntityType,
-                EntityId = r.EntityId,
+                EntityId = r.EntityId.ToString(),
                 Action = r.Action,
-                ActingUserId = r.ActingUserId
+                ActingUserId = r.UserId
             }).ToList()
         };
 
@@ -188,20 +188,20 @@ public class AuditChainIntegrityService : IAuditChainIntegrityService
         var hashInput = new
         {
             record.SequenceNumber,
-            record.Timestamp.ToString("O"), // ISO 8601 format
+            Timestamp = record.Timestamp.ToString("O"), // ISO 8601 format
             record.EntityType,
             record.EntityId,
             record.Action,
-            record.ActingUserId,
+            UserId = record.UserId, // Use UserId instead of ActingUserId
             record.PreviousRecordHash,
             // Include audit data in hash but handle null/empty cases
-            AuditData = string.IsNullOrEmpty(record.AuditData) ? "" : record.AuditData
+            AuditData = string.IsNullOrEmpty(record.Details) ? "" : record.Details
         };
 
         var json = JsonSerializer.Serialize(hashInput, new JsonSerializerOptions 
         { 
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            DefaultIgnoreCondition = JsonIgnoreCondition.Never
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never
         });
 
         using var sha256 = SHA256.Create();

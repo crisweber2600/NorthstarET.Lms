@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Domain.Enums;
 using NorthstarET.Lms.Infrastructure.Data;
 using System.Security.Cryptography;
 using System.Text;
@@ -99,10 +100,11 @@ public class AuditProcessorService : BackgroundService
                     .FirstOrDefaultAsync(cancellationToken);
 
                 // Set the previous record hash
-                auditRecord.PreviousRecordHash = previousRecord?.RecordHash ?? string.Empty;
+                auditRecord.SetPreviousRecordHash(previousRecord?.RecordHash ?? string.Empty);
 
                 // Calculate and set the record hash
-                auditRecord.RecordHash = CalculateRecordHash(auditRecord);
+                var recordHash = CalculateRecordHash(auditRecord);
+                auditRecord.SetRecordHash(recordHash);
 
                 // Mark as processed
                 dbContext.AuditRecords.Update(auditRecord);
@@ -170,12 +172,11 @@ public class AuditProcessorService : BackgroundService
                 
                 // Create a security alert for audit tampering
                 var securityAlert = new AuditRecord(
-                    eventType: "SecurityAlert",
+                    eventType: AuditEventType.SecurityViolation,
                     entityType: "AuditRecord",
-                    entityId: null,
+                    entityId: Guid.NewGuid(),
                     userId: "SYSTEM",
-                    changeDetails: $"Audit chain integrity violation detected. {invalidRecords.Count} invalid records found.",
-                    correlationId: Guid.NewGuid().ToString()
+                    changeDetails: $"Audit chain integrity violation detected. {invalidRecords.Count} invalid records found."
                 );
 
                 await dbContext.AuditRecords.AddAsync(securityAlert, cancellationToken);

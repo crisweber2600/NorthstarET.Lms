@@ -97,6 +97,9 @@ public class AuditRecord : TenantScopedEntity
     public string? Details => ChangeDetails;
     public string? IpAddress { get; private set; }
     public string Hash => RecordHash ?? string.Empty;
+    
+    // Audit chain properties for infrastructure layer
+    public long SequenceNumber { get; private set; }
 
     public bool IsSecurityEvent => EventType == AuditEventType.SecurityViolation;
     public bool IsPartOfBulkOperation => CorrelationId.HasValue;
@@ -114,6 +117,31 @@ public class AuditRecord : TenantScopedEntity
     {
         if (!string.IsNullOrEmpty(RecordHash))
             throw new InvalidOperationException("Audit record hash already set and cannot be modified");
+            
+        RecordHash = hash;
+    }
+    
+    // Methods needed by audit chain integrity service
+    public void SetSequenceNumber(long sequenceNumber)
+    {
+        if (SequenceNumber != 0)
+            throw new InvalidOperationException("Sequence number already set and cannot be modified");
+            
+        SequenceNumber = sequenceNumber;
+    }
+    
+    public void SetPreviousRecordHash(string? previousHash)
+    {
+        if (!string.IsNullOrEmpty(PreviousRecordHash))
+            throw new InvalidOperationException("Previous record hash already set and cannot be modified");
+            
+        PreviousRecordHash = previousHash;
+    }
+    
+    public void SetRecordHash(string hash)
+    {
+        if (!string.IsNullOrEmpty(RecordHash))
+            throw new InvalidOperationException("Record hash already set and cannot be modified");
             
         RecordHash = hash;
     }

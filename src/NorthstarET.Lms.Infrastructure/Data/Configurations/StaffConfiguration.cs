@@ -24,8 +24,10 @@ public class StaffConfiguration : IEntityTypeConfiguration<Staff>
             .IsRequired()
             .HasMaxLength(100);
             
-        builder.Property(s => s.MiddleName)
-            .HasMaxLength(100);
+        // Comment out MiddleName since Staff entity doesn't have this property
+        // TODO: Add MiddleName to Staff domain entity if needed
+        // builder.Property(s => s.MiddleName)
+        //     .HasMaxLength(100);
             
         builder.Property(s => s.Email)
             .IsRequired()

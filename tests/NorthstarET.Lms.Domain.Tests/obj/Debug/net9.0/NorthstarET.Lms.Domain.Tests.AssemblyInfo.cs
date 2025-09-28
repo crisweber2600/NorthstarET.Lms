@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © 2024 Northstar Educational Technologies")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+123e233a93a2cf97742dc86637649f9511383c13")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69ba5e09ea95efe0c93172088fbc5e031b183147")]
 [assembly: System.Reflection.AssemblyProductAttribute("Northstar LMS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NorthstarET.Lms.Domain.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
