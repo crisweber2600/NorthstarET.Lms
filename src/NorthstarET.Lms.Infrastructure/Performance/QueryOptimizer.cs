@@ -9,7 +9,7 @@ namespace NorthstarET.Lms.Infrastructure.Performance;
 
 /// <summary>
 /// Service that analyzes and optimizes database queries for performance
-/// Implements PR-003 (audit queries <2s on 1M records) optimization
+/// Implements PR-003 (audit queries under 2s on 1M records) optimization
 /// </summary>
 public class QueryOptimizer : DbCommandInterceptor, IQueryOptimizer
 {

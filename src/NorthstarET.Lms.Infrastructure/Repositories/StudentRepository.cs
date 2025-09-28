@@ -183,4 +183,25 @@ public class StudentRepository : IStudentRepository
         Update(student);
         await Task.CompletedTask;
     }
+
+    public async Task<Student?> GetByIdWithDetailsAsync(Guid id)
+    {
+        return await _context.Students
+            .Include(s => s.Enrollments)
+                .ThenInclude(e => e.Class)
+            .Include(s => s.GuardianRelationships)
+                .ThenInclude(gr => gr.Guardian)
+            .FirstOrDefaultAsync(s => s.UserId == id);
+    }
+
+    public async Task<bool> StudentNumberExistsAsync(string studentNumber)
+    {
+        return await _context.Students
+            .AnyAsync(s => s.StudentNumber == studentNumber);
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
 }

@@ -1,0 +1,6 @@
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Infrastructure/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.csproj.AssemblyReference.cache
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Infrastructure/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Infrastructure/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.AssemblyInfoInputs.cache
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Infrastructure/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.AssemblyInfo.cs
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Infrastructure/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Infrastructure/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.sourcelink.json

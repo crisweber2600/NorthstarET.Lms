@@ -291,7 +291,7 @@ public class TenantDataInterceptor : DbCommandInterceptor
         base.CommandFailed(command, eventData);
     }
 
-    public override ValueTask CommandFailedAsync(DbCommand command, CommandErrorEventData eventData, CancellationToken cancellationToken = default)
+    public override Task CommandFailedAsync(DbCommand command, CommandErrorEventData eventData, CancellationToken cancellationToken = default)
     {
         var tenantId = _tenantContext.GetCurrentTenantId();
         _logger.LogError(eventData.Exception, 

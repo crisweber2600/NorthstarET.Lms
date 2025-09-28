@@ -75,11 +75,12 @@ public class RoleAuthorizationService
         }
 
         // Check for duplicate assignment
-        var existingAssignment = await _roleAssignmentRepository.GetActiveRoleAssignmentAsync(
+        var existingAssignment = await _roleAssignmentRepository.GetActiveAssignmentAsync(
             assignRoleDto.UserId, 
             assignRoleDto.RoleDefinitionId, 
             assignRoleDto.SchoolId, 
-            assignRoleDto.ClassId);
+            assignRoleDto.ClassId,
+            null);
         
         if (existingAssignment != null)
         {
@@ -189,9 +190,8 @@ public class RoleAuthorizationService
             RoleName = roleName,
             SchoolId = assignment.SchoolId,
             ClassId = assignment.ClassId,
-            AssignedDate = assignment.AssignedDate,
+            EffectiveDate = assignment.EffectiveDate,
             ExpirationDate = assignment.ExpirationDate,
-            AssignedBy = assignment.AssignedBy,
             IsActive = assignment.IsActive
         };
     }

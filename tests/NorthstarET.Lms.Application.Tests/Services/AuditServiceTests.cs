@@ -123,7 +123,9 @@ public class AuditServiceTests
             new("UPDATE_STUDENT", "Student", Guid.NewGuid(), "district-admin-1", "Updated student", "192.168.1.1")
         };
 
-        _mockAuditRepository.Setup(x => x.QueryAsync(It.IsAny<AuditQueryDto>()))
+        _mockAuditRepository.Setup(x => x.QueryAsync(
+            It.IsAny<string?>(), It.IsAny<Guid?>(), It.IsAny<string?>(), It.IsAny<string?>(), 
+            It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(new PagedResult<AuditRecord>(expectedRecords, 1, 20, 2));
 
         // Act & Assert - This will fail until AuditService.QueryAuditRecordsAsync is implemented

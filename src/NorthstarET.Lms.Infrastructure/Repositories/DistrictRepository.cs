@@ -128,4 +128,14 @@ public class DistrictRepository : IDistrictRepository
             .Where(d => d.Id == districtId)
             .AnyAsync(d => d.RetentionPolicy != null);
     }
+
+    public async Task<bool> SlugExistsAsync(string slug)
+    {
+        return await SlugExistsAsync(slug, CancellationToken.None);
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
 }

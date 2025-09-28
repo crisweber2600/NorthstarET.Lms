@@ -56,7 +56,7 @@ public class EnrollmentService
 
         // Check for duplicate enrollment
         var existingEnrollment = await _enrollmentRepository.GetActiveEnrollmentAsync(
-            enrollmentDto.StudentId, enrollmentDto.ClassId, enrollmentDto.SchoolYearId);
+            enrollmentDto.StudentId, enrollmentDto.ClassId);
         if (existingEnrollment != null)
         {
             return Result.Failure<EnrollmentDto>("Student is already enrolled in this class for the school year");
@@ -188,9 +188,9 @@ public class EnrollmentService
             StudentId = enrollment.StudentId,
             ClassId = enrollment.ClassId,
             SchoolYearId = enrollment.SchoolYearId,
-            GradeLevel = enrollment.GradeLevel,
+            GradeLevel = enrollment.GradeLevel.ToString(),
             EnrollmentDate = enrollment.EnrollmentDate,
-            Status = enrollment.Status,
+            Status = enrollment.Status.ToString(),
             CompletionDate = enrollment.CompletionDate,
             CompletionReason = enrollment.CompletionReason
         };

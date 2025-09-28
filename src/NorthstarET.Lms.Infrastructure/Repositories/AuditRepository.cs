@@ -204,6 +204,76 @@ public class AuditRepository : IAuditRepository
         await AddAsync(auditRecord, CancellationToken.None);
     }
 
+    public async Task<PagedResult<AuditRecord>> QueryAsync(string? entityType, Guid? entityId, string? userId, string? eventType, DateTime? startDate, DateTime? endDate, int page, int pageSize)
+    {
+        var query = _context.AuditRecords.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(entityType))
+            query = query.Where(ar => ar.EntityType == entityType);
+            
+        if (entityId.HasValue)
+            query = query.Where(ar => ar.EntityId == entityId.Value);
+            
+        if (!string.IsNullOrWhiteSpace(userId))
+            query = query.Where(ar => ar.UserId == userId);
+            
+        if (!string.IsNullOrWhiteSpace(eventType))
+            query = query.Where(ar => ar.EventType == eventType);
+            
+        if (startDate.HasValue)
+            query = query.Where(ar => ar.Timestamp >= startDate.Value);
+            
+        if (endDate.HasValue)
+            query = query.Where(ar => ar.Timestamp <= endDate.Value);
+
+        var totalCount = await query.CountAsync();
+        
+        var records = await query
+            .OrderByDescending(ar => ar.Timestamp)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+            
+        return new PagedResult<AuditRecord>(records, page, pageSize, totalCount);
+    }
+
+    public async Task<List<AuditRecord>> GetRecordsForIntegrityCheckAsync(long? startSequence, long? endSequence)
+    {
+        var query = _context.AuditRecords.AsQueryable();
+        
+        if (startSequence.HasValue)
+            query = query.Where(ar => ar.SequenceNumber >= startSequence.Value);
+            
+        if (endSequence.HasValue)
+            query = query.Where(ar => ar.SequenceNumber <= endSequence.Value);
+            
+        return await query
+            .OrderBy(ar => ar.SequenceNumber)
+            .ToListAsync();
+    }
+
+    public async Task<AuditComplianceSummary> GetComplianceSummaryAsync(DateTime startDate, DateTime endDate)
+    {
+        var records = await _context.AuditRecords
+            .Where(ar => ar.Timestamp >= startDate && ar.Timestamp <= endDate)
+            .ToListAsync();
+
+        return new AuditComplianceSummary
+        {
+            TotalRecords = records.Count,
+            EventTypeCounts = records.GroupBy(ar => ar.EventType)
+                .ToDictionary(g => g.Key, g => g.Count()),
+            DataAccessCount = records.Count(ar => ar.EventType.Contains("Read") || ar.EventType.Contains("View")),
+            DataModificationCount = records.Count(ar => ar.EventType.Contains("Create") || ar.EventType.Contains("Update") || ar.EventType.Contains("Delete")),
+            IntegrityIssues = 0 // Would need actual integrity checking logic
+        };
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
+
     // Note: Audit records are typically immutable, so Update and Remove are not implemented
 }
 
@@ -337,5 +407,10 @@ public class PlatformAuditRepository : IPlatformAuditRepository
     public async Task AddAsync(PlatformAuditRecord auditRecord)
     {
         await AddAsync(auditRecord, CancellationToken.None);
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }

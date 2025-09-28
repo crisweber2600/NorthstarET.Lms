@@ -4,6 +4,7 @@ using System.Text.Json;
 using NorthstarET.Lms.Domain.Entities;
 using NorthstarET.Lms.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace NorthstarET.Lms.Infrastructure.Services;
 

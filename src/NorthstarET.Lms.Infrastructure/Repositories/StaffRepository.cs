@@ -247,4 +247,9 @@ public class StaffRepository : IStaffRepository
         Update(staff);
         await Task.CompletedTask;
     }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
 }

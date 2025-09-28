@@ -246,4 +246,34 @@ public class EnrollmentRepository : IEnrollmentRepository
         Update(enrollment);
         await Task.CompletedTask;
     }
+
+    public async Task<Enrollment?> GetActiveEnrollmentAsync(Guid studentId, Guid classId)
+    {
+        return await _context.Enrollments
+            .Include(e => e.Student)
+            .Include(e => e.Class)
+            .Include(e => e.SchoolYear)
+            .FirstOrDefaultAsync(e => 
+                e.StudentId == studentId && 
+                e.ClassId == classId && 
+                e.Status == EnrollmentStatus.Active);
+    }
+
+    public async Task<IEnumerable<Enrollment>> GetActiveEnrollmentsByStudentAndSchoolAsync(Guid studentId, Guid schoolId)
+    {
+        return await _context.Enrollments
+            .Where(e => 
+                e.StudentId == studentId && 
+                e.Class.SchoolId == schoolId && 
+                e.Status == EnrollmentStatus.Active)
+            .Include(e => e.Student)
+            .Include(e => e.Class)
+            .Include(e => e.SchoolYear)
+            .ToListAsync();
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
 }

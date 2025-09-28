@@ -24,7 +24,7 @@ public class CreateDistrictUseCase
         // Validate business rules
         if (await _districtRepository.SlugExistsAsync(request.Slug))
         {
-            return Result<DistrictDto>.Failure("District slug already exists");
+            return Result.Failure<DistrictDto>("District slug already exists");
         }
 
         // Create domain entity
@@ -88,7 +88,7 @@ public class GetDistrictUseCase
         var district = await _districtRepository.GetByIdAsync(districtId);
         if (district == null)
         {
-            return Result<DistrictDto>.Failure("District not found");
+            return Result.Failure<DistrictDto>("District not found");
         }
 
         var dto = new DistrictDto

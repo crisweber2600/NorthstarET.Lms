@@ -138,8 +138,8 @@ public class DistrictService
                 MaxStaff = district.Quotas.MaxStaff,
                 MaxAdmins = district.Quotas.MaxAdmins
             },
-            Status = district.Status,
-            CreatedAt = district.CreatedAt
+            Status = district.Status.ToString(),
+            CreatedDate = district.CreatedAt
         };
     }
 }

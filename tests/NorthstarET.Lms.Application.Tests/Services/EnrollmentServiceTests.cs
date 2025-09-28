@@ -61,7 +61,7 @@ public class EnrollmentServiceTests
             .ReturnsAsync(classEntity);
         _mockSchoolYearRepository.Setup(x => x.GetByIdAsync(enrollmentDto.SchoolYearId))
             .ReturnsAsync(schoolYear);
-        _mockEnrollmentRepository.Setup(x => x.GetActiveEnrollmentAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+        _mockEnrollmentRepository.Setup(x => x.GetActiveEnrollmentAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .ReturnsAsync((Enrollment?)null);
 
         // Act & Assert - This will fail until EnrollmentService.EnrollStudentAsync is implemented
@@ -108,7 +108,7 @@ public class EnrollmentServiceTests
         _mockSchoolYearRepository.Setup(x => x.GetByIdAsync(enrollmentDto.SchoolYearId))
             .ReturnsAsync(schoolYear);
         _mockEnrollmentRepository.Setup(x => x.GetActiveEnrollmentAsync(
-            enrollmentDto.StudentId, enrollmentDto.ClassId, enrollmentDto.SchoolYearId))
+            enrollmentDto.StudentId, enrollmentDto.ClassId))
             .ReturnsAsync(existingEnrollment);
 
         // Act & Assert - This will fail until EnrollmentService is implemented

@@ -149,7 +149,7 @@ public class RevokeRoleUseCase
         _auditService = auditService;
     }
 
-    public async Task<Result> ExecuteAsync(Guid assignmentId, string revokedByUserId)
+    public async Task<Result> ExecuteAsync(Guid assignmentId, string reason, string revokedByUserId)
     {
         var assignment = await _roleAssignmentRepository.GetByIdAsync(assignmentId);
         if (assignment == null)
@@ -162,7 +162,7 @@ public class RevokeRoleUseCase
             return Result.Failure("Role assignment is already inactive");
         }
 
-        assignment.Revoke(revokedByUserId);
+        assignment.Revoke(reason, revokedByUserId);
         await _roleAssignmentRepository.SaveChangesAsync();
 
         await _auditService.LogAsync(

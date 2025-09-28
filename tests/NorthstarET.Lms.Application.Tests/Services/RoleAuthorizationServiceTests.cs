@@ -143,8 +143,8 @@ public class RoleAuthorizationServiceTests
         _mockRoleDefinitionRepository.Setup(x => x.GetByIdAsync(assignRoleDto.RoleDefinitionId))
             .ReturnsAsync(roleDefinition);
         
-        _mockRoleAssignmentRepository.Setup(x => x.GetActiveRoleAssignmentAsync(
-            assignRoleDto.UserId, assignRoleDto.RoleDefinitionId, assignRoleDto.SchoolId, assignRoleDto.ClassId))
+        _mockRoleAssignmentRepository.Setup(x => x.GetActiveAssignmentAsync(
+            assignRoleDto.UserId, assignRoleDto.RoleDefinitionId, assignRoleDto.SchoolId, assignRoleDto.ClassId, It.IsAny<Guid?>()))
             .ReturnsAsync((RoleAssignment?)null);
 
         // Act & Assert - This will fail until RoleAuthorizationService.AssignRoleAsync is implemented

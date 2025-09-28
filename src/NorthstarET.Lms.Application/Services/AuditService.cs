@@ -114,7 +114,7 @@ public class AuditService : IAuditService
 
         foreach (var record in records)
         {
-            csv.AppendLine($"{record.Timestamp:yyyy-MM-dd HH:mm:ss},{record.Action},{record.EntityType},{record.EntityId},{record.UserId},\"{record.Details.Replace("\"", "\"\"")}\",{record.IpAddress},{record.Hash}");
+            csv.AppendLine($"{record.Timestamp:yyyy-MM-dd HH:mm:ss},{record.Action},{record.EntityType},{record.EntityId},{record.UserId},\"{(record.Details?.Replace("\"", "\"\"") ?? "")}\",{record.IpAddress},{record.Hash}");
         }
 
         var fileName = $"audit_export_{DateTime.UtcNow:yyyyMMdd_HHmmss}.csv";

@@ -34,14 +34,14 @@ public class EnrollStudentUseCase
         var student = await _studentRepository.GetByIdAsync(request.StudentId);
         if (student == null)
         {
-            return Result<EnrollmentDto>.Failure("Student not found");
+            return Result.Failure<EnrollmentDto>("Student not found");
         }
 
         // Validate class exists
         var classEntity = await _classRepository.GetByIdAsync(request.ClassId);
         if (classEntity == null)
         {
-            return Result<EnrollmentDto>.Failure("Class not found");
+            return Result.Failure<EnrollmentDto>("Class not found");
         }
 
         // Check for existing active enrollment
@@ -49,7 +49,7 @@ public class EnrollStudentUseCase
             request.StudentId, request.ClassId);
         if (existingEnrollment != null)
         {
-            return Result<EnrollmentDto>.Failure("Student is already enrolled in this class");
+            return Result.Failure<EnrollmentDto>("Student is already enrolled in this class");
         }
 
         // Create enrollment
@@ -154,7 +154,7 @@ public class TransferStudentUseCase
         var student = await _studentRepository.GetByIdAsync(request.StudentId);
         if (student == null)
         {
-            return Result<TransferResultDto>.Failure("Student not found");
+            return Result.Failure<TransferResultDto>("Student not found");
         }
 
         // Get current enrollments in the from school
