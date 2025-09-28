@@ -108,12 +108,6 @@ public interface IUnitOfWork
     Task RollbackTransactionAsync();
 }
 
-public interface ITenantContextAccessor
-{
-    string? GetCurrentTenantId();
-    void SetTenantContext(string tenantId);
-}
-
 public interface IAuditService
 {
     Task<AuditRecord> LogAuditEventAsync(CreateAuditRecordDto auditDto);
