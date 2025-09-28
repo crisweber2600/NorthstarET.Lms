@@ -44,7 +44,7 @@ public class SchoolYearTests
     [InlineData("")]
     [InlineData(null)]
     [InlineData("   ")]
-    public void CreateSchoolYear_WithInvalidName_ShouldThrowArgumentException(string invalidName)
+    public void CreateSchoolYear_WithInvalidName_ShouldThrowArgumentException(string? invalidName)
     {
         // Arrange
         var startDate = new DateTime(2024, 8, 15);

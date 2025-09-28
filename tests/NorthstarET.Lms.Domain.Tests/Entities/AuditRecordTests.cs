@@ -51,7 +51,7 @@ public class AuditRecordTests
     [InlineData("")]
     [InlineData(null)]
     [InlineData("   ")]
-    public void CreateAuditRecord_WithInvalidEntityType_ShouldThrowArgumentException(string invalidEntityType)
+    public void CreateAuditRecord_WithInvalidEntityType_ShouldThrowArgumentException(string? invalidEntityType)
     {
         // Arrange
         var eventType = AuditEventType.Create;
@@ -68,7 +68,7 @@ public class AuditRecordTests
     [InlineData("")]
     [InlineData(null)]
     [InlineData("   ")]
-    public void CreateAuditRecord_WithInvalidUserId_ShouldThrowArgumentException(string invalidUserId)
+    public void CreateAuditRecord_WithInvalidUserId_ShouldThrowArgumentException(string? invalidUserId)
     {
         // Arrange
         var eventType = AuditEventType.Create;

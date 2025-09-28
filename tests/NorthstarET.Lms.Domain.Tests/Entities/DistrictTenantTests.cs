@@ -36,7 +36,7 @@ public class DistrictTenantTests
     [InlineData("INVALID-UPPER")]
     [InlineData("invalid_underscore")]
     [InlineData("invalid spaces")]
-    public void CreateDistrict_WithInvalidSlug_ShouldThrowArgumentException(string invalidSlug)
+    public void CreateDistrict_WithInvalidSlug_ShouldThrowArgumentException(string? invalidSlug)
     {
         // Arrange
         var displayName = "Test District";

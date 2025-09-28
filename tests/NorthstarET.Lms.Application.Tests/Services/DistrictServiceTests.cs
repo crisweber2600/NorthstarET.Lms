@@ -44,7 +44,8 @@ public class DistrictServiceTests
             }
         };
 
-        var expectedDistrict = new DistrictTenant("oakland-unified", "Oakland Unified School District");
+        var quotas = new DistrictQuotas { MaxStudents = 10000, MaxStaff = 1000, MaxAdmins = 100 };
+        var expectedDistrict = new DistrictTenant("oakland-unified", "Oakland Unified School District", quotas, "system-admin");
         
         _mockDistrictRepository.Setup(x => x.GetBySlugAsync(It.IsAny<string>()))
             .ReturnsAsync((DistrictTenant?)null);
@@ -74,7 +75,8 @@ public class DistrictServiceTests
             DisplayName = "Existing District"
         };
 
-        var existingDistrict = new DistrictTenant("existing-district", "Existing District");
+        var existingQuotas = new DistrictQuotas { MaxStudents = 5000, MaxStaff = 500, MaxAdmins = 50 };
+        var existingDistrict = new DistrictTenant("existing-district", "Existing District", existingQuotas, "system-admin");
         _mockDistrictRepository.Setup(x => x.GetBySlugAsync("existing-district"))
             .ReturnsAsync(existingDistrict);
 
@@ -91,7 +93,8 @@ public class DistrictServiceTests
     {
         // Arrange
         var districtId = Guid.NewGuid();
-        var expectedDistrict = new DistrictTenant("test-district", "Test District");
+        var quotas = new DistrictQuotas { MaxStudents = 10000, MaxStaff = 1000, MaxAdmins = 100 };
+        var expectedDistrict = new DistrictTenant("test-district", "Test District", quotas, "system-admin");
         
         _mockDistrictRepository.Setup(x => x.GetByIdAsync(districtId))
             .ReturnsAsync(expectedDistrict);
@@ -109,8 +112,9 @@ public class DistrictServiceTests
     {
         // Arrange
         var districtId = Guid.NewGuid();
-        var district = new DistrictTenant("test-district", "Test District");
-        var newQuotas = new DistrictQuotas(60000, 6000, 150);
+        var districtQuotas = new DistrictQuotas { MaxStudents = 10000, MaxStaff = 1000, MaxAdmins = 100 };
+        var district = new DistrictTenant("test-district", "Test District", districtQuotas, "system-admin");
+        var newQuotas = new DistrictQuotas { MaxStudents = 60000, MaxStaff = 6000, MaxAdmins = 150 };
 
         _mockDistrictRepository.Setup(x => x.GetByIdAsync(districtId))
             .ReturnsAsync(district);
@@ -129,7 +133,8 @@ public class DistrictServiceTests
     {
         // Arrange
         var districtId = Guid.NewGuid();
-        var district = new DistrictTenant("test-district", "Test District");
+        var quotas = new DistrictQuotas { MaxStudents = 10000, MaxStaff = 1000, MaxAdmins = 100 };
+        var district = new DistrictTenant("test-district", "Test District", quotas, "system-admin");
         var reason = "Policy violation";
 
         _mockDistrictRepository.Setup(x => x.GetByIdAsync(districtId))
@@ -149,7 +154,8 @@ public class DistrictServiceTests
     {
         // Arrange
         var districtId = Guid.NewGuid();
-        var district = new DistrictTenant("test-district", "Test District");
+        var quotas = new DistrictQuotas { MaxStudents = 10000, MaxStaff = 1000, MaxAdmins = 100 };
+        var district = new DistrictTenant("test-district", "Test District", quotas, "system-admin");
 
         _mockDistrictRepository.Setup(x => x.GetByIdAsync(districtId))
             .ReturnsAsync(district);

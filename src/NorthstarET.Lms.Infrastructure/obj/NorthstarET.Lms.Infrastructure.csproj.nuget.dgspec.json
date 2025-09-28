@@ -216,6 +216,14 @@
               "target": "Package",
               "version": "[12.25.1, )"
             },
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.CodeAnalysis.Analyzers": {
               "suppressParent": "All",
               "target": "Package",
@@ -237,6 +245,10 @@
               "version": "[9.0.9, )"
             },
             "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[9.0.9, )"
             },

@@ -36,7 +36,7 @@ public class StudentTests
     [InlineData("")]
     [InlineData(null)]
     [InlineData("   ")]
-    public void CreateStudent_WithInvalidStudentNumber_ShouldThrowArgumentException(string invalidStudentNumber)
+    public void CreateStudent_WithInvalidStudentNumber_ShouldThrowArgumentException(string? invalidStudentNumber)
     {
         // Arrange
         var firstName = "John";

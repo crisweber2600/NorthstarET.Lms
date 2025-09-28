@@ -71,7 +71,7 @@ public class StudentServiceTests
             LastName = "Doe"
         };
 
-        var existingStudent = new Student("EXISTING-001", "Existing", "Student", new DateTime(2008, 1, 1), GradeLevel.Grade9);
+        var existingStudent = new Student("EXISTING-001", "Existing", "Student", new DateTime(2008, 1, 1), DateTime.UtcNow.Date);
         _mockStudentRepository.Setup(x => x.GetByStudentNumberAsync("EXISTING-001"))
             .ReturnsAsync(existingStudent);
 
@@ -88,7 +88,8 @@ public class StudentServiceTests
     {
         // Arrange
         var studentId = Guid.NewGuid();
-        var expectedStudent = new Student("STU-001", "Test", "Student", new DateTime(2008, 1, 1), GradeLevel.Grade9);
+        var expectedStudent = new Student("STU-001", "Test", "Student", new DateTime(2008, 1, 1), DateTime.UtcNow.Date);
+        expectedStudent.UpdateGradeLevel(GradeLevel.Grade9, "system");
         
         _mockStudentRepository.Setup(x => x.GetByIdAsync(studentId))
             .ReturnsAsync(expectedStudent);
@@ -107,7 +108,8 @@ public class StudentServiceTests
     {
         // Arrange
         var studentId = Guid.NewGuid();
-        var student = new Student("STU-001", "Test", "Student", new DateTime(2008, 1, 1), GradeLevel.Grade9);
+        var student = new Student("STU-001", "Test", "Student", new DateTime(2008, 1, 1), DateTime.UtcNow.Date);
+        student.UpdateGradeLevel(GradeLevel.Grade9, "system");
         var newGradeLevel = GradeLevel.Grade10;
 
         _mockStudentRepository.Setup(x => x.GetByIdAsync(studentId))
@@ -127,7 +129,8 @@ public class StudentServiceTests
     {
         // Arrange
         var studentId = Guid.NewGuid();
-        var student = new Student("STU-001", "Test", "Student", new DateTime(2008, 1, 1), GradeLevel.Grade9);
+        var student = new Student("STU-001", "Test", "Student", new DateTime(2008, 1, 1), DateTime.UtcNow.Date);
+        student.UpdateGradeLevel(GradeLevel.Grade9, "system");
         var withdrawalDate = DateTime.UtcNow.Date;
         var reason = "Family relocation";
 
@@ -155,11 +158,12 @@ public class StudentServiceTests
             PageSize = 20
         };
 
-        var expectedStudents = new List<Student>
-        {
-            new("STU-001", "John", "Smith", new DateTime(2008, 1, 1), GradeLevel.Grade9),
-            new("STU-002", "Jane", "Doe", new DateTime(2008, 2, 1), GradeLevel.Grade9)
-        };
+        var student1 = new Student("STU-001", "John", "Smith", new DateTime(2008, 1, 1), DateTime.UtcNow.Date);
+        student1.UpdateGradeLevel(GradeLevel.Grade9, "system");
+        var student2 = new Student("STU-002", "Jane", "Doe", new DateTime(2008, 2, 1), DateTime.UtcNow.Date);
+        student2.UpdateGradeLevel(GradeLevel.Grade9, "system");
+        
+        var expectedStudents = new List<Student> { student1, student2 };
 
         _mockStudentRepository.Setup(x => x.SearchAsync(It.IsAny<StudentSearchDto>()))
             .ReturnsAsync(new PagedResult<Student>(expectedStudents, 1, 20, 2));

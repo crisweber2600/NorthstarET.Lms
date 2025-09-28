@@ -31,15 +31,20 @@ public class AuditRecord : TenantScopedEntity
         if (entityId == Guid.Empty)
             throw new ArgumentException("Entity ID cannot be empty", nameof(entityId));
 
-        // Convert action string to enum
-        if (Enum.TryParse<AuditEventType>(action.Replace("_", ""), true, out var eventType))
+        // Convert action string to enum with better mapping
+        EventType = action.ToUpperInvariant() switch
         {
-            EventType = eventType;
-        }
-        else
-        {
-            EventType = AuditEventType.Update; // Default to Update for unknown actions
-        }
+            var a when a.StartsWith("CREATE") => AuditEventType.Create,
+            var a when a.StartsWith("UPDATE") => AuditEventType.Update,
+            var a when a.StartsWith("DELETE") => AuditEventType.Delete,
+            var a when a.Contains("ROLE") && a.Contains("ASSIGN") => AuditEventType.RoleAssigned,
+            var a when a.Contains("ROLE") && a.Contains("REVOKE") => AuditEventType.RoleRevoked,
+            var a when a.Contains("LOGIN") => AuditEventType.LoginAttempt,
+            var a when a.Contains("BULK") => AuditEventType.BulkOperation,
+            var a when a.Contains("SECURITY") || a.Contains("VIOLATION") => AuditEventType.SecurityViolation,
+            var a when a.Contains("PURGE") => AuditEventType.DataPurged,
+            _ => Enum.TryParse<AuditEventType>(action.Replace("_", ""), true, out var parsed) ? parsed : AuditEventType.Update
+        };
         
         EntityType = entityType;
         EntityId = entityId;

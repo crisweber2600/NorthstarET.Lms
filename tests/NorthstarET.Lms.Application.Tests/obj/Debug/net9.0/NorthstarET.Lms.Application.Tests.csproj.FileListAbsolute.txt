@@ -459,3 +459,5 @@
 /Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net9.0/NorthstarET.Lms.Application.Tests.pdb
 /Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net9.0/NorthstarET.Lms.Application.Tests.genruntimeconfig.cache
 /Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net9.0/ref/NorthstarET.Lms.Application.Tests.dll
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/bin/Debug/net9.0/Castle.Core.dll
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/bin/Debug/net9.0/Moq.dll

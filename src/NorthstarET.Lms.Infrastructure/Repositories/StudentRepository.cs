@@ -3,6 +3,8 @@ using NorthstarET.Lms.Application.Common;
 using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Domain.Enums;
+using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Infrastructure.Data;
 
 namespace NorthstarET.Lms.Infrastructure.Repositories;

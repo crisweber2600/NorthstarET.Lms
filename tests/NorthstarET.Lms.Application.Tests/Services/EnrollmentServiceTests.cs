@@ -50,8 +50,9 @@ public class EnrollmentServiceTests
             EnrollmentDate = DateTime.UtcNow.Date
         };
 
-        var student = new Student("STU-001", "John", "Smith", new DateTime(2008, 1, 1), GradeLevel.Grade9);
-        var classEntity = new Class("Math 101", Guid.NewGuid(), Guid.NewGuid());
+        var student = new Student("STU-001", "John", "Smith", new DateTime(2008, 1, 1), DateTime.UtcNow.Date);
+        student.UpdateGradeLevel(GradeLevel.Grade9, "system");
+        var classEntity = new Class("Math 101", "Mathematics 101", "Mathematics", GradeLevel.Grade9, Guid.NewGuid(), Guid.NewGuid());
         var schoolYear = new SchoolYear("2024-2025", new DateTime(2024, 8, 15), new DateTime(2025, 6, 15));
 
         _mockStudentRepository.Setup(x => x.GetByIdAsync(enrollmentDto.StudentId))
@@ -126,7 +127,7 @@ public class EnrollmentServiceTests
             GradeLevel.Grade9,
             DateTime.UtcNow.AddDays(-30).Date);
 
-        var toClass = new Class("English 101", Guid.NewGuid(), Guid.NewGuid());
+        var toClass = new Class("English 101", "English Literature 101", "English", GradeLevel.Grade9, Guid.NewGuid(), Guid.NewGuid());
 
         _mockEnrollmentRepository.Setup(x => x.GetByIdAsync(transferDto.EnrollmentId))
             .ReturnsAsync(enrollment);
