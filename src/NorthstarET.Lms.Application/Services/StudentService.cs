@@ -155,8 +155,8 @@ public class StudentService
             LastName = student.LastName,
             MiddleName = student.MiddleName,
             DateOfBirth = student.DateOfBirth,
-            CurrentGradeLevel = student.CurrentGradeLevel,
-            Status = student.Status,
+            CurrentGradeLevel = student.CurrentGradeLevel.ToString(),
+            Status = student.Status.ToString(),
             WithdrawalDate = student.WithdrawalDate,
             WithdrawalReason = student.WithdrawalReason
         };

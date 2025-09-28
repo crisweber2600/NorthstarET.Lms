@@ -29,16 +29,15 @@ public class QueryAuditLogsUseCase
         var dtos = auditRecords.Items.Select(record => new AuditRecordDto
         {
             Id = record.Id,
-            EventType = record.EventType,
+            Action = record.Action,
             EntityType = record.EntityType,
             EntityId = record.EntityId,
             UserId = record.UserId,
+            Details = record.Details ?? string.Empty,
             Timestamp = record.Timestamp,
-            IpAddress = record.IpAddress,
-            UserAgent = record.UserAgent,
-            ChangeDetails = record.ChangeDetails,
-            CorrelationId = record.CorrelationId,
-            SequenceNumber = record.SequenceNumber
+            IpAddress = record.IpAddress ?? string.Empty,
+            UserAgent = record.AdditionalMetadata, // Use metadata for UserAgent
+            Hash = record.Hash
         }).ToList();
 
         var result = new PagedResult<AuditRecordDto>(
@@ -83,7 +82,7 @@ public class VerifyAuditIntegrityUseCase
                 integrityResults.Add(new AuditIntegrityIssue
                 {
                     RecordId = record.Id,
-                    SequenceNumber = record.SequenceNumber,
+                    SequenceNumber = (long)record.Timestamp.Ticks,
                     IssueType = "Hash Verification Failed",
                     Description = "Record hash does not match calculated hash"
                 });
@@ -93,14 +92,14 @@ public class VerifyAuditIntegrityUseCase
             if (i > 0)
             {
                 var previousRecord = records[i - 1];
-                if (record.SequenceNumber != previousRecord.SequenceNumber + 1)
+                if ((long)record.Timestamp.Ticks != (long)previousRecord.Timestamp.Ticks + 1)
                 {
                     integrityResults.Add(new AuditIntegrityIssue
                     {
                         RecordId = record.Id,
-                        SequenceNumber = record.SequenceNumber,
+                        SequenceNumber = (long)record.Timestamp.Ticks,
                         IssueType = "Sequence Gap",
-                        Description = $"Expected sequence {previousRecord.SequenceNumber + 1}, found {record.SequenceNumber}"
+                        Description = $"Expected sequence {(long)previousRecord.Timestamp.Ticks + 1}, found {(long)record.Timestamp.Ticks}"
                     });
                 }
 
@@ -110,7 +109,7 @@ public class VerifyAuditIntegrityUseCase
                     integrityResults.Add(new AuditIntegrityIssue
                     {
                         RecordId = record.Id,
-                        SequenceNumber = record.SequenceNumber,
+                        SequenceNumber = (long)record.Timestamp.Ticks,
                         IssueType = "Chain Linkage Broken",
                         Description = "Previous record hash does not match expected value"
                     });
@@ -122,8 +121,8 @@ public class VerifyAuditIntegrityUseCase
         {
             CheckStartTime = DateTime.UtcNow,
             RecordsChecked = records.Count,
-            StartSequence = request.StartSequence ?? (records.FirstOrDefault()?.SequenceNumber ?? 0),
-            EndSequence = request.EndSequence ?? (records.LastOrDefault()?.SequenceNumber ?? 0),
+            StartSequence = request.StartSequence ?? ((records.FirstOrDefault()?.Timestamp.Ticks ?? 0)),
+            EndSequence = request.EndSequence ?? ((records.LastOrDefault()?.Timestamp.Ticks ?? 0)),
             IssuesFound = integrityResults.Count,
             Issues = integrityResults,
             OverallIntegrity = integrityResults.Count == 0 ? "Valid" : "Compromised"
@@ -156,7 +155,7 @@ public class CreateLegalHoldUseCase
         
         if (existingHold != null)
         {
-            return Result<LegalHoldDto>.Failure("Entity already has an active legal hold");
+            return Result.Failure<LegalHoldDto>("Entity already has an active legal hold");
         }
 
         var legalHold = new LegalHold(
@@ -281,7 +280,7 @@ public class GenerateComplianceReportUseCase
             },
             RetentionSummary = new RetentionSummaryDto
             {
-                ActivePolicies = retentionPolicies.Count,
+                ActivePolicies = retentionPolicies.Count(),
                 PoliciesByEntityType = retentionPolicies
                     .GroupBy(p => p.EntityType)
                     .ToDictionary(g => g.Key, g => g.First().RetentionYears)

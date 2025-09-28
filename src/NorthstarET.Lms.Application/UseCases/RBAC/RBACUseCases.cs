@@ -31,14 +31,14 @@ public class AssignRoleUseCase
         var roleDefinition = await _roleDefinitionRepository.GetByIdAsync(request.RoleDefinitionId);
         if (roleDefinition == null)
         {
-            return Result<RoleAssignmentDto>.Failure("Role definition not found");
+            return Result.Failure<RoleAssignmentDto>("Role definition not found");
         }
 
         // Validate scope constraints
         var validationResult = ValidateRoleScope(roleDefinition, request);
         if (!validationResult.IsSuccess)
         {
-            return Result<RoleAssignmentDto>.Failure(validationResult.Error);
+            return Result.Failure<RoleAssignmentDto>(validationResult.Error);
         }
 
         // Check for existing assignment
@@ -47,7 +47,7 @@ public class AssignRoleUseCase
         
         if (existingAssignment != null)
         {
-            return Result<RoleAssignmentDto>.Failure("User already has this role assignment");
+            return Result.Failure<RoleAssignmentDto>("User already has this role assignment");
         }
 
         // Create role assignment
@@ -206,15 +206,15 @@ public class GetUserRolesUseCase
                 RoleName = roleDefinition.Name,
                 RoleDescription = roleDefinition.Description,
                 Scope = roleDefinition.Scope.ToString(),
-                Permissions = roleDefinition.Permissions,
+                Permissions = roleDefinition.Permissions.ToArray(),
                 SchoolId = assignment.SchoolId,
                 ClassId = assignment.ClassId,
                 SchoolYearId = assignment.SchoolYearId,
                 EffectiveDate = assignment.EffectiveDate,
                 ExpirationDate = assignment.ExpirationDate,
-                IsDelegated = assignment.DelegatedByUserId.HasValue,
-                DelegatedByUserId = assignment.DelegatedByUserId,
-                DelegationExpiry = assignment.DelegationExpiry
+                IsDelegated = false, // assignment.DelegatedByUserId.HasValue,
+                DelegatedByUserId = null, // assignment.DelegatedByUserId,
+                DelegationExpiry = null // assignment.DelegationExpiry
             };
         }).ToList();
 

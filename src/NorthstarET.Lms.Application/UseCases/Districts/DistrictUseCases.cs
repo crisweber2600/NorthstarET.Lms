@@ -66,7 +66,7 @@ public class CreateDistrictUseCase
                 MaxStaff = district.Quotas.MaxStaff,
                 MaxAdmins = district.Quotas.MaxAdmins
             },
-            CreatedDate = district.CreatedDate,
+            CreatedDate = district.CreatedAt,
             CreatedByUserId = district.CreatedByUserId
         };
 
@@ -103,7 +103,7 @@ public class GetDistrictUseCase
                 MaxStaff = district.Quotas.MaxStaff,
                 MaxAdmins = district.Quotas.MaxAdmins
             },
-            CreatedDate = district.CreatedDate,
+            CreatedDate = district.CreatedAt,
             CreatedByUserId = district.CreatedByUserId
         };
 
