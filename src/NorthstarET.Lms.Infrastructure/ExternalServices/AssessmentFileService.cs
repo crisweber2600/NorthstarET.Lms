@@ -288,4 +288,77 @@ public class AssessmentFileService : IAssessmentFileService
 
         return containerClient;
     }
+
+    // IAssessmentFileService interface implementations
+    public async Task<string> StoreAssessmentFileAsync(Stream fileStream, string fileName, string contentType, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            // Read stream to byte array
+            using var memoryStream = new MemoryStream();
+            await fileStream.CopyToAsync(memoryStream, cancellationToken);
+            var fileContent = memoryStream.ToArray();
+
+            // Use default tenant ID for now - this should come from tenant context
+            var tenantId = "default";
+            var result = await StoreAssessmentFileAsync(fileName, fileContent, contentType, tenantId, cancellationToken);
+            
+            return result ?? throw new InvalidOperationException("Failed to store assessment file");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to store assessment file {FileName}", fileName);
+            throw;
+        }
+    }
+
+    public async Task<Stream> RetrieveAssessmentFileAsync(string fileId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            // Use default tenant ID for now - this should come from tenant context
+            var tenantId = "default";
+            var (content, contentType, fileName) = await RetrieveAssessmentFileAsync(fileId, tenantId, cancellationToken);
+            
+            if (content == null)
+                throw new FileNotFoundException($"Assessment file {fileId} not found");
+
+            return new MemoryStream(content);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to retrieve assessment file {FileId}", fileId);
+            throw;
+        }
+    }
+
+    public async Task<bool> DeleteAssessmentFileAsync(string fileId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            // Use default tenant ID for now - this should come from tenant context
+            var tenantId = "default";
+            return await DeleteAssessmentFileAsync(fileId, tenantId, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete assessment file {FileId}", fileId);
+            return false;
+        }
+    }
+
+    public async Task<string> GenerateAccessUrlAsync(string fileId, TimeSpan expiration, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            // Use default tenant ID for now - this should come from tenant context
+            var tenantId = "default";
+            return await GenerateDownloadUrlAsync(fileId, tenantId, expiration, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to generate access URL for assessment file {FileId}", fileId);
+            throw;
+        }
+    }
 }

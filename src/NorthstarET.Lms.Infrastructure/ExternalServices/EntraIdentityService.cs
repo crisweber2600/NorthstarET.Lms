@@ -178,4 +178,104 @@ public class EntraIdentityService : IIdentityProvider
             return Array.Empty<string>();
         }
     }
+
+    // IIdentityProvider interface implementations
+    public async Task<string?> GetUserIdAsync(string email, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var users = await _graphServiceClient.Users
+                .GetAsync(requestConfiguration =>
+                {
+                    requestConfiguration.QueryParameters.Filter = $"mail eq '{email}' or userPrincipalName eq '{email}'";
+                    requestConfiguration.QueryParameters.Select = new[] { "id" };
+                }, cancellationToken: cancellationToken);
+
+            return users?.Value?.FirstOrDefault()?.Id;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to get user ID for {Email}", email);
+            return null;
+        }
+    }
+
+    public async Task<UserInfo?> GetUserInfoAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var user = await _graphServiceClient.Users[userId]
+                .GetAsync(requestConfiguration =>
+                {
+                    requestConfiguration.QueryParameters.Select = new[] { "id", "mail", "givenName", "surname", "accountEnabled", "userPrincipalName" };
+                }, cancellationToken: cancellationToken);
+
+            if (user == null) return null;
+
+            return new UserInfo
+            {
+                UserId = user.Id ?? userId,
+                Email = user.Mail ?? user.UserPrincipalName ?? "",
+                FirstName = user.GivenName ?? "",
+                LastName = user.Surname ?? "",
+                IsActive = user.AccountEnabled ?? false
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to get user info for {UserId}", userId);
+            return null;
+        }
+    }
+
+    public async Task<bool> CreateUserAsync(CreateUserRequest request, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var invitation = new Invitation
+            {
+                InvitedUserEmailAddress = request.Email,
+                InvitedUserDisplayName = $"{request.FirstName} {request.LastName}",
+                InviteRedirectUrl = "https://myapplications.microsoft.com",
+                SendInvitationMessage = true
+            };
+
+            var result = await _graphServiceClient.Invitations
+                .PostAsync(invitation, cancellationToken: cancellationToken);
+
+            return result?.InvitedUser?.Id != null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to create user for {Email}", request.Email);
+            return false;
+        }
+    }
+
+    public async Task<bool> UpdateUserAsync(string userId, UpdateUserRequest request, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var user = new User();
+            if (!string.IsNullOrEmpty(request.FirstName))
+                user.GivenName = request.FirstName;
+            if (!string.IsNullOrEmpty(request.LastName))
+                user.Surname = request.LastName;
+
+            await _graphServiceClient.Users[userId]
+                .PatchAsync(user, cancellationToken: cancellationToken);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update user {UserId}", userId);
+            return false;
+        }
+    }
+
+    public async Task<bool> DisableUserAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        return await DisableExternalUserAsync(userId, cancellationToken);
+    }
 }

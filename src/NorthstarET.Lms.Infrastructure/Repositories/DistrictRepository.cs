@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Domain.Enums;
 using NorthstarET.Lms.Infrastructure.Data;
 
 namespace NorthstarET.Lms.Infrastructure.Repositories;
@@ -92,5 +93,39 @@ public class DistrictRepository : IDistrictRepository
     public void Remove(DistrictTenant district)
     {
         _context.Districts.Remove(district);
+    }
+
+    // Interface methods without CancellationToken
+    public async Task<DistrictTenant?> GetByIdAsync(Guid id)
+    {
+        return await GetByIdAsync(id, CancellationToken.None);
+    }
+
+    public async Task<DistrictTenant?> GetBySlugAsync(string slug)
+    {
+        return await GetBySlugAsync(slug, CancellationToken.None);
+    }
+
+    public async Task<IEnumerable<DistrictTenant>> GetAllAsync()
+    {
+        return await GetAllAsync(CancellationToken.None);
+    }
+
+    public async Task AddAsync(DistrictTenant district)
+    {
+        await AddAsync(district, CancellationToken.None);
+    }
+
+    public async Task UpdateAsync(DistrictTenant district)
+    {
+        Update(district);
+        await Task.CompletedTask;
+    }
+
+    public async Task<bool> HasActiveRetentionPoliciesAsync(Guid districtId)
+    {
+        return await _context.Districts
+            .Where(d => d.Id == districtId)
+            .AnyAsync(d => d.RetentionPolicy != null);
     }
 }

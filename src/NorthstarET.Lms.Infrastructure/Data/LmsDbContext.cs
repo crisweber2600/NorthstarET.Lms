@@ -39,8 +39,8 @@ public class LmsDbContext : DbContext, IUnitOfWork
     public DbSet<RetentionPolicy> RetentionPolicies { get; set; } = null!;
     public DbSet<LegalHold> LegalHolds { get; set; } = null!;
 
-    // Assessment entities
-    public DbSet<AssessmentDefinition> AssessmentDefinitions { get; set; } = null!;
+    // Assessment entities - TODO: Implement when assessment module is added
+    // public DbSet<AssessmentDefinition> AssessmentDefinitions { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -105,9 +105,30 @@ public class LmsDbContext : DbContext, IUnitOfWork
         return await base.SaveChangesAsync(cancellationToken);
     }
 
-    // Explicit interface implementation for IUnitOfWork
-    async Task IUnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+    // IUnitOfWork implementation
+    public async Task SaveChangesAsync()
     {
-        await SaveChangesAsync(cancellationToken);
+        await SaveChangesAsync(CancellationToken.None);
+    }
+
+    public async Task BeginTransactionAsync()
+    {
+        await Database.BeginTransactionAsync();
+    }
+
+    public async Task CommitTransactionAsync()
+    {
+        if (Database.CurrentTransaction != null)
+        {
+            await Database.CurrentTransaction.CommitAsync();
+        }
+    }
+
+    public async Task RollbackTransactionAsync()
+    {
+        if (Database.CurrentTransaction != null)
+        {
+            await Database.CurrentTransaction.RollbackAsync();
+        }
     }
 }

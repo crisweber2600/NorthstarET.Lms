@@ -164,6 +164,46 @@ public class AuditRepository : IAuditRepository
         await _context.AuditRecords.AddRangeAsync(auditRecords, cancellationToken);
     }
 
+    // Interface methods without CancellationToken
+    public async Task<AuditRecord?> GetByIdAsync(Guid id)
+    {
+        return await GetByIdAsync(id, CancellationToken.None);
+    }
+
+    public async Task<PagedResult<AuditRecord>> QueryAsync(AuditQueryDto queryDto)
+    {
+        return await QueryAuditRecordsAsync(queryDto, CancellationToken.None);
+    }
+
+    public async Task<IEnumerable<AuditRecord>> GetByDateRangeAsync(DateTime startDate, DateTime endDate, string[] entityTypes)
+    {
+        var query = _context.AuditRecords
+            .Where(ar => ar.Timestamp >= startDate && ar.Timestamp <= endDate);
+
+        if (entityTypes?.Length > 0)
+        {
+            query = query.Where(ar => entityTypes.Contains(ar.EntityType));
+        }
+
+        return await query
+            .OrderBy(ar => ar.Timestamp)
+            .ThenBy(ar => ar.SequenceNumber)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<AuditRecord>> GetChainAsync(string tenantId, DateTime startDate, DateTime endDate)
+    {
+        return await _context.AuditRecords
+            .Where(ar => ar.Timestamp >= startDate && ar.Timestamp <= endDate)
+            .OrderBy(ar => ar.SequenceNumber)
+            .ToListAsync();
+    }
+
+    public async Task AddAsync(AuditRecord auditRecord)
+    {
+        await AddAsync(auditRecord, CancellationToken.None);
+    }
+
     // Note: Audit records are typically immutable, so Update and Remove are not implemented
 }
 
@@ -247,5 +287,55 @@ public class PlatformAuditRepository : IPlatformAuditRepository
     public async Task AddAsync(PlatformAuditRecord auditRecord, CancellationToken cancellationToken = default)
     {
         await _context.PlatformAuditRecords.AddAsync(auditRecord, cancellationToken);
+    }
+
+    // Interface methods without CancellationToken
+    public async Task<PlatformAuditRecord?> GetByIdAsync(Guid id)
+    {
+        return await GetByIdAsync(id, CancellationToken.None);
+    }
+
+    public async Task<PagedResult<PlatformAuditRecord>> QueryAsync(AuditQueryDto queryDto)
+    {
+        var query = _context.PlatformAuditRecords.AsQueryable();
+
+        // Apply filters - convert AuditQueryDto to platform audit query
+        if (!string.IsNullOrWhiteSpace(queryDto.EntityType))
+        {
+            query = query.Where(par => par.EventType == queryDto.EntityType);
+        }
+
+        if (!string.IsNullOrWhiteSpace(queryDto.UserId))
+        {
+            query = query.Where(par => par.ActingUserId == queryDto.UserId);
+        }
+
+        if (queryDto.StartDate.HasValue)
+        {
+            query = query.Where(par => par.Timestamp >= queryDto.StartDate.Value);
+        }
+
+        if (queryDto.EndDate.HasValue)
+        {
+            query = query.Where(par => par.Timestamp <= queryDto.EndDate.Value);
+        }
+
+        // Get total count
+        var totalCount = await query.CountAsync();
+
+        // Apply pagination and ordering (most recent first)
+        var auditRecords = await query
+            .OrderByDescending(par => par.Timestamp)
+            .ThenByDescending(par => par.SequenceNumber)
+            .Skip((queryDto.Page - 1) * queryDto.PageSize)
+            .Take(queryDto.PageSize)
+            .ToListAsync();
+
+        return new PagedResult<PlatformAuditRecord>(auditRecords, queryDto.Page, queryDto.PageSize, totalCount);
+    }
+
+    public async Task AddAsync(PlatformAuditRecord auditRecord)
+    {
+        await AddAsync(auditRecord, CancellationToken.None);
     }
 }

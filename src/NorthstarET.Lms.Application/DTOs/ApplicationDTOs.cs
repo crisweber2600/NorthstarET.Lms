@@ -190,3 +190,37 @@ public class AuditExportResultDto
     public string FileName { get; set; } = null!;
     public string ContentType { get; set; } = null!;
 }
+
+// Search DTOs
+public class EnrollmentSearchDto
+{
+    public Guid? StudentId { get; set; }
+    public Guid? ClassId { get; set; }
+    public Guid? SchoolYearId { get; set; }
+    public EnrollmentStatus? Status { get; set; }
+    public GradeLevel? GradeLevel { get; set; }
+    public string? StudentSearchTerm { get; set; }
+    public int Page { get; set; } = 1;
+    public int Size { get; set; } = 20;
+}
+
+public class StaffSearchDto
+{
+    public string? SearchTerm { get; set; }
+    public UserLifecycleStatus? Status { get; set; }
+    public Guid? SchoolId { get; set; }
+    public string? RoleName { get; set; }
+    public int Page { get; set; } = 1;
+    public int Size { get; set; } = 20;
+}
+
+public class PlatformAuditQueryDto
+{
+    public string? TenantId { get; set; }
+    public string? ActingUserId { get; set; }
+    public string? EventType { get; set; }
+    public DateTime? FromDate { get; set; }
+    public DateTime? ToDate { get; set; }
+    public int Page { get; set; } = 1;
+    public int Size { get; set; } = 20;
+}
