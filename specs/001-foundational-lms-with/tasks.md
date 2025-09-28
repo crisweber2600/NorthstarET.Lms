@@ -137,28 +137,28 @@
 ## Phase 3.6: Infrastructure Layer Implementation (EF Core & External Services)
 
 ### Database Configuration
-- [ ] **T071** Multi-tenant DbContext with schema isolation in `src/NorthstarET.Lms.Infrastructure/Data/LmsDbContext.cs`
-- [ ] **T072** [P] Entity configurations for DistrictTenant in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/DistrictTenantConfiguration.cs`
-- [ ] **T073** [P] Entity configurations for Student in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/StudentConfiguration.cs`
-- [ ] **T074** [P] Entity configurations for Staff in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/StaffConfiguration.cs`
-- [ ] **T075** [P] Entity configurations for Enrollment in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/EnrollmentConfiguration.cs`
-- [ ] **T076** [P] Entity configurations for audit entities in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/AuditConfiguration.cs`
+- [X] **T071** Multi-tenant DbContext with schema isolation in `src/NorthstarET.Lms.Infrastructure/Data/LmsDbContext.cs` ✅ Created with tenant filtering
+- [X] **T072** [P] Entity configurations for DistrictTenant in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/DistrictTenantConfiguration.cs` ✅ Created
+- [X] **T073** [P] Entity configurations for Student in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/StudentConfiguration.cs` ✅ Created
+- [X] **T074** [P] Entity configurations for Staff in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/StaffConfiguration.cs` ✅ Created
+- [X] **T075** [P] Entity configurations for Enrollment in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/EnrollmentConfiguration.cs` ✅ Created
+- [X] **T076** [P] Entity configurations for audit entities in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/AuditConfiguration.cs` ✅ Created
 
 ### Repository Implementations
-- [ ] **T077** [P] DistrictRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/DistrictRepository.cs`
-- [ ] **T078** [P] StudentRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/StudentRepository.cs`
-- [ ] **T079** [P] StaffRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/StaffRepository.cs`
-- [ ] **T080** [P] EnrollmentRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/EnrollmentRepository.cs`
-- [ ] **T081** [P] AuditRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/AuditRepository.cs`
+- [X] **T077** [P] DistrictRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/DistrictRepository.cs` ✅ Created
+- [X] **T078** [P] StudentRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/StudentRepository.cs` ✅ Created
+- [X] **T079** [P] StaffRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/StaffRepository.cs` ✅ Created
+- [X] **T080** [P] EnrollmentRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/EnrollmentRepository.cs` ✅ Created
+- [X] **T081** [P] AuditRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/AuditRepository.cs` ✅ Created
 
 ### External Service Integrations
-- [ ] **T082** [P] Entra External ID service in `src/NorthstarET.Lms.Infrastructure/ExternalServices/EntraIdentityService.cs`
-- [ ] **T083** [P] Assessment file service in `src/NorthstarET.Lms.Infrastructure/ExternalServices/AssessmentFileService.cs`
-- [ ] **T084** [P] Tenant context accessor in `src/NorthstarET.Lms.Infrastructure/Security/TenantContextAccessor.cs`
+- [X] **T082** [P] Entra External ID service in `src/NorthstarET.Lms.Infrastructure/ExternalServices/EntraIdentityService.cs` ✅ Created
+- [X] **T083** [P] Assessment file service in `src/NorthstarET.Lms.Infrastructure/ExternalServices/AssessmentFileService.cs` ✅ Created
+- [X] **T084** [P] Tenant context accessor in `src/NorthstarET.Lms.Infrastructure/Security/TenantContextAccessor.cs` ✅ Created
 
 ### Background Services
-- [ ] **T085** [P] Retention policy enforcement job in `src/NorthstarET.Lms.Infrastructure/BackgroundServices/RetentionJobService.cs`
-- [ ] **T086** [P] Audit chain processor in `src/NorthstarET.Lms.Infrastructure/BackgroundServices/AuditProcessorService.cs`
+- [X] **T085** [P] Retention policy enforcement job in `src/NorthstarET.Lms.Infrastructure/BackgroundServices/RetentionJobService.cs` ✅ Created
+- [X] **T086** [P] Audit chain processor in `src/NorthstarET.Lms.Infrastructure/BackgroundServices/AuditProcessorService.cs` ✅ Created
 
 ## Phase 3.7: Presentation Layer Implementation (API Controllers)
 

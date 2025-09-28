@@ -1,0 +1,150 @@
+using Microsoft.EntityFrameworkCore;
+using NorthstarET.Lms.Application.Common;
+using NorthstarET.Lms.Application.DTOs;
+using NorthstarET.Lms.Application.Interfaces;
+using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Infrastructure.Data;
+
+namespace NorthstarET.Lms.Infrastructure.Repositories;
+
+public class StudentRepository : IStudentRepository
+{
+    private readonly LmsDbContext _context;
+
+    public StudentRepository(LmsDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<Student?> GetByIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Students
+            .Include(s => s.Enrollments)
+                .ThenInclude(e => e.Class)
+            .Include(s => s.GuardianRelationships)
+                .ThenInclude(gr => gr.Guardian)
+            .FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
+    }
+
+    public async Task<Student?> GetByStudentNumberAsync(string studentNumber, CancellationToken cancellationToken = default)
+    {
+        return await _context.Students
+            .Include(s => s.Enrollments)
+                .ThenInclude(e => e.Class)
+            .FirstOrDefaultAsync(s => s.StudentNumber == studentNumber, cancellationToken);
+    }
+
+    public async Task<bool> StudentNumberExistsAsync(string studentNumber, CancellationToken cancellationToken = default)
+    {
+        return await _context.Students
+            .AnyAsync(s => s.StudentNumber == studentNumber, cancellationToken);
+    }
+
+    public async Task<PagedResult<Student>> SearchStudentsAsync(StudentSearchDto searchDto, CancellationToken cancellationToken = default)
+    {
+        var query = _context.Students.AsQueryable();
+
+        // Apply filters
+        if (!string.IsNullOrWhiteSpace(searchDto.SearchTerm))
+        {
+            var searchTerm = searchDto.SearchTerm.ToLowerInvariant();
+            query = query.Where(s => 
+                s.FirstName.ToLower().Contains(searchTerm) ||
+                s.LastName.ToLower().Contains(searchTerm) ||
+                s.StudentNumber.ToLower().Contains(searchTerm));
+        }
+
+        if (searchDto.Status.HasValue)
+        {
+            query = query.Where(s => s.Status == searchDto.Status.Value);
+        }
+
+        if (searchDto.GradeLevel.HasValue)
+        {
+            // Get students with current enrollments at the specified grade level
+            query = query.Where(s => s.Enrollments
+                .Any(e => e.GradeLevel == searchDto.GradeLevel.Value && 
+                         e.Status == EnrollmentStatus.Active));
+        }
+
+        if (searchDto.IsSpecialEducation.HasValue)
+        {
+            query = query.Where(s => s.IsSpecialEducation == searchDto.IsSpecialEducation.Value);
+        }
+
+        // Get total count
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        // Apply pagination and ordering
+        var students = await query
+            .OrderBy(s => s.LastName)
+            .ThenBy(s => s.FirstName)
+            .Skip((searchDto.Page - 1) * searchDto.Size)
+            .Take(searchDto.Size)
+            .Include(s => s.Enrollments.Where(e => e.Status == EnrollmentStatus.Active))
+                .ThenInclude(e => e.Class)
+            .ToListAsync(cancellationToken);
+
+        return new PagedResult<Student>(students, searchDto.Page, searchDto.Size, totalCount);
+    }
+
+    public async Task<IList<Student>> GetStudentsInGradeLevelAsync(GradeLevel gradeLevel, Guid schoolYearId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Students
+            .Where(s => s.Enrollments.Any(e => 
+                e.GradeLevel == gradeLevel && 
+                e.SchoolYearId == schoolYearId && 
+                e.Status == EnrollmentStatus.Active))
+            .Include(s => s.Enrollments.Where(e => e.SchoolYearId == schoolYearId))
+                .ThenInclude(e => e.Class)
+            .OrderBy(s => s.LastName)
+            .ThenBy(s => s.FirstName)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IList<Student>> GetStudentsByStatusAsync(UserLifecycleStatus status, CancellationToken cancellationToken = default)
+    {
+        return await _context.Students
+            .Where(s => s.Status == status)
+            .OrderBy(s => s.LastName)
+            .ThenBy(s => s.FirstName)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<int> CountActiveStudentsAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Students
+            .CountAsync(s => s.Status == UserLifecycleStatus.Active, cancellationToken);
+    }
+
+    public async Task<IList<Student>> GetStudentsForRolloverAsync(GradeLevel fromGrade, Guid fromSchoolYearId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Students
+            .Where(s => s.Enrollments.Any(e => 
+                e.GradeLevel == fromGrade && 
+                e.SchoolYearId == fromSchoolYearId && 
+                e.Status == EnrollmentStatus.Active))
+            .Include(s => s.Enrollments.Where(e => e.SchoolYearId == fromSchoolYearId))
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task AddAsync(Student student, CancellationToken cancellationToken = default)
+    {
+        await _context.Students.AddAsync(student, cancellationToken);
+    }
+
+    public async Task AddRangeAsync(IEnumerable<Student> students, CancellationToken cancellationToken = default)
+    {
+        await _context.Students.AddRangeAsync(students, cancellationToken);
+    }
+
+    public void Update(Student student)
+    {
+        _context.Students.Update(student);
+    }
+
+    public void Remove(Student student)
+    {
+        _context.Students.Remove(student);
+    }
+}
