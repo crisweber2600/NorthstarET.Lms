@@ -27,12 +27,12 @@
 - Phase 3-4: Implementation execution (manual or via tools)
 
 ## Summary
-Foundational Learning Management System with strict tenant isolation by SchoolDistrict, comprehensive RBAC supporting flexible staff roles, academic calendar and enrollment lifecycle management, compliance features (audit, retention, legal holds), bulk operations, and Entra External ID integration. Technical approach: .NET 9 web application with Clean Architecture, Aspire orchestration, multi-tenant data isolation, and BDD-first development.
+Foundational Learning Management System with strict tenant isolation by District, comprehensive RBAC supporting flexible staff roles, academic calendar and enrollment lifecycle management, compliance features (audit, retention, legal holds), bulk operations, and Entra External ID integration. Technical approach: .NET 9 web application with Clean Architecture, Aspire orchestration, multi-tenant data isolation, and BDD-first development.
 
 ## Technical Context
 **Language/Version**: .NET 9 with C# 13  
 **Primary Dependencies**: ASP.NET Core, Entity Framework Core, .NET Aspire, Reqnroll, xUnit  
-**Storage**: Multi-tenant SQL Server with strict data isolation per SchoolDistrict  
+**Storage**: Multi-tenant SQL Server with strict data isolation per District  
 **Testing**: Reqnroll for BDD, xUnit for unit/integration tests, Testcontainers for infrastructure tests  
 **Target Platform**: Cloud-hosted web application (Azure/AWS containers)
 **Project Type**: web - ASP.NET Core API with potential future web UI  

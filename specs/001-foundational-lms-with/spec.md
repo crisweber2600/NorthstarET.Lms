@@ -17,7 +17,7 @@
 ## Scope & Overview
 
 This specification defines a foundational Learning Management System (LMS) that provides:
-- Strict tenant isolation by SchoolDistrict
+- Strict tenant isolation by District
 - Lifecycle management by SchoolYear and AcademicCalendar
 - Full CRUD operations for Districts, Schools, Classes, Staff, Students, and Assessments
 - Comprehensive RBAC with PlatformAdmin tenant provisioning
@@ -130,7 +130,7 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **District Deletion**: What happens when a district has active legal holds or hasn't met retention requirements?
 - **Staff Suspension**: How does the system handle access to classes and students when a staff member is suspended mid-year?
 - **Academic Year Overlap**: How does the system prevent scheduling conflicts when SchoolYears have overlapping date ranges?
-- **Bulk Operation Failures**: How are partial failures handled during large enrollment imports? → User-configurable strategies (all-or-nothing, best-effort, threshold-based)
+- **How are partial failures handled during large enrollment imports? → User-configurable strategies (all-or-nothing, best-effort, threshold-based)**
 - **External ID Conflicts**: What happens when multiple users claim the same Entra External ID?
 
 ## Requirements
@@ -185,7 +185,11 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **FR-032**: System MUST provide read-only assessment access to Teachers/SchoolUsers via RBAC
 
 #### Bulk Operations & Integration
-- **FR-033**: System MUST support bulk import of Students, Staff, Classes, and Enrollments via CSV/JSON with user-selectable error handling (all-or-nothing, best-effort, or threshold-based rollback)
+- **FR-033**: System MUST support bulk import of Students, Staff, Classes, and Enrollments via CSV/JSON with user-selectable error handling strategies:
+  - **All-or-Nothing**: Entire import fails if any record fails validation
+  - **Best-Effort**: Continue processing valid records, report failed records for manual review
+  - **Threshold-Based**: Fail entire import if error rate exceeds configurable threshold (default 5%)
+  - **Preview Mode**: Generate detailed report of changes without applying them
 - **FR-034**: System MUST provide bulk rollover capabilities for grade promotion
 - **FR-035**: System MUST support bulk reassignment operations for school closure scenarios
 - **FR-036**: System MUST export roster and assessment data in CSV format
@@ -208,7 +212,7 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 - **FR-049**: System MUST track repeated authorization failures and suspicious access patterns
 
 #### Data Isolation & Security
-- **FR-050**: System MUST enforce strict tenant isolation by SchoolDistrict
+- **FR-050**: System MUST enforce strict tenant isolation by District
 - **FR-051**: System MUST scope all operations by appropriate SchoolYear context
 - **FR-052**: System MUST implement deny-by-default RBAC resolution
 - **FR-053**: System MUST enforce least privilege access principles
@@ -222,7 +226,7 @@ A PlatformAdmin provisions a new school district, automatically receiving Distri
 
 ### Key Entities
 
-- **DistrictTenant/SchoolDistrict**: Top-level tenant entity representing a school district, lifecycle managed by PlatformAdmin, contains schools and users
+- **District**: Top-level tenant entity representing a school district, lifecycle managed by PlatformAdmin, contains schools and users
 - **SchoolYear**: Academic cycle with start/end dates and status, provides temporal scoping for Classes, Enrollments, and RoleAssignments
 - **AcademicCalendar**: Bound to SchoolYear, defines Terms and Closures for academic scheduling
 - **School**: Belongs to one District, owns Classes and Staff assignments, represents physical or virtual school locations  

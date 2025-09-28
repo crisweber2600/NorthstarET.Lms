@@ -220,10 +220,36 @@
 - [ ] **T121** [P] Architecture decision records for key design choices
 - [ ] **T122** Final BDD scenario validation and acceptance testing
 
+## Phase 3.11: Security Implementation (Critical Gap Resolution)
+
+### Data Isolation & Access Control
+- [ ] **T123** [P] Tenant isolation validation service in `src/NorthstarET.Lms.Infrastructure/Security/TenantIsolationValidator.cs`
+- [ ] **T124** [P] Multi-tenant data access interceptor in `src/NorthstarET.Lms.Infrastructure/Security/TenantDataInterceptor.cs`
+- [ ] **T125** [P] Role-based access control enforcer in `src/NorthstarET.Lms.Infrastructure/Security/RbacEnforcer.cs`
+- [ ] **T126** [P] Security monitoring service in `src/NorthstarET.Lms.Infrastructure/Security/SecurityMonitoringService.cs`
+
+### Security Testing & Validation
+- [ ] **T127** [P] Tenant isolation integration tests in `tests/NorthstarET.Lms.Infrastructure.Tests/Security/TenantIsolationTests.cs`
+- [ ] **T128** [P] RBAC authorization tests in `tests/NorthstarET.Lms.Api.Tests/Security/AuthorizationTests.cs`
+- [ ] **T129** [P] Security penetration testing validation in `tests/Security/PenetrationTests.cs`
+- [ ] **T130** [P] Data classification compliance tests in `tests/Security/DataClassificationTests.cs`
+
+## Phase 3.12: Performance Implementation
+
+### Monitoring & Optimization
+- [ ] **T131** [P] Performance monitoring infrastructure in `src/NorthstarET.Lms.Infrastructure/Performance/PerformanceMonitor.cs`
+- [ ] **T132** [P] Query optimization service in `src/NorthstarET.Lms.Infrastructure/Performance/QueryOptimizer.cs`
+- [ ] **T133** [P] Caching strategy implementation in `src/NorthstarET.Lms.Infrastructure/Caching/CachingService.cs`
+- [ ] **T134** [P] Response time SLA enforcement in `src/NorthstarET.Lms.Api/Middleware/PerformanceSlaMiddleware.cs`
+
+### Performance Validation
+- [ ] **T135** [P] Real-time performance metrics collection in `src/NorthstarET.Lms.Infrastructure/Observability/MetricsCollector.cs`
+- [ ] **T136** [P] Performance regression testing in `tests/Performance/RegressionTests.cs`
+
 ## Dependencies
 
 ### Phase Dependencies
-- Setup (T001-T005) → BDD Features (T006-T023) → Unit Tests (T024-T039) → Domain (T040-T057) → Application (T058-T070) → Infrastructure (T071-T086) → Presentation (T087-T100) → Integration (T101-T112) → Polish (T113-T122)
+- Setup (T001-T005) → BDD Features (T006-T023) → Unit Tests (T024-T039) → Domain (T040-T057) → Application (T058-T070) → Infrastructure (T071-T086) → Presentation (T087-T100) → Integration (T101-T112) → Polish (T113-T122) → Security (T123-T130) → Performance (T131-T136)
 
 ### Key Blocking Dependencies
 - BDD feature files (T006-T018) MUST complete before step definitions (T019-T023)
@@ -231,6 +257,8 @@
 - Domain entities (T040-T055) before application services (T058-T070)
 - Application services before infrastructure repositories (T071-T086)
 - Infrastructure before presentation controllers (T087-T100)
+- Security implementation (T123-T130) MUST complete before production deployment
+- Performance validation (T131-T136) MUST complete before production deployment
 
 ## Parallel Execution Examples
 
@@ -267,16 +295,18 @@ Task: "Entity configurations for Student in src/NorthstarET.Lms.Infrastructure/D
 - ✅ BDD features and tests come before implementation
 - ✅ Clean Architecture dependencies respected
 - ✅ Aspire orchestration included (T101-T107)
-- ✅ Performance requirements validated (T113-T115)
+- ✅ Performance requirements validated (T113-T115, T131-T136)
+- ✅ Security requirements implemented (T123-T130)
 
 **Task Quality**:
 - ✅ Each task specifies exact file path
 - ✅ Parallel tasks are truly independent ([P] marking)
 - ✅ No task modifies same file as another [P] task
 - ✅ TDD ordering enforced (tests before implementation)
+- ✅ Critical security and performance gaps resolved
 
 ---
 
-**122 Tasks Generated** | **Constitutional Requirements Met** | **Ready for Execution**
+**136 Tasks Generated** | **Constitutional Requirements Met** | **Ready for Execution**
 
 *Generated from complete design artifacts: plan.md, research.md, data-model.md, contracts/, quickstart.md*
