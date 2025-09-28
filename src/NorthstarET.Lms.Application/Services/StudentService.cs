@@ -40,7 +40,13 @@ public class StudentService
             createStudentDto.FirstName,
             createStudentDto.LastName,
             createStudentDto.DateOfBirth,
-            createStudentDto.CurrentGradeLevel);
+            DateTime.UtcNow.Date); // Use current date as enrollment date
+            
+        // Update grade level after creation
+        if (createStudentDto.CurrentGradeLevel != student.CurrentGradeLevel)
+        {
+            student.UpdateGradeLevel(createStudentDto.CurrentGradeLevel, createdBy);
+        }
 
         if (!string.IsNullOrEmpty(createStudentDto.MiddleName))
         {
@@ -107,7 +113,7 @@ public class StudentService
             return Result.Failure<StudentDto>("Student not found");
         }
 
-        student.Withdraw(withdrawalDate, reason, withdrawnBy);
+        student.Withdraw(withdrawalDate, reason);
         
         await _studentRepository.UpdateAsync(student);
         await _unitOfWork.SaveChangesAsync();

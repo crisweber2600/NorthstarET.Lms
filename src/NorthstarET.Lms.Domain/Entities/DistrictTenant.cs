@@ -37,6 +37,9 @@ public class DistrictTenant : TenantScopedEntity
     public DistrictStatus Status { get; private set; }
     public DistrictQuotas Quotas { get; private set; } = null!;
     public string CreatedByUserId { get; private set; } = string.Empty;
+    
+    // Additional property expected by application services
+    public DateTime CreatedAt => CreatedDate;
 
     private static bool IsValidSlug(string slug)
     {

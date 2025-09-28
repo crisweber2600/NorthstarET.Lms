@@ -11,7 +11,7 @@ public class RoleAssignment : TenantScopedEntity
     public RoleAssignment(
         Guid userId, 
         Guid roleDefinitionId, 
-        Guid schoolId, 
+        Guid? schoolId, // Made nullable to support district-level roles
         string assignedByUserId,
         Guid? classId = null,
         Guid? schoolYearId = null,
@@ -22,7 +22,7 @@ public class RoleAssignment : TenantScopedEntity
 
         UserId = userId;
         RoleDefinitionId = roleDefinitionId;
-        SchoolId = schoolId;
+        SchoolId = schoolId ?? Guid.Empty; // Use Empty for district-level roles
         ClassId = classId;
         SchoolYearId = schoolYearId;
         AssignedByUserId = assignedByUserId;
@@ -43,6 +43,11 @@ public class RoleAssignment : TenantScopedEntity
     public DateTime? RevokedDate { get; private set; }
     public string? RevokedByUserId { get; private set; }
     public string? RevocationReason { get; private set; }
+    
+    // Additional properties expected by application services
+    public DateTime AssignedDate => EffectiveDate;
+    public string AssignedBy => AssignedByUserId;
+    public bool IsActive => Status == RoleAssignmentStatus.Active;
 
     public bool IsTemporary => ExpirationDate.HasValue;
     public bool IsExpired => ExpirationDate.HasValue && ExpirationDate.Value <= DateTime.UtcNow;

@@ -31,17 +31,22 @@ public class DistrictService
             return Result.Failure<DistrictDto>($"District with slug '{createDistrictDto.Slug}' already exists");
         }
 
-        // Create district entity
-        var district = new DistrictTenant(createDistrictDto.Slug, createDistrictDto.DisplayName);
-        
-        if (createDistrictDto.Quotas != null)
-        {
-            var quotas = new DistrictQuotas(
-                createDistrictDto.Quotas.MaxStudents,
-                createDistrictDto.Quotas.MaxStaff,
-                createDistrictDto.Quotas.MaxAdmins);
-            district.UpdateQuotas(quotas, createdBy);
-        }
+        // Create district entity with default quotas if not provided
+        var quotas = createDistrictDto.Quotas != null
+            ? new DistrictQuotas
+            {
+                MaxStudents = createDistrictDto.Quotas.MaxStudents,
+                MaxStaff = createDistrictDto.Quotas.MaxStaff,
+                MaxAdmins = createDistrictDto.Quotas.MaxAdmins
+            }
+            : new DistrictQuotas
+            {
+                MaxStudents = 10000, // Default values
+                MaxStaff = 1000,
+                MaxAdmins = 100
+            };
+            
+        var district = new DistrictTenant(createDistrictDto.Slug, createDistrictDto.DisplayName, quotas, createdBy);
 
         // Save to repository
         await _districtRepository.AddAsync(district);

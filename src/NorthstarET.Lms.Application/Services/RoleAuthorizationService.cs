@@ -87,30 +87,23 @@ public class RoleAuthorizationService
         }
 
         // Create role assignment
+        // Create role assignment - SchoolId can be null for district-level roles
         RoleAssignment roleAssignment;
         if (assignRoleDto.ClassId.HasValue)
         {
             roleAssignment = new RoleAssignment(
                 assignRoleDto.UserId,
                 assignRoleDto.RoleDefinitionId,
-                assignRoleDto.SchoolId,
+                assignRoleDto.SchoolId, // Can be null now
                 assignedBy,
                 assignRoleDto.ClassId);
-        }
-        else if (assignRoleDto.SchoolId.HasValue)
-        {
-            roleAssignment = new RoleAssignment(
-                assignRoleDto.UserId,
-                assignRoleDto.RoleDefinitionId,
-                assignRoleDto.SchoolId,
-                assignedBy);
         }
         else
         {
             roleAssignment = new RoleAssignment(
                 assignRoleDto.UserId,
                 assignRoleDto.RoleDefinitionId,
-                assignRoleDto.SchoolId,
+                assignRoleDto.SchoolId, // Can be null now
                 assignedBy);
         }
 
@@ -179,8 +172,8 @@ public class RoleAuthorizationService
 
         return roleDefinition.Scope switch
         {
-            RoleScope.District => roleAssignment.SchoolId == null && roleAssignment.ClassId == null,
-            RoleScope.School => roleAssignment.SchoolId != null && roleAssignment.ClassId == null,
+            RoleScope.District => roleAssignment.SchoolId == Guid.Empty && roleAssignment.ClassId == null,
+            RoleScope.School => roleAssignment.SchoolId != Guid.Empty && roleAssignment.ClassId == null,
             RoleScope.Class => roleAssignment.ClassId != null,
             _ => false
         };

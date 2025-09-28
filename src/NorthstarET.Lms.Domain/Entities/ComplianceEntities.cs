@@ -112,6 +112,11 @@ public class RoleDefinition : TenantScopedEntity
         return _permissions.Contains(permission, StringComparer.OrdinalIgnoreCase);
     }
 
+    public IReadOnlyCollection<string> GetPermissions()
+    {
+        return _permissions.AsReadOnly();
+    }
+
     public bool CanBeDeleted()
     {
         // System roles cannot be deleted

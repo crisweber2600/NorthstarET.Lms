@@ -45,6 +45,8 @@ public class Enrollment : TenantScopedEntity
     public DateTime EnrollmentDate { get; private set; }
     public DateTime? WithdrawalDate { get; private set; }
     public string? WithdrawalReason { get; private set; }
+    public DateTime? CompletionDate { get; private set; }
+    public string? CompletionReason { get; private set; }
 
     // Navigation properties
     public Student Student { get; private set; } = null!;
@@ -112,8 +114,10 @@ public class Enrollment : TenantScopedEntity
             throw new ArgumentException("Graduation date cannot be before enrollment date", nameof(graduationDate));
 
         Status = EnrollmentStatus.Graduated;
-        WithdrawalDate = graduationDate;
+        WithdrawalDate = graduationDate; // Keep for backward compatibility
         WithdrawalReason = "Graduated";
+        CompletionDate = graduationDate;
+        CompletionReason = "Graduated";
         MarkAsModified();
         
         AddDomainEvent(new StudentGraduatedEvent(StudentId, graduationDate, graduatedByUserId));

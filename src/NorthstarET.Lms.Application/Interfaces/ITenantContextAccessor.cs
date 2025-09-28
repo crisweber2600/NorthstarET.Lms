@@ -25,4 +25,9 @@ public interface ITenantContextAccessor
     /// Sets the current tenant context
     /// </summary>
     void SetTenant(ITenantContext? tenant);
+
+    /// <summary>
+    /// Gets the current tenant ID, or null if no tenant is set
+    /// </summary>
+    string? GetCurrentTenantId();
 }

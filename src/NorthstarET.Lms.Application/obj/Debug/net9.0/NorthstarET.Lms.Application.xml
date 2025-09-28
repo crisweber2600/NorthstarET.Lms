@@ -4,5 +4,30 @@
         <name>NorthstarET.Lms.Application</name>
     </assembly>
     <members>
+        <member name="T:NorthstarET.Lms.Application.Interfaces.ITenantContext">
+            <summary>
+            Represents tenant context for multi-tenant data isolation
+            </summary>
+        </member>
+        <member name="T:NorthstarET.Lms.Application.Interfaces.ITenantContextAccessor">
+            <summary>
+            Provides access to the current tenant context in multi-tenant scenarios
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Application.Interfaces.ITenantContextAccessor.GetTenant">
+            <summary>
+            Gets the current tenant context, or null if no tenant is set
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Application.Interfaces.ITenantContextAccessor.SetTenant(NorthstarET.Lms.Application.Interfaces.ITenantContext)">
+            <summary>
+            Sets the current tenant context
+            </summary>
+        </member>
+        <member name="M:NorthstarET.Lms.Application.Interfaces.ITenantContextAccessor.GetCurrentTenantId">
+            <summary>
+            Gets the current tenant ID, or null if no tenant is set
+            </summary>
+        </member>
     </members>
 </doc>

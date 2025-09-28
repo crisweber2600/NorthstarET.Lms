@@ -11,6 +11,46 @@ public class AuditRecord : TenantScopedEntity
     private AuditRecord() { }
 
     public AuditRecord(
+        string action,
+        string entityType,
+        Guid entityId,
+        string userId,
+        object? changeDetails = null,
+        string? ipAddress = null,
+        string? userAgent = null)
+    {
+        if (string.IsNullOrWhiteSpace(action))
+            throw new ArgumentException("Action is required", nameof(action));
+            
+        if (string.IsNullOrWhiteSpace(entityType))
+            throw new ArgumentException("Entity type is required", nameof(entityType));
+            
+        if (string.IsNullOrWhiteSpace(userId))
+            throw new ArgumentException("User ID is required", nameof(userId));
+            
+        if (entityId == Guid.Empty)
+            throw new ArgumentException("Entity ID cannot be empty", nameof(entityId));
+
+        // Convert action string to enum
+        if (Enum.TryParse<AuditEventType>(action.Replace("_", ""), true, out var eventType))
+        {
+            EventType = eventType;
+        }
+        else
+        {
+            EventType = AuditEventType.Update; // Default to Update for unknown actions
+        }
+        
+        EntityType = entityType;
+        EntityId = entityId;
+        UserId = userId;
+        Timestamp = DateTime.UtcNow;
+        ChangeDetails = changeDetails != null ? JsonSerializer.Serialize(changeDetails) : null;
+        IpAddress = ipAddress;
+        AdditionalMetadata = userAgent != null ? JsonSerializer.Serialize(new { UserAgent = userAgent }) : null;
+    }
+
+    public AuditRecord(
         AuditEventType eventType,
         string entityType,
         Guid entityId,
@@ -44,6 +84,12 @@ public class AuditRecord : TenantScopedEntity
     public string? PreviousRecordHash { get; private set; }
     public Guid? CorrelationId { get; private set; }
     public string? AdditionalMetadata { get; private set; }
+    
+    // Additional properties expected by application services
+    public string Action => EventType.ToString();
+    public string? Details => ChangeDetails;
+    public string? IpAddress { get; private set; }
+    public string Hash => RecordHash ?? string.Empty;
 
     public bool IsSecurityEvent => EventType == AuditEventType.SecurityViolation;
     public bool IsPartOfBulkOperation => CorrelationId.HasValue;
@@ -55,6 +101,14 @@ public class AuditRecord : TenantScopedEntity
 
         PreviousRecordHash = previousHash;
         RecordHash = CalculateHash(previousHash);
+    }
+
+    public void SetHash(string hash)
+    {
+        if (!string.IsNullOrEmpty(RecordHash))
+            throw new InvalidOperationException("Audit record hash already set and cannot be modified");
+            
+        RecordHash = hash;
     }
 
     public bool VerifyIntegrity(string? expectedPreviousHash)

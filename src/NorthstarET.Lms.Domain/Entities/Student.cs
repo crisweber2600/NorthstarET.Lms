@@ -39,19 +39,23 @@ public class Student : TenantScopedEntity
     public Guid UserId { get; private set; }
     public string StudentNumber { get; private set; } = string.Empty;
     public string FirstName { get; private set; } = string.Empty;
+    public string? MiddleName { get; private set; }
     public string LastName { get; private set; } = string.Empty;
     public DateTime DateOfBirth { get; private set; }
     public DateTime EnrollmentDate { get; private set; }
     public UserLifecycleStatus Status { get; private set; }
     public GradeLevel CurrentGradeLevel { get; private set; }
     public DateTime? WithdrawalDate { get; private set; }
+    public string? WithdrawalReason { get; private set; }
     
     // Program participation flags
     public bool IsSpecialEducation { get; private set; }
     public bool IsGifted { get; private set; }
     public bool IsEnglishLanguageLearner { get; private set; }
 
-    public string FullName => $"{FirstName} {LastName}";
+    public string FullName => string.IsNullOrEmpty(MiddleName) 
+        ? $"{FirstName} {LastName}" 
+        : $"{FirstName} {MiddleName} {LastName}";
     public IReadOnlyList<string> AccommodationTags => _accommodationTags.AsReadOnly();
 
     public void UpdateGradeLevel(GradeLevel newGradeLevel, string updatedByUserId)
@@ -90,8 +94,7 @@ public class Student : TenantScopedEntity
 
     public void UpdateMiddleName(string? middleName, string updatedByUserId)
     {
-        // For now, just mark as modified since MiddleName property doesn't exist yet
-        // This method will be properly implemented when MiddleName is added to the entity
+        MiddleName = middleName;
         MarkAsModified();
         
         AddDomainEvent(new StudentGradeUpdatedEvent(UserId, CurrentGradeLevel, CurrentGradeLevel, updatedByUserId));
@@ -101,6 +104,7 @@ public class Student : TenantScopedEntity
     {
         Status = UserLifecycleStatus.Withdrawn;
         WithdrawalDate = withdrawalDate;
+        WithdrawalReason = reason;
         MarkAsModified();
         
         AddDomainEvent(new StudentWithdrawnEvent(UserId, withdrawalDate, reason));

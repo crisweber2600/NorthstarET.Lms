@@ -54,4 +54,9 @@ public class TenantContextAccessor : ITenantContextAccessor
         // Always set in AsyncLocal for consistency
         _tenantContext.Value = tenant;
     }
+
+    public string? GetCurrentTenantId()
+    {
+        return GetTenant()?.TenantId;
+    }
 }
