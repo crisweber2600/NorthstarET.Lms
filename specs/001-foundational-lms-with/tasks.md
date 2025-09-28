@@ -96,21 +96,21 @@
 - [X] **T044** [P] SchoolYear entity in `src/NorthstarET.Lms.Domain/Entities/SchoolYear.cs` ✅ Already exists
 - [X] **T045** [P] School entity in `src/NorthstarET.Lms.Domain/Entities/School.cs` ✅ Created in Class.cs
 - [X] **T046** [P] Student entity in `src/NorthstarET.Lms.Domain/Entities/Student.cs` ✅ Already exists
-- [ ] **T047** [P] Staff entity in `src/NorthstarET.Lms.Domain/Entities/Staff.cs`
+- [X] **T047** [P] Staff entity in `src/NorthstarET.Lms.Domain/Entities/Staff.cs` ✅ Created
 - [X] **T048** [P] Class entity in `src/NorthstarET.Lms.Domain/Entities/Class.cs` ✅ Created
 - [X] **T048a** [P] AcademicCalendar entity in `src/NorthstarET.Lms.Domain/Entities/AcademicCalendar.cs` ✅ Created
 - [X] **T049** [P] Enrollment entity in `src/NorthstarET.Lms.Domain/Entities/Enrollment.cs` ✅ Created
-- [ ] **T050** [P] Guardian entity in `src/NorthstarET.Lms.Domain/Entities/Guardian.cs`
+- [X] **T050** [P] Guardian entity in `src/NorthstarET.Lms.Domain/Entities/Guardian.cs` ✅ Created
 
 ### Compliance & RBAC Entities
-- [ ] **T051** [P] RoleDefinition entity in `src/NorthstarET.Lms.Domain/Entities/RoleDefinition.cs`
+- [X] **T051** [P] RoleDefinition entity in `src/NorthstarET.Lms.Domain/Entities/RoleDefinition.cs` ✅ Created in ComplianceEntities.cs
 - [X] **T052** [P] RoleAssignment entity in `src/NorthstarET.Lms.Domain/Entities/RoleAssignment.cs` ✅ Already exists
 - [X] **T053** [P] AuditRecord entity in `src/NorthstarET.Lms.Domain/Entities/AuditRecord.cs` ✅ Already exists
-- [ ] **T054** [P] RetentionPolicy entity in `src/NorthstarET.Lms.Domain/Entities/RetentionPolicy.cs`
-- [ ] **T055** [P] LegalHold entity in `src/NorthstarET.Lms.Domain/Entities/LegalHold.cs`
+- [X] **T054** [P] RetentionPolicy entity in `src/NorthstarET.Lms.Domain/Entities/RetentionPolicy.cs` ✅ Created in ComplianceEntities.cs
+- [X] **T055** [P] LegalHold entity in `src/NorthstarET.Lms.Domain/Entities/LegalHold.cs` ✅ Created in ComplianceEntities.cs
 
 ### Domain Services & Events
-- [ ] **T056** [P] Domain services interfaces in `src/NorthstarET.Lms.Domain/Services/`
+- [X] **T056** [P] Domain services interfaces in `src/NorthstarET.Lms.Domain/Services/` ✅ Created DomainServices.cs
 - [X] **T057** [P] Domain events for audit trail in `src/NorthstarET.Lms.Domain/Events/` ✅ Enhanced with new events
 
 ## Phase 3.5: Application Layer Implementation (Depends Only on Domain)

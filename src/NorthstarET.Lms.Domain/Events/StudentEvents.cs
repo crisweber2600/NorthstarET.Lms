@@ -136,3 +136,131 @@ public record StudentGradeLevelUpdatedEvent : IDomainEvent
         UpdatedByUserId = updatedByUserId;
     }
 }
+
+// Staff Events
+public record StaffHiredEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid UserId { get; }
+    public string EmployeeNumber { get; }
+    public string FullName { get; }
+    public DateTime HireDate { get; }
+
+    public StaffHiredEvent(Guid userId, string employeeNumber, string fullName, DateTime hireDate)
+    {
+        UserId = userId;
+        EmployeeNumber = employeeNumber;
+        FullName = fullName;
+        HireDate = hireDate;
+    }
+}
+
+public record StaffEmailUpdatedEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid UserId { get; }
+    public string OldEmail { get; }
+    public string NewEmail { get; }
+    public string UpdatedByUserId { get; }
+
+    public StaffEmailUpdatedEvent(Guid userId, string oldEmail, string newEmail, string updatedByUserId)
+    {
+        UserId = userId;
+        OldEmail = oldEmail;
+        NewEmail = newEmail;
+        UpdatedByUserId = updatedByUserId;
+    }
+}
+
+public record StaffSpecializationAddedEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid UserId { get; }
+    public string Specialization { get; }
+    public string AddedByUserId { get; }
+
+    public StaffSpecializationAddedEvent(Guid userId, string specialization, string addedByUserId)
+    {
+        UserId = userId;
+        Specialization = specialization;
+        AddedByUserId = addedByUserId;
+    }
+}
+
+public record StaffSpecializationRemovedEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid UserId { get; }
+    public string Specialization { get; }
+    public string RemovedByUserId { get; }
+
+    public StaffSpecializationRemovedEvent(Guid userId, string specialization, string removedByUserId)
+    {
+        UserId = userId;
+        Specialization = specialization;
+        RemovedByUserId = removedByUserId;
+    }
+}
+
+public record StaffSuspendedEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid UserId { get; }
+    public string Reason { get; }
+    public DateTime SuspensionDate { get; }
+    public string SuspendedByUserId { get; }
+
+    public StaffSuspendedEvent(Guid userId, string reason, DateTime suspensionDate, string suspendedByUserId)
+    {
+        UserId = userId;
+        Reason = reason;
+        SuspensionDate = suspensionDate;
+        SuspendedByUserId = suspendedByUserId;
+    }
+}
+
+public record StaffReinstatedEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid UserId { get; }
+    public DateTime ReinstateDate { get; }
+    public string ReinstatedByUserId { get; }
+
+    public StaffReinstatedEvent(Guid userId, DateTime reinstateDate, string reinstatedByUserId)
+    {
+        UserId = userId;
+        ReinstateDate = reinstateDate;
+        ReinstatedByUserId = reinstatedByUserId;
+    }
+}
+
+public record StaffTerminatedEvent : IDomainEvent
+{
+    public Guid EventId { get; } = Guid.NewGuid();
+    public DateTime OccurredAt { get; } = DateTime.UtcNow;
+    
+    public Guid UserId { get; }
+    public DateTime TerminationDate { get; }
+    public string Reason { get; }
+    public string TerminatedByUserId { get; }
+
+    public StaffTerminatedEvent(Guid userId, DateTime terminationDate, string reason, string terminatedByUserId)
+    {
+        UserId = userId;
+        TerminationDate = terminationDate;
+        Reason = reason;
+        TerminatedByUserId = terminatedByUserId;
+    }
+}
