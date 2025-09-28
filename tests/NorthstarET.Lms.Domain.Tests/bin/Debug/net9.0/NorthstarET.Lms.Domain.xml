@@ -4,6 +4,11 @@
         <name>NorthstarET.Lms.Domain</name>
     </assembly>
     <members>
+        <member name="T:NorthstarET.Lms.Domain.Entities.PlatformAuditRecord">
+            <summary>
+            Platform-level audit record for cross-tenant operations (not tenant-scoped)
+            </summary>
+        </member>
         <member name="M:NorthstarET.Lms.Domain.Services.ITenantIsolationService.ValidateTenantAccessAsync(System.String,System.String)">
             <summary>
             Validates that the current user context is authorized to access the specified tenant

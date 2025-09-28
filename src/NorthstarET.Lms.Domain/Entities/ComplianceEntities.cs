@@ -295,3 +295,59 @@ public class LegalHold : TenantScopedEntity
         return endDate - HoldDate;
     }
 }
+
+/// <summary>
+/// Platform-level audit record for cross-tenant operations (not tenant-scoped)
+/// </summary>
+public class PlatformAuditRecord
+{
+    public Guid Id { get; private set; }
+    public string Action { get; private set; }
+    public string EntityType { get; private set; }
+    public Guid EntityId { get; private set; }
+    public string UserId { get; private set; }
+    public string Details { get; private set; }
+    public DateTime Timestamp { get; private set; }
+    public string IpAddress { get; private set; }
+    public string? UserAgent { get; private set; }
+
+    private PlatformAuditRecord() // EF Constructor
+    {
+        Action = string.Empty;
+        EntityType = string.Empty;
+        UserId = string.Empty;
+        Details = string.Empty;
+        IpAddress = string.Empty;
+    }
+
+    public PlatformAuditRecord(
+        string action,
+        string entityType,
+        Guid entityId,
+        string userId,
+        string details,
+        string ipAddress,
+        string? userAgent = null)
+    {
+        if (string.IsNullOrWhiteSpace(action))
+            throw new ArgumentException("Action cannot be empty", nameof(action));
+        if (string.IsNullOrWhiteSpace(entityType))
+            throw new ArgumentException("Entity type cannot be empty", nameof(entityType));
+        if (string.IsNullOrWhiteSpace(userId))
+            throw new ArgumentException("User ID cannot be empty", nameof(userId));
+        if (string.IsNullOrWhiteSpace(details))
+            throw new ArgumentException("Details cannot be empty", nameof(details));
+        if (string.IsNullOrWhiteSpace(ipAddress))
+            throw new ArgumentException("IP address cannot be empty", nameof(ipAddress));
+
+        Id = Guid.NewGuid();
+        Action = action;
+        EntityType = entityType;
+        EntityId = entityId;
+        UserId = userId;
+        Details = details;
+        Timestamp = DateTime.UtcNow;
+        IpAddress = ipAddress;
+        UserAgent = userAgent;
+    }
+}

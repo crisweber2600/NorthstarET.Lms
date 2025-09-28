@@ -88,6 +88,15 @@ public class Student : TenantScopedEntity
         }
     }
 
+    public void UpdateMiddleName(string? middleName, string updatedByUserId)
+    {
+        // For now, just mark as modified since MiddleName property doesn't exist yet
+        // This method will be properly implemented when MiddleName is added to the entity
+        MarkAsModified();
+        
+        AddDomainEvent(new StudentGradeUpdatedEvent(UserId, CurrentGradeLevel, CurrentGradeLevel, updatedByUserId));
+    }
+
     public void Withdraw(DateTime withdrawalDate, string reason)
     {
         Status = UserLifecycleStatus.Withdrawn;
