@@ -29,6 +29,8 @@
   <ItemGroup>
     <Reqnroll Include="..\Features\Districts\*.feature" />
     <Reqnroll Include="..\Features\Students\*.feature" />
+    <Reqnroll Include="..\Features\RBAC\*.feature" />
+    <Reqnroll Include="..\Features\Compliance\*.feature" />
   </ItemGroup>
 
   <ItemGroup>

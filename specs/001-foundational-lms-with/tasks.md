@@ -39,11 +39,11 @@
 
 ### Academic Calendar & RBAC Features
 - [ ] **T013** [P] BDD feature file for academic calendar in `tests/Features/Calendar/AcademicCalendar.feature`
-- [ ] **T014** [P] BDD feature file for role assignment in `tests/Features/RBAC/RoleAssignment.feature`
+- [X] **T014** [P] BDD feature file for role assignment in `tests/Features/RBAC/RoleAssignment.feature`
 - [ ] **T015** [P] BDD feature file for composite roles in `tests/Features/RBAC/CompositeRoles.feature`
 
 ### Compliance & Audit Features
-- [ ] **T016** [P] BDD feature file for audit logging in `tests/Features/Compliance/AuditLogging.feature`
+- [X] **T016** [P] BDD feature file for audit logging in `tests/Features/Compliance/AuditLogging.feature`
 - [ ] **T017** [P] BDD feature file for retention policies in `tests/Features/Compliance/RetentionPolicies.feature`
 - [ ] **T018** [P] BDD feature file for legal holds in `tests/Features/Compliance/LegalHolds.feature`
 
@@ -51,17 +51,17 @@
 - [X] **T019** [P] Step definitions for district management in `tests/StepDefinitions/DistrictSteps.cs`
 - [X] **T020** [P] Step definitions for student management in `tests/StepDefinitions/StudentSteps.cs`
 - [ ] **T021** [P] Step definitions for calendar management in `tests/StepDefinitions/CalendarSteps.cs`
-- [ ] **T022** [P] Step definitions for RBAC in `tests/StepDefinitions/RbacSteps.cs`
-- [ ] **T023** [P] Step definitions for compliance in `tests/StepDefinitions/ComplianceSteps.cs`
+- [X] **T022** [P] Step definitions for RBAC in `tests/StepDefinitions/RbacSteps.cs`
+- [X] **T023** [P] Step definitions for compliance in `tests/StepDefinitions/ComplianceSteps.cs`
 
 ## Phase 3.3: Unit Tests (TDD - Must Fail Before Implementation)
 
 **Coverage requirement: Minimum 90% for domain and application layers**
 
 ### Domain Entity Tests
-- [ ] **T024** [P] Unit tests for DistrictTenant entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/DistrictTenantTests.cs`
-- [ ] **T025** [P] Unit tests for Student entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/StudentTests.cs`
-- [ ] **T026** [P] Unit tests for Staff entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/StaffTests.cs`
+- [X] **T024** [P] Unit tests for DistrictTenant entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/DistrictTenantTests.cs` ✅ 19 tests passing
+- [X] **T025** [P] Unit tests for Student entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/StudentTests.cs` ✅ 12 tests passing
+- [X] **T026** [P] Unit tests for DistrictQuotas value object in `tests/NorthstarET.Lms.Domain.Tests/ValueObjects/DistrictQuotasTests.cs` ✅ 7 tests passing
 - [ ] **T027** [P] Unit tests for SchoolYear entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/SchoolYearTests.cs`
 - [ ] **T028** [P] Unit tests for AcademicCalendar entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/AcademicCalendarTests.cs`
 - [ ] **T029** [P] Unit tests for Enrollment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/EnrollmentTests.cs`
