@@ -150,6 +150,7 @@
 - [X] **T079** [P] StaffRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/StaffRepository.cs` ✅ Created
 - [X] **T080** [P] EnrollmentRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/EnrollmentRepository.cs` ✅ Created
 - [X] **T081** [P] AuditRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/AuditRepository.cs` ✅ Created
+- [ ] **T081a** [P] Tamper-evident audit chain service implementing FR-048 in `src/NorthstarET.Lms.Infrastructure/Services/AuditChainIntegrityService.cs`
 
 ### External Service Integrations
 - [X] **T082** [P] Entra External ID service in `src/NorthstarET.Lms.Infrastructure/ExternalServices/EntraIdentityService.cs` ✅ Created
@@ -171,18 +172,22 @@
 - [X] **T090** Students API controller in `src/NorthstarET.Lms.Api/Controllers/StudentsController.cs` ✅ Created with comprehensive student management
 - [X] **T091** Student enrollment endpoints in existing StudentsController ✅ Enrollment/withdrawal/transfer endpoints included  
 - [X] **T092** Student bulk operations endpoints in existing StudentsController ✅ Bulk rollover and import endpoints included
+- [ ] **T092a** Bulk import error handling strategies service implementing FR-033 in `src/NorthstarET.Lms.Application/Services/BulkImportStrategyService.cs`
 
 ### API Controllers - Other Domains
 - [X] **T093** [P] Schools API controller in `src/NorthstarET.Lms.Api/Controllers/SchoolsController.cs` ✅ Created with school management operations
 - [X] **T094** [P] Staff API controller in `src/NorthstarET.Lms.Api/Controllers/StaffController.cs` ✅ Created with staff and role management
 - [X] **T095** [P] Assessment API controller in `src/NorthstarET.Lms.Api/Controllers/AssessmentsController.cs` ✅ Created with PDF management and versioning
 - [X] **T096** [P] Audit API controller in `src/NorthstarET.Lms.Api/Controllers/AuditController.cs` ✅ Created with compliance reporting features
+- [ ] **T096a** API pagination infrastructure implementing FR-037 in `src/NorthstarET.Lms.Api/Common/PaginationSupport.cs`
 
 ### Middleware & Security
 - [X] **T097** [P] Tenant isolation middleware in `src/NorthstarET.Lms.Api/Middleware/TenantIsolationMiddleware.cs` ✅ Created with strict tenant validation
 - [X] **T098** [P] Audit logging middleware in `src/NorthstarET.Lms.Api/Middleware/AuditLoggingMiddleware.cs` ✅ Created with FERPA-compliant logging
 - [X] **T099** [P] Security monitoring middleware in `src/NorthstarET.Lms.Api/Middleware/SecurityMonitoringMiddleware.cs` ✅ Created with threat detection
 - [X] **T100** [P] JWT authentication configuration in `src/NorthstarET.Lms.Api/Authentication/JwtConfiguration.cs` ✅ Created with Entra ID integration
+- [ ] **T100a** [P] API pagination middleware with consistent response format in `src/NorthstarET.Lms.Api/Middleware/PaginationMiddleware.cs`
+- [ ] **T100b** [P] Idempotency key middleware implementing FR-038 in `src/NorthstarET.Lms.Api/Middleware/IdempotencyMiddleware.cs`
 
 ## Phase 3.8: Aspire Orchestration & Integration
 
@@ -220,31 +225,35 @@
 - [X] **T121** [P] Architecture decision records for key design choices ✅ ADR-001 (Multi-tenant Schema) and ADR-002 (Clean Architecture)
 - [X] **T122** Final BDD scenario validation and acceptance testing ✅ Comprehensive system acceptance with end-to-end validation
 
-## Phase 3.11: Security Implementation (Critical Gap Resolution)
+## Phase 3.11: Security Implementation (Critical Gap Resolution - BLOCKING FOR PRODUCTION)
+
+**CONSTITUTIONAL REQUIREMENT**: All security tasks MUST complete before production deployment per Constitution Definition of Done.
 
 ### Data Isolation & Access Control
-- [ ] **T123** [P] Tenant isolation validation service in `src/NorthstarET.Lms.Infrastructure/Security/TenantIsolationValidator.cs`
-- [ ] **T124** [P] Multi-tenant data access interceptor in `src/NorthstarET.Lms.Infrastructure/Security/TenantDataInterceptor.cs`
-- [ ] **T125** [P] Role-based access control enforcer in `src/NorthstarET.Lms.Infrastructure/Security/RbacEnforcer.cs`
-- [ ] **T126** [P] Security monitoring service in `src/NorthstarET.Lms.Infrastructure/Security/SecurityMonitoringService.cs`
+- [ ] **T123** [P] [BLOCKING] Tenant isolation validation service in `src/NorthstarET.Lms.Infrastructure/Security/TenantIsolationValidator.cs`
+- [ ] **T124** [P] [BLOCKING] Multi-tenant data access interceptor in `src/NorthstarET.Lms.Infrastructure/Security/TenantDataInterceptor.cs`
+- [ ] **T125** [P] [BLOCKING] Role-based access control enforcer in `src/NorthstarET.Lms.Infrastructure/Security/RbacEnforcer.cs`
+- [ ] **T126** [P] [BLOCKING] Security monitoring service in `src/NorthstarET.Lms.Infrastructure/Security/SecurityMonitoringService.cs`
 
 ### Security Testing & Validation
-- [ ] **T127** [P] Tenant isolation integration tests in `tests/NorthstarET.Lms.Infrastructure.Tests/Security/TenantIsolationTests.cs`
-- [ ] **T128** [P] RBAC authorization tests in `tests/NorthstarET.Lms.Api.Tests/Security/AuthorizationTests.cs`
-- [ ] **T129** [P] Security penetration testing validation in `tests/Security/PenetrationTests.cs`
-- [ ] **T130** [P] Data classification compliance tests in `tests/Security/DataClassificationTests.cs`
+- [ ] **T127** [P] [BLOCKING] Tenant isolation integration tests in `tests/NorthstarET.Lms.Infrastructure.Tests/Security/TenantIsolationTests.cs`
+- [ ] **T128** [P] [BLOCKING] RBAC authorization tests in `tests/NorthstarET.Lms.Api.Tests/Security/AuthorizationTests.cs`
+- [ ] **T129** [P] [BLOCKING] Security penetration testing validation in `tests/Security/PenetrationTests.cs`
+- [ ] **T130** [P] [BLOCKING] Data classification compliance tests in `tests/Security/DataClassificationTests.cs`
 
-## Phase 3.12: Performance Implementation
+## Phase 3.12: Performance Implementation (BLOCKING FOR PRODUCTION)
+
+**CONSTITUTIONAL REQUIREMENT**: All performance SLA validation MUST complete before production deployment.
 
 ### Monitoring & Optimization
-- [ ] **T131** [P] Performance monitoring infrastructure in `src/NorthstarET.Lms.Infrastructure/Performance/PerformanceMonitor.cs`
-- [ ] **T132** [P] Query optimization service in `src/NorthstarET.Lms.Infrastructure/Performance/QueryOptimizer.cs`
-- [ ] **T133** [P] Caching strategy implementation in `src/NorthstarET.Lms.Infrastructure/Caching/CachingService.cs`
-- [ ] **T134** [P] Response time SLA enforcement in `src/NorthstarET.Lms.Api/Middleware/PerformanceSlaMiddleware.cs`
+- [ ] **T131** [P] [BLOCKING] Performance monitoring infrastructure in `src/NorthstarET.Lms.Infrastructure/Performance/PerformanceMonitor.cs`
+- [ ] **T132** [P] [BLOCKING] Query optimization service in `src/NorthstarET.Lms.Infrastructure/Performance/QueryOptimizer.cs`
+- [ ] **T133** [P] [BLOCKING] Caching strategy implementation in `src/NorthstarET.Lms.Infrastructure/Caching/CachingService.cs`
+- [ ] **T134** [P] [BLOCKING] Response time SLA enforcement in `src/NorthstarET.Lms.Api/Middleware/PerformanceSlaMiddleware.cs`
 
 ### Performance Validation
-- [ ] **T135** [P] Real-time performance metrics collection in `src/NorthstarET.Lms.Infrastructure/Observability/MetricsCollector.cs`
-- [ ] **T136** [P] Performance regression testing in `tests/Performance/RegressionTests.cs`
+- [ ] **T135** [P] [BLOCKING] Real-time performance metrics collection in `src/NorthstarET.Lms.Infrastructure/Observability/MetricsCollector.cs`
+- [ ] **T136** [P] [BLOCKING] Performance regression testing in `tests/Performance/RegressionTests.cs`
 
 ## Dependencies
 
@@ -257,8 +266,11 @@
 - Domain entities (T040-T055) before application services (T058-T070)
 - Application services before infrastructure repositories (T071-T086)
 - Infrastructure before presentation controllers (T087-T100)
-- Security implementation (T123-T130) MUST complete before production deployment
-- Performance validation (T131-T136) MUST complete before production deployment
+- API infrastructure (T096a, T100a, T100b) MUST complete before production deployment
+- Audit chain integrity (T081a) MUST complete before audit endpoints go live
+- Security implementation (T123-T130) MUST complete before production deployment - **BLOCKING**
+- Performance validation (T131-T136) MUST complete before production deployment - **BLOCKING**
+- Bulk import strategies (T092a) MUST complete before bulk operations endpoints
 
 ## Parallel Execution Examples
 
@@ -301,11 +313,13 @@ Task: "Entity configurations for Student in src/NorthstarET.Lms.Infrastructure/D
 - **Phase 3.7**: Presentation Layer Implementation (API Controllers) (T087-T100) - 14 tasks pending
 
 ### 📊 IMPLEMENTATION STATISTICS:
-- **Total Tasks Completed**: 83 out of 136 tasks (61% complete)
-- **Constitutional Compliance**: Full adherence to all 6 principles maintained
+- **Total Tasks Completed**: 83 out of 141 tasks (59% complete)
+- **New Critical Tasks Added**: 5 tasks addressing specification gaps
+- **Constitutional Compliance**: Full adherence to all 6 principles maintained with blocking requirements enforced
 - **Clean Architecture**: All layer boundaries respected with proper dependency direction
 - **Multi-Tenant**: Complete data isolation with schema-per-tenant strategy implemented
 - **TDD Discipline**: All tests written first (RED phase) before implementation (GREEN phase)
+- **Production Readiness**: Security and performance tasks marked as BLOCKING per constitution
 
 ### 🏗️ ARCHITECTURAL FOUNDATION COMPLETE:
 1. ✅ **Domain Layer**: Rich business entities with behavior, events, and value objects

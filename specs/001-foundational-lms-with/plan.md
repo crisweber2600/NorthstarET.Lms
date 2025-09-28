@@ -40,6 +40,37 @@ Foundational Learning Management System with strict tenant isolation by District
 **Constraints**: FERPA compliance, strict tenant isolation, tamper-evident audit logs, deny-by-default RBAC  
 **Scale/Scope**: Multi-district (hundreds), multi-school (thousands), students/staff (tens of thousands per district)
 
+## Bulk Operations Architecture
+
+### Error Handling Strategies (FR-033)
+The system implements four user-selectable strategies for bulk import operations:
+
+1. **All-or-Nothing Strategy**
+   - Implementation: Single database transaction wrapping entire import
+   - Rollback: Complete rollback on any validation failure
+   - Use Case: Critical data imports requiring perfect consistency
+
+2. **Best-Effort Strategy**
+   - Implementation: Individual record transactions with error collection
+   - Rollback: Per-record rollback, continue with valid records
+   - Use Case: Daily data synchronization with acceptable partial imports
+
+3. **Threshold-Based Strategy**
+   - Implementation: Running error rate calculation with configurable limits
+   - Rollback: Complete rollback if error rate exceeds threshold (default 5%)
+   - Use Case: Large imports where some errors are expected but not excessive
+
+4. **Preview Mode**
+   - Implementation: Validation-only pass with detailed change report
+   - Rollback: No data changes, comprehensive preview generation
+   - Use Case: Pre-import validation and change impact assessment
+
+### Technical Implementation
+- **Service**: `BulkOperationService` in Application layer
+- **Strategy Pattern**: Pluggable error handlers per import type
+- **Progress Tracking**: Real-time progress reports with correlation IDs
+- **Audit Trail**: All strategies generate audit records for compliance
+
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
