@@ -34,3 +34,31 @@ public enum GradeLevel
     Grade11,
     Grade12
 }
+
+public enum SchoolYearStatus
+{
+    Planning,
+    Active,
+    Archived
+}
+
+public enum RoleAssignmentStatus
+{
+    Active,
+    Revoked,
+    Expired,
+    Suspended
+}
+
+public enum AuditEventType
+{
+    Create,
+    Update,
+    Delete,
+    BulkOperation,
+    SecurityViolation,
+    RoleAssigned,
+    RoleRevoked,
+    LoginAttempt,
+    DataPurged
+}

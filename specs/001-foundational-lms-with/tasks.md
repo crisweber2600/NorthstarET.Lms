@@ -64,13 +64,13 @@
 
 ### Domain Entity Tests
 - [X] **T024** [P] Unit tests for DistrictTenant entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/DistrictTenantTests.cs` ✅ 19 tests passing
-- [X] **T025** [P] Unit tests for Student entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/StudentTests.cs` ✅ 12 tests passing
+- [X] **T025** [P] Unit tests for Student entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/StudentTests.cs` ✅ 12 tests passing  
 - [X] **T026** [P] Unit tests for DistrictQuotas value object in `tests/NorthstarET.Lms.Domain.Tests/ValueObjects/DistrictQuotasTests.cs` ✅ 7 tests passing
-- [ ] **T027** [P] Unit tests for SchoolYear entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/SchoolYearTests.cs`
+- [X] **T027** [P] Unit tests for SchoolYear entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/SchoolYearTests.cs` ✅ 18 tests passing
+- [X] **T030** [P] Unit tests for RoleAssignment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/RoleAssignmentTests.cs` ✅ 20 tests passing
+- [X] **T031** [P] Unit tests for AuditRecord entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/AuditRecordTests.cs` ✅ 15 tests passing
 - [ ] **T028** [P] Unit tests for AcademicCalendar entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/AcademicCalendarTests.cs`
 - [ ] **T029** [P] Unit tests for Enrollment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/EnrollmentTests.cs`
-- [ ] **T030** [P] Unit tests for RoleAssignment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/RoleAssignmentTests.cs`
-- [ ] **T031** [P] Unit tests for AuditRecord entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/AuditRecordTests.cs`
 
 ### Application Service Tests
 - [ ] **T032** [P] Unit tests for DistrictService in `tests/NorthstarET.Lms.Application.Tests/Services/DistrictServiceTests.cs`
