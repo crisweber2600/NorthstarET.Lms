@@ -350,6 +350,10 @@
               "target": "Package",
               "version": "[3.1.0, )"
             },
+            "Testcontainers": {
+              "target": "Package",
+              "version": "[3.10.0, )"
+            },
             "coverlet.collector": {
               "target": "Package",
               "version": "[6.0.2, )"

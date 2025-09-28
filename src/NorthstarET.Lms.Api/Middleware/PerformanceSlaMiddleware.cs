@@ -8,7 +8,7 @@ namespace NorthstarET.Lms.Api.Middleware;
 
 /// <summary>
 /// Middleware that enforces performance SLA requirements and tracks response times
-/// Implements PR-001 (CRUD <200ms p95), PR-002 (bulk <120s), PR-003 (audit <2s)
+/// Implements PR-001 (CRUD less than 200ms p95), PR-002 (bulk less than 120s), PR-003 (audit less than 2s)
 /// </summary>
 public class PerformanceSlaMiddleware
 {

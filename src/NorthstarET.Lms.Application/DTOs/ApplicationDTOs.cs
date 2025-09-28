@@ -472,3 +472,48 @@ public class PlatformAuditQueryDto
     public int Page { get; set; } = 1;
     public int Size { get; set; } = 20;
 }
+
+// Additional Missing DTOs for API Controllers
+public class StudentSummaryDto
+{
+    public Guid UserId { get; set; }
+    public string StudentNumber { get; set; } = string.Empty;
+    public string FullName { get; set; } = string.Empty;
+    public string CurrentGradeLevel { get; set; } = string.Empty;
+    public DateTime EnrollmentDate { get; set; }
+    public UserLifecycleStatus Status { get; set; }
+}
+
+public class UpdateStudentDto
+{
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public DateTime? DateOfBirth { get; set; }
+}
+
+public class BulkRolloverPreviewDto
+{
+    public int TotalStudents { get; set; }
+    public int EligibleForPromotion { get; set; }
+    public int RequiringIntervention { get; set; }
+    public Dictionary<string, int> PromotionsByGrade { get; set; } = new();
+}
+
+public class GuardianRelationshipDto
+{
+    public Guid RelationshipId { get; set; }
+    public Guid StudentId { get; set; }
+    public Guid GuardianId { get; set; }
+    public string GuardianName { get; set; } = string.Empty;
+    public RelationshipType RelationshipType { get; set; }
+    public DateTime CreatedDate { get; set; }
+}
+
+public class StaffSummaryDto
+{
+    public Guid UserId { get; set; }
+    public string StaffNumber { get; set; } = string.Empty;
+    public string FullName { get; set; } = string.Empty;
+    public string Department { get; set; } = string.Empty;
+    public UserLifecycleStatus Status { get; set; }
+}

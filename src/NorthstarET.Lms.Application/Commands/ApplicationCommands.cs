@@ -160,3 +160,56 @@ public class CreateAuditRecordCommand
         AuditRecord = auditRecord;
     }
 }
+
+// Additional Missing Commands for API Layer
+public class PreviewBulkRolloverCommand
+{
+    public BulkRolloverDto Rollover { get; }
+    public string InitiatedBy { get; }
+
+    public PreviewBulkRolloverCommand(BulkRolloverDto rollover, string initiatedBy)
+    {
+        Rollover = rollover;
+        InitiatedBy = initiatedBy;
+    }
+}
+
+public class ExecuteBulkRolloverCommand
+{
+    public BulkRolloverDto Rollover { get; }
+    public string InitiatedBy { get; }
+
+    public ExecuteBulkRolloverCommand(BulkRolloverDto rollover, string initiatedBy)
+    {
+        Rollover = rollover;
+        InitiatedBy = initiatedBy;
+    }
+}
+
+public class UpdateStudentCommand
+{
+    public Guid StudentId { get; }
+    public UpdateStudentDto Student { get; }
+    public string UpdatedBy { get; }
+
+    public UpdateStudentCommand(Guid studentId, UpdateStudentDto student, string updatedBy)
+    {
+        StudentId = studentId;
+        Student = student;
+        UpdatedBy = updatedBy;
+    }
+}
+
+public class ListStudentsQuery
+{
+    public int Page { get; } = 1;
+    public int Size { get; } = 20;
+    public string? SearchTerm { get; }
+
+    public ListStudentsQuery(int page, int size, string? searchTerm = null)
+    {
+        Page = Math.Max(1, page);
+        Size = Math.Min(100, Math.Max(1, size));
+        SearchTerm = searchTerm;
+    }
+}
