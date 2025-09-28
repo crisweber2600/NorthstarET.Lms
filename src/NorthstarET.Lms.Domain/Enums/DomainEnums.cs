@@ -62,3 +62,39 @@ public enum AuditEventType
     LoginAttempt,
     DataPurged
 }
+
+public enum EnrollmentStatus
+{
+    Active,
+    Transferred,
+    Graduated,
+    Withdrawn,
+    Inactive
+}
+
+public enum SchoolType
+{
+    Elementary,
+    Middle,
+    High,
+    K12,
+    Alternative,
+    Charter
+}
+
+public enum RelationshipType
+{
+    Parent,
+    Guardian,
+    StepParent,
+    Grandparent,
+    EmergencyContact
+}
+
+public enum RoleScope
+{
+    Platform,
+    District,
+    School,
+    Class
+}

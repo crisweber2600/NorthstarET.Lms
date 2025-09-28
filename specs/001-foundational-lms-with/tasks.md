@@ -34,18 +34,18 @@
 ### Student Management Features  
 - [X] **T009** [P] BDD feature file for student creation in `tests/Features/Students/CreateStudent.feature`
 - [X] **T010** [P] BDD feature file for student enrollment in `tests/Features/Students/StudentEnrollment.feature`
-- [ ] **T011** [P] BDD feature file for grade progression in `tests/Features/Students/GradeProgression.feature`
-- [ ] **T012** [P] BDD feature file for bulk rollover in `tests/Features/Students/BulkRollover.feature`
+- [X] **T011** [P] BDD feature file for grade progression in `tests/Features/Students/GradeProgression.feature`
+- [X] **T012** [P] BDD feature file for bulk rollover in `tests/Features/Students/BulkRollover.feature`
 
 ### Academic Calendar & RBAC Features
-- [ ] **T013** [P] BDD feature file for academic calendar in `tests/Features/Calendar/AcademicCalendar.feature`
+- [X] **T013** [P] BDD feature file for academic calendar in `tests/Features/Calendar/AcademicCalendar.feature`
 - [X] **T014** [P] BDD feature file for role assignment in `tests/Features/RBAC/RoleAssignment.feature`
-- [ ] **T015** [P] BDD feature file for composite roles in `tests/Features/RBAC/CompositeRoles.feature`
+- [X] **T015** [P] BDD feature file for composite roles in `tests/Features/RBAC/CompositeRoles.feature`
 
 ### Compliance & Audit Features
 - [X] **T016** [P] BDD feature file for audit logging in `tests/Features/Compliance/AuditLogging.feature`
-- [ ] **T017** [P] BDD feature file for retention policies in `tests/Features/Compliance/RetentionPolicies.feature`
-- [ ] **T018** [P] BDD feature file for legal holds in `tests/Features/Compliance/LegalHolds.feature`
+- [X] **T017** [P] BDD feature file for retention policies in `tests/Features/Compliance/RetentionPolicies.feature`
+- [X] **T018** [P] BDD feature file for legal holds in `tests/Features/Compliance/LegalHolds.feature`
 
 ### Assessment Management Features
 - [X] **T018a** [P] BDD feature file for assessment management in `tests/Features/Assessments/AssessmentManagement.feature`
@@ -53,7 +53,7 @@
 ### Step Definitions (Must Fail Initially)
 - [X] **T019** [P] Step definitions for district management in `tests/StepDefinitions/DistrictSteps.cs`
 - [X] **T020** [P] Step definitions for student management in `tests/StepDefinitions/StudentSteps.cs`
-- [ ] **T021** [P] Step definitions for calendar management in `tests/StepDefinitions/CalendarSteps.cs`
+- [X] **T021** [P] Step definitions for calendar management in `tests/StepDefinitions/CalendarSteps.cs`
 - [X] **T022** [P] Step definitions for RBAC in `tests/StepDefinitions/RbacSteps.cs`
 - [X] **T023** [P] Step definitions for compliance in `tests/StepDefinitions/ComplianceSteps.cs`
 - [X] **T023a** [P] Step definitions for assessments in `tests/StepDefinitions/AssessmentSteps.cs`
@@ -69,8 +69,8 @@
 - [X] **T027** [P] Unit tests for SchoolYear entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/SchoolYearTests.cs` ✅ 18 tests passing
 - [X] **T030** [P] Unit tests for RoleAssignment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/RoleAssignmentTests.cs` ✅ 20 tests passing
 - [X] **T031** [P] Unit tests for AuditRecord entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/AuditRecordTests.cs` ✅ 15 tests passing
-- [ ] **T028** [P] Unit tests for AcademicCalendar entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/AcademicCalendarTests.cs`
-- [ ] **T029** [P] Unit tests for Enrollment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/EnrollmentTests.cs`
+- [X] **T028** [P] Unit tests for AcademicCalendar entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/AcademicCalendarTests.cs` ✅ 18 tests passing
+- [X] **T029** [P] Unit tests for Enrollment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/EnrollmentTests.cs` ✅ 21 tests passing
 
 ### Application Service Tests
 - [ ] **T032** [P] Unit tests for DistrictService in `tests/NorthstarET.Lms.Application.Tests/Services/DistrictServiceTests.cs`
@@ -87,30 +87,31 @@
 ## Phase 3.4: Domain Layer Implementation (Clean Architecture - ZERO External Dependencies)
 
 ### Base Classes & Value Objects
-- [ ] **T040** [P] TenantScopedEntity base class in `src/NorthstarET.Lms.Domain/Common/TenantScopedEntity.cs`
-- [ ] **T041** [P] Domain events infrastructure in `src/NorthstarET.Lms.Domain/Common/IDomainEvent.cs`
-- [ ] **T042** [P] Value objects (UserId, ExternalId, GradeLevel) in `src/NorthstarET.Lms.Domain/ValueObjects/`
+- [X] **T040** [P] TenantScopedEntity base class in `src/NorthstarET.Lms.Domain/Common/TenantScopedEntity.cs` ✅ Already exists
+- [X] **T041** [P] Domain events infrastructure in `src/NorthstarET.Lms.Domain/Common/IDomainEvent.cs` ✅ Already exists 
+- [X] **T042** [P] Value objects (UserId, ExternalId, GradeLevel) in `src/NorthstarET.Lms.Domain/ValueObjects/` ✅ Enums implemented
 
 ### Core Domain Entities
-- [ ] **T043** [P] DistrictTenant entity in `src/NorthstarET.Lms.Domain/Entities/DistrictTenant.cs`
-- [ ] **T044** [P] SchoolYear entity in `src/NorthstarET.Lms.Domain/Entities/SchoolYear.cs`
-- [ ] **T045** [P] School entity in `src/NorthstarET.Lms.Domain/Entities/School.cs`
-- [ ] **T046** [P] Student entity in `src/NorthstarET.Lms.Domain/Entities/Student.cs`
+- [X] **T043** [P] DistrictTenant entity in `src/NorthstarET.Lms.Domain/Entities/DistrictTenant.cs` ✅ Already exists
+- [X] **T044** [P] SchoolYear entity in `src/NorthstarET.Lms.Domain/Entities/SchoolYear.cs` ✅ Already exists
+- [X] **T045** [P] School entity in `src/NorthstarET.Lms.Domain/Entities/School.cs` ✅ Created in Class.cs
+- [X] **T046** [P] Student entity in `src/NorthstarET.Lms.Domain/Entities/Student.cs` ✅ Already exists
 - [ ] **T047** [P] Staff entity in `src/NorthstarET.Lms.Domain/Entities/Staff.cs`
-- [ ] **T048** [P] Class entity in `src/NorthstarET.Lms.Domain/Entities/Class.cs`
-- [ ] **T049** [P] Enrollment entity in `src/NorthstarET.Lms.Domain/Entities/Enrollment.cs`
+- [X] **T048** [P] Class entity in `src/NorthstarET.Lms.Domain/Entities/Class.cs` ✅ Created
+- [X] **T048a** [P] AcademicCalendar entity in `src/NorthstarET.Lms.Domain/Entities/AcademicCalendar.cs` ✅ Created
+- [X] **T049** [P] Enrollment entity in `src/NorthstarET.Lms.Domain/Entities/Enrollment.cs` ✅ Created
 - [ ] **T050** [P] Guardian entity in `src/NorthstarET.Lms.Domain/Entities/Guardian.cs`
 
 ### Compliance & RBAC Entities
 - [ ] **T051** [P] RoleDefinition entity in `src/NorthstarET.Lms.Domain/Entities/RoleDefinition.cs`
-- [ ] **T052** [P] RoleAssignment entity in `src/NorthstarET.Lms.Domain/Entities/RoleAssignment.cs`
-- [ ] **T053** [P] AuditRecord entity in `src/NorthstarET.Lms.Domain/Entities/AuditRecord.cs`
+- [X] **T052** [P] RoleAssignment entity in `src/NorthstarET.Lms.Domain/Entities/RoleAssignment.cs` ✅ Already exists
+- [X] **T053** [P] AuditRecord entity in `src/NorthstarET.Lms.Domain/Entities/AuditRecord.cs` ✅ Already exists
 - [ ] **T054** [P] RetentionPolicy entity in `src/NorthstarET.Lms.Domain/Entities/RetentionPolicy.cs`
 - [ ] **T055** [P] LegalHold entity in `src/NorthstarET.Lms.Domain/Entities/LegalHold.cs`
 
 ### Domain Services & Events
 - [ ] **T056** [P] Domain services interfaces in `src/NorthstarET.Lms.Domain/Services/`
-- [ ] **T057** [P] Domain events for audit trail in `src/NorthstarET.Lms.Domain/Events/`
+- [X] **T057** [P] Domain events for audit trail in `src/NorthstarET.Lms.Domain/Events/` ✅ Enhanced with new events
 
 ## Phase 3.5: Application Layer Implementation (Depends Only on Domain)
 
