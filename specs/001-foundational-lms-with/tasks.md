@@ -73,7 +73,7 @@
 - [X] **T029** [P] Unit tests for Enrollment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/EnrollmentTests.cs` ✅ 21 tests passing
 
 ### Application Service Tests
-- [ ] **T032** [P] Unit tests for DistrictService in `tests/NorthstarET.Lms.Application.Tests/Services/DistrictServiceTests.cs`
+- [X] **T032** [P] Unit tests for DistrictService in `tests/NorthstarET.Lms.Application.Tests/Services/DistrictServiceTests.cs` ✅ Created - FAILING (RED phase)
 - [ ] **T033** [P] Unit tests for StudentService in `tests/NorthstarET.Lms.Application.Tests/Services/StudentServiceTests.cs`
 - [ ] **T034** [P] Unit tests for EnrollmentService in `tests/NorthstarET.Lms.Application.Tests/Services/EnrollmentServiceTests.cs`
 - [ ] **T035** [P] Unit tests for RoleAuthorizationService in `tests/NorthstarET.Lms.Application.Tests/Services/RoleAuthorizationServiceTests.cs`
