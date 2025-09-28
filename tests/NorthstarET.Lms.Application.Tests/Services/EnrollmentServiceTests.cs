@@ -89,6 +89,11 @@ public class EnrollmentServiceTests
             EnrollmentDate = DateTime.UtcNow.Date
         };
 
+        var student = new Student("STU-001", "John", "Smith", new DateTime(2008, 1, 1), DateTime.UtcNow.Date);
+        student.UpdateGradeLevel(GradeLevel.Grade9, "system");
+        var classEntity = new Class("Math 101", "Mathematics 101", "Mathematics", GradeLevel.Grade9, Guid.NewGuid(), Guid.NewGuid());
+        var schoolYear = new SchoolYear("2024-2025", new DateTime(2024, 8, 15), new DateTime(2025, 6, 15));
+
         var existingEnrollment = new Enrollment(
             enrollmentDto.StudentId,
             enrollmentDto.ClassId,
@@ -96,6 +101,12 @@ public class EnrollmentServiceTests
             enrollmentDto.GradeLevel,
             enrollmentDto.EnrollmentDate);
 
+        _mockStudentRepository.Setup(x => x.GetByIdAsync(enrollmentDto.StudentId))
+            .ReturnsAsync(student);
+        _mockClassRepository.Setup(x => x.GetByIdAsync(enrollmentDto.ClassId))
+            .ReturnsAsync(classEntity);
+        _mockSchoolYearRepository.Setup(x => x.GetByIdAsync(enrollmentDto.SchoolYearId))
+            .ReturnsAsync(schoolYear);
         _mockEnrollmentRepository.Setup(x => x.GetActiveEnrollmentAsync(
             enrollmentDto.StudentId, enrollmentDto.ClassId, enrollmentDto.SchoolYearId))
             .ReturnsAsync(existingEnrollment);

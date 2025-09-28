@@ -3,6 +3,7 @@ using NorthstarET.Lms.Application.Common;
 using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Domain.Enums;
 using NorthstarET.Lms.Infrastructure.Data;
 
 namespace NorthstarET.Lms.Infrastructure.Repositories;
@@ -213,5 +214,37 @@ public class StaffRepository : IStaffRepository
     public void Remove(Staff staff)
     {
         _context.Staff.Remove(staff);
+    }
+
+    // Interface methods without CancellationToken
+    public async Task<Staff?> GetByIdAsync(Guid id)
+    {
+        return await GetByIdAsync(id, CancellationToken.None);
+    }
+
+    public async Task<IEnumerable<Staff>> GetBySchoolIdAsync(Guid schoolId)
+    {
+        return await GetStaffInSchoolAsync(schoolId, CancellationToken.None);
+    }
+
+    public async Task<IEnumerable<Staff>> GetAllAsync()
+    {
+        return await _context.Staff
+            .Include(s => s.RoleAssignments.Where(ra => ra.IsActive))
+                .ThenInclude(ra => ra.RoleDefinition)
+            .OrderBy(s => s.LastName)
+            .ThenBy(s => s.FirstName)
+            .ToListAsync();
+    }
+
+    public async Task AddAsync(Staff staff)
+    {
+        await AddAsync(staff, CancellationToken.None);
+    }
+
+    public async Task UpdateAsync(Staff staff)
+    {
+        Update(staff);
+        await Task.CompletedTask;
     }
 }

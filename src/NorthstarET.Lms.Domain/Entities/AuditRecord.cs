@@ -32,6 +32,7 @@ public class AuditRecord : TenantScopedEntity
             throw new ArgumentException("Entity ID cannot be empty", nameof(entityId));
 
         // Convert action string to enum with better mapping
+        Action = action; // Store original action string
         EventType = action.ToUpperInvariant() switch
         {
             var a when a.StartsWith("CREATE") => AuditEventType.Create,
@@ -72,6 +73,7 @@ public class AuditRecord : TenantScopedEntity
             throw new ArgumentException("Entity ID cannot be empty", nameof(entityId));
 
         EventType = eventType;
+        Action = eventType.ToString(); // Set action from enum
         EntityType = entityType;
         EntityId = entityId;
         UserId = userId;
@@ -91,7 +93,7 @@ public class AuditRecord : TenantScopedEntity
     public string? AdditionalMetadata { get; private set; }
     
     // Additional properties expected by application services
-    public string Action => EventType.ToString();
+    public string Action { get; private set; } = string.Empty;
     public string? Details => ChangeDetails;
     public string? IpAddress { get; private set; }
     public string Hash => RecordHash ?? string.Empty;

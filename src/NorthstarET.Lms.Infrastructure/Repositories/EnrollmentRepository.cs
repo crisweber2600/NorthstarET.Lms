@@ -3,6 +3,7 @@ using NorthstarET.Lms.Application.Common;
 using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Domain.Enums;
 using NorthstarET.Lms.Infrastructure.Data;
 
 namespace NorthstarET.Lms.Infrastructure.Repositories;
@@ -26,6 +27,12 @@ public class EnrollmentRepository : IEnrollmentRepository
             .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
+    // Interface method without cancellation token
+    public async Task<Enrollment?> GetByIdAsync(Guid id)
+    {
+        return await GetByIdAsync(id, CancellationToken.None);
+    }
+
     public async Task<Enrollment?> GetActiveEnrollmentAsync(Guid studentId, Guid classId, Guid schoolYearId, CancellationToken cancellationToken = default)
     {
         return await _context.Enrollments
@@ -38,6 +45,12 @@ public class EnrollmentRepository : IEnrollmentRepository
                 e.SchoolYearId == schoolYearId &&
                 e.Status == EnrollmentStatus.Active, 
                 cancellationToken);
+    }
+
+    // Interface method without cancellation token
+    public async Task<Enrollment?> GetActiveEnrollmentAsync(Guid studentId, Guid classId, Guid schoolYearId)
+    {
+        return await GetActiveEnrollmentAsync(studentId, classId, schoolYearId, CancellationToken.None);
     }
 
     public async Task<bool> EnrollmentExistsAsync(Guid studentId, Guid classId, Guid schoolYearId, CancellationToken cancellationToken = default)
@@ -176,6 +189,12 @@ public class EnrollmentRepository : IEnrollmentRepository
         await _context.Enrollments.AddAsync(enrollment, cancellationToken);
     }
 
+    // Interface method without CancellationToken
+    public async Task AddAsync(Enrollment enrollment)
+    {
+        await AddAsync(enrollment, CancellationToken.None);
+    }
+
     public async Task AddRangeAsync(IEnumerable<Enrollment> enrollments, CancellationToken cancellationToken = default)
     {
         await _context.Enrollments.AddRangeAsync(enrollments, cancellationToken);
@@ -194,5 +213,37 @@ public class EnrollmentRepository : IEnrollmentRepository
     public void Remove(Enrollment enrollment)
     {
         _context.Enrollments.Remove(enrollment);
+    }
+
+    // Interface methods
+    public async Task<IEnumerable<Enrollment>> GetByClassAndSchoolYearAsync(Guid classId, Guid schoolYearId)
+    {
+        return await GetClassRosterAsync(classId, schoolYearId, null, CancellationToken.None);
+    }
+
+    public async Task<IEnumerable<Enrollment>> GetBySchoolYearAsync(Guid schoolYearId)
+    {
+        return await _context.Enrollments
+            .Where(e => e.SchoolYearId == schoolYearId)
+            .Include(e => e.Student)
+            .Include(e => e.Class)
+            .Include(e => e.SchoolYear)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Enrollment>> GetByStudentIdAsync(Guid studentId)
+    {
+        return await _context.Enrollments
+            .Where(e => e.StudentId == studentId)
+            .Include(e => e.Class)
+            .Include(e => e.SchoolYear)
+            .OrderBy(e => e.EnrollmentDate)
+            .ToListAsync();
+    }
+
+    public async Task UpdateAsync(Enrollment enrollment)
+    {
+        Update(enrollment);
+        await Task.CompletedTask;
     }
 }

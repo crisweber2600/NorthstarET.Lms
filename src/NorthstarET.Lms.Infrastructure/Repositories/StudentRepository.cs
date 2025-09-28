@@ -4,7 +4,6 @@ using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
 using NorthstarET.Lms.Domain.Enums;
-using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Infrastructure.Data;
 
 namespace NorthstarET.Lms.Infrastructure.Repositories;
@@ -148,5 +147,40 @@ public class StudentRepository : IStudentRepository
     public void Remove(Student student)
     {
         _context.Students.Remove(student);
+    }
+
+    // Interface methods without CancellationToken
+    public async Task<Student?> GetByIdAsync(Guid id)
+    {
+        return await GetByIdAsync(id, CancellationToken.None);
+    }
+
+    public async Task<Student?> GetByStudentNumberAsync(string studentNumber)
+    {
+        return await GetByStudentNumberAsync(studentNumber, CancellationToken.None);
+    }
+
+    public async Task<IEnumerable<Student>> GetAllAsync()
+    {
+        return await _context.Students
+            .OrderBy(s => s.LastName)
+            .ThenBy(s => s.FirstName)
+            .ToListAsync();
+    }
+
+    public async Task<PagedResult<Student>> SearchAsync(StudentSearchDto searchDto)
+    {
+        return await SearchStudentsAsync(searchDto, CancellationToken.None);
+    }
+
+    public async Task AddAsync(Student student)
+    {
+        await AddAsync(student, CancellationToken.None);
+    }
+
+    public async Task UpdateAsync(Student student)
+    {
+        Update(student);
+        await Task.CompletedTask;
     }
 }
