@@ -1,0 +1,9 @@
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Api/obj/Debug/net9.0/NorthstarET.Lms.Api.csproj.AssemblyReference.cache
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Api/obj/Debug/net9.0/rpswa.dswa.cache.json
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Api/obj/Debug/net9.0/NorthstarET.Lms.Api.GeneratedMSBuildEditorConfig.editorconfig
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Api/obj/Debug/net9.0/NorthstarET.Lms.Api.AssemblyInfoInputs.cache
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Api/obj/Debug/net9.0/NorthstarET.Lms.Api.AssemblyInfo.cs
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Api/obj/Debug/net9.0/NorthstarET.Lms.Api.csproj.CoreCompileInputs.cache
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Api/obj/Debug/net9.0/NorthstarET.Lms.Api.MvcApplicationPartsAssemblyInfo.cs
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Api/obj/Debug/net9.0/NorthstarET.Lms.Api.MvcApplicationPartsAssemblyInfo.cache
+/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Api/obj/Debug/net9.0/NorthstarET.Lms.Api.sourcelink.json

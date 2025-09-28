@@ -1,0 +1,9 @@
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Infrastructure.Tests/bin/Debug/net9.0/.msCoverageSourceRootsMapping_NorthstarET.Lms.Infrastructure.Tests
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Infrastructure.Tests/bin/Debug/net9.0/CoverletSourceRootsMapping_NorthstarET.Lms.Infrastructure.Tests
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Infrastructure.Tests/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.Tests.csproj.AssemblyReference.cache
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Infrastructure.Tests/obj/Debug/net9.0/MvcTestingAppManifest.json
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Infrastructure.Tests/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.Tests.GeneratedMSBuildEditorConfig.editorconfig
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Infrastructure.Tests/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.Tests.AssemblyInfoInputs.cache
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Infrastructure.Tests/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.Tests.AssemblyInfo.cs
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Infrastructure.Tests/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.Tests.csproj.CoreCompileInputs.cache
+/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Infrastructure.Tests/obj/Debug/net9.0/NorthstarET.Lms.Infrastructure.Tests.sourcelink.json
