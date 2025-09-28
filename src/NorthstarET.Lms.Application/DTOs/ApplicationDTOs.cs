@@ -4,6 +4,249 @@ using NorthstarET.Lms.Domain.ValueObjects;
 
 namespace NorthstarET.Lms.Application.DTOs;
 
+// Request/Response DTOs for Use Cases
+
+// District Request DTOs
+public class CreateDistrictRequest
+{
+    public string Slug { get; set; } = string.Empty;
+    public string DisplayName { get; set; } = string.Empty;
+    public DistrictQuotasDto Quotas { get; set; } = new();
+}
+
+// Student Request DTOs  
+public class CreateStudentRequest
+{
+    public string StudentNumber { get; set; } = string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public DateTime DateOfBirth { get; set; }
+    public DateTime EnrollmentDate { get; set; }
+    public StudentProgramsDto Programs { get; set; } = new();
+    public GuardianDto[] Guardians { get; set; } = Array.Empty<GuardianDto>();
+}
+
+public class UpdateStudentProgramsRequest
+{
+    public bool IsSpecialEducation { get; set; }
+    public bool IsGifted { get; set; }
+    public bool IsEnglishLanguageLearner { get; set; }
+    public string[] AccommodationTags { get; set; } = Array.Empty<string>();
+}
+
+public class StudentDetailDto : StudentDto
+{
+    public List<EnrollmentDto> CurrentEnrollments { get; set; } = new();
+    public List<GuardianRelationshipDto> GuardianRelationships { get; set; } = new();
+}
+
+public class StudentProgramsDto
+{
+    public bool IsSpecialEducation { get; set; }
+    public bool IsGifted { get; set; }
+    public bool IsEnglishLanguageLearner { get; set; }
+    public string[] AccommodationTags { get; set; } = Array.Empty<string>();
+}
+
+public class GuardianDto
+{
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Phone { get; set; } = string.Empty;
+    public string RelationshipType { get; set; } = string.Empty;
+    public bool IsPrimary { get; set; }
+    public bool CanPickup { get; set; }
+}
+
+public class GuardianRelationshipDto
+{
+    public Guid GuardianId { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string RelationshipType { get; set; } = string.Empty;
+    public bool IsPrimary { get; set; }
+    public bool CanPickup { get; set; }
+    public DateTime EffectiveDate { get; set; }
+}
+
+// Enrollment Request DTOs
+public class EnrollStudentRequest
+{
+    public Guid StudentId { get; set; }
+    public Guid ClassId { get; set; }
+    public string GradeLevel { get; set; } = string.Empty;
+    public DateTime EnrollmentDate { get; set; }
+}
+
+public class WithdrawStudentRequest
+{
+    public Guid EnrollmentId { get; set; }
+    public DateTime WithdrawalDate { get; set; }
+    public string WithdrawalReason { get; set; } = string.Empty;
+}
+
+public class TransferStudentRequest
+{
+    public Guid StudentId { get; set; }
+    public Guid FromSchoolId { get; set; }
+    public Guid ToSchoolId { get; set; }
+    public DateTime EffectiveDate { get; set; }
+    public string Reason { get; set; } = string.Empty;
+    public bool MaintainGradeLevel { get; set; }
+    public List<ClassTransferDto> TransferClasses { get; set; } = new();
+}
+
+public class ClassTransferDto
+{
+    public Guid FromClassId { get; set; }
+    public Guid ToClassId { get; set; }
+}
+
+public class TransferResultDto
+{
+    public Guid StudentId { get; set; }
+    public DateTime TransferDate { get; set; }
+    public string Reason { get; set; } = string.Empty;
+    public List<EnrollmentTransferDto> EnrollmentTransfers { get; set; } = new();
+}
+
+public class EnrollmentTransferDto
+{
+    public Guid FromClassId { get; set; }
+    public Guid ToClassId { get; set; }
+    public Guid? NewEnrollmentId { get; set; }
+    public bool Success { get; set; }
+    public string? Error { get; set; }
+}
+
+// RBAC Request DTOs
+public class AssignRoleRequest
+{
+    public Guid UserId { get; set; }
+    public Guid RoleDefinitionId { get; set; }
+    public Guid? SchoolId { get; set; }
+    public Guid? ClassId { get; set; }
+    public Guid? SchoolYearId { get; set; }
+    public DateTime EffectiveDate { get; set; }
+    public DateTime? ExpirationDate { get; set; }
+    public Guid? DelegatedByUserId { get; set; }
+    public DateTime? DelegationExpiry { get; set; }
+}
+
+public class UserRoleDto
+{
+    public Guid AssignmentId { get; set; }
+    public Guid RoleDefinitionId { get; set; }
+    public string RoleName { get; set; } = string.Empty;
+    public string RoleDescription { get; set; } = string.Empty;
+    public string Scope { get; set; } = string.Empty;
+    public string[] Permissions { get; set; } = Array.Empty<string>();
+    public Guid? SchoolId { get; set; }
+    public Guid? ClassId { get; set; }
+    public Guid? SchoolYearId { get; set; }
+    public DateTime EffectiveDate { get; set; }
+    public DateTime? ExpirationDate { get; set; }
+    public bool IsDelegated { get; set; }
+    public Guid? DelegatedByUserId { get; set; }
+    public DateTime? DelegationExpiry { get; set; }
+}
+
+// Audit Request DTOs
+public class AuditQueryRequest
+{
+    public string? EntityType { get; set; }
+    public Guid? EntityId { get; set; }
+    public string? UserId { get; set; }
+    public string? EventType { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+    public int Page { get; set; } = 1;
+    public int PageSize { get; set; } = 50;
+}
+
+public class AuditIntegrityCheckRequest
+{
+    public long? StartSequence { get; set; }
+    public long? EndSequence { get; set; }
+}
+
+public class AuditIntegrityResultDto
+{
+    public DateTime CheckStartTime { get; set; }
+    public int RecordsChecked { get; set; }
+    public long StartSequence { get; set; }
+    public long EndSequence { get; set; }
+    public int IssuesFound { get; set; }
+    public List<AuditIntegrityIssue> Issues { get; set; } = new();
+    public string OverallIntegrity { get; set; } = string.Empty;
+}
+
+public class AuditIntegrityIssue
+{
+    public Guid RecordId { get; set; }
+    public long SequenceNumber { get; set; }
+    public string IssueType { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+}
+
+public class CreateLegalHoldRequest
+{
+    public string EntityType { get; set; } = string.Empty;
+    public Guid EntityId { get; set; }
+    public string Reason { get; set; } = string.Empty;
+}
+
+public class LegalHoldDto
+{
+    public Guid Id { get; set; }
+    public string EntityType { get; set; } = string.Empty;
+    public Guid EntityId { get; set; }
+    public string Reason { get; set; } = string.Empty;
+    public DateTime HoldDate { get; set; }
+    public DateTime? ReleaseDate { get; set; }
+    public bool IsActive { get; set; }
+    public string AuthorizingUser { get; set; } = string.Empty;
+}
+
+public class ComplianceReportRequest
+{
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+}
+
+public class ComplianceReportDto
+{
+    public DateTime GeneratedDate { get; set; }
+    public DateTime ReportPeriodStart { get; set; }
+    public DateTime ReportPeriodEnd { get; set; }
+    public AuditComplianceSummaryDto AuditSummary { get; set; } = new();
+    public LegalHoldSummaryDto LegalHoldSummary { get; set; } = new();
+    public RetentionSummaryDto RetentionSummary { get; set; } = new();
+}
+
+public class AuditComplianceSummaryDto
+{
+    public int TotalAuditRecords { get; set; }
+    public Dictionary<string, int> RecordsByEventType { get; set; } = new();
+    public int DataAccessEvents { get; set; }
+    public int DataModificationEvents { get; set; }
+    public int IntegrityIssues { get; set; }
+}
+
+public class LegalHoldSummaryDto
+{
+    public int ActiveLegalHolds { get; set; }
+    public Dictionary<string, int> HoldsByEntityType { get; set; } = new();
+    public DateTime? OldestActiveHold { get; set; }
+}
+
+public class RetentionSummaryDto
+{
+    public int ActivePolicies { get; set; }
+    public Dictionary<string, int> PoliciesByEntityType { get; set; } = new();
+}
+
 // District DTOs
 public class CreateDistrictDto
 {
@@ -17,9 +260,10 @@ public class DistrictDto
     public Guid Id { get; set; }
     public string Slug { get; set; } = null!;
     public string DisplayName { get; set; } = null!;
+    public string Status { get; set; } = null!; // Will be converted from enum
     public DistrictQuotasDto Quotas { get; set; } = null!;
-    public DistrictStatus Status { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public string CreatedByUserId { get; set; } = null!;
 }
 
 public class DistrictQuotasDto
@@ -49,10 +293,12 @@ public class StudentDto
     public string? MiddleName { get; set; }
     public string FullName => $"{FirstName} {(string.IsNullOrEmpty(MiddleName) ? "" : MiddleName + " ")}{LastName}";
     public DateTime DateOfBirth { get; set; }
-    public GradeLevel CurrentGradeLevel { get; set; }
-    public UserLifecycleStatus Status { get; set; }
+    public DateTime EnrollmentDate { get; set; }
+    public string CurrentGradeLevel { get; set; } = null!; // Will be converted from enum
+    public string Status { get; set; } = null!; // Will be converted from enum
     public DateTime? WithdrawalDate { get; set; }
     public string? WithdrawalReason { get; set; }
+    public StudentProgramsDto Programs { get; set; } = new();
 }
 
 public class StudentSearchDto
@@ -76,13 +322,13 @@ public class CreateEnrollmentDto
 
 public class EnrollmentDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } // Change from EnrollmentId to Id
     public Guid StudentId { get; set; }
     public Guid ClassId { get; set; }
-    public Guid SchoolYearId { get; set; }
-    public GradeLevel GradeLevel { get; set; }
+    public Guid? SchoolYearId { get; set; }
+    public string GradeLevel { get; set; } = null!; // Will be converted from enum
     public DateTime EnrollmentDate { get; set; }
-    public EnrollmentStatus Status { get; set; }
+    public string Status { get; set; } = null!; // Will be converted from enum
     public DateTime? CompletionDate { get; set; }
     public string? CompletionReason { get; set; }
 }
@@ -134,10 +380,12 @@ public class RoleAssignmentDto
     public string RoleName { get; set; } = null!;
     public Guid? SchoolId { get; set; }
     public Guid? ClassId { get; set; }
-    public DateTime AssignedDate { get; set; }
+    public Guid? SchoolYearId { get; set; }
+    public DateTime EffectiveDate { get; set; }
     public DateTime? ExpirationDate { get; set; }
-    public string AssignedBy { get; set; } = null!;
     public bool IsActive { get; set; }
+    public Guid? DelegatedByUserId { get; set; }
+    public DateTime? DelegationExpiry { get; set; }
 }
 
 // Audit DTOs

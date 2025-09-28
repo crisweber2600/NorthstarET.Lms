@@ -1,7 +1,8 @@
 using NorthstarET.Lms.Application.Common;
-using NorthstarET.Lms.Application.DTOs.Enrollment;
+using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Domain.Enums;
 using NorthstarET.Lms.Domain.ValueObjects;
 
 namespace NorthstarET.Lms.Application.UseCases.Enrollment;
@@ -56,7 +57,7 @@ public class EnrollStudentUseCase
             request.StudentId,
             request.ClassId,
             classEntity.SchoolYearId,
-            request.GradeLevel,
+            Enum.Parse<GradeLevel>(request.GradeLevel),
             request.EnrollmentDate);
 
         await _enrollmentRepository.AddAsync(enrollment);
@@ -72,7 +73,7 @@ public class EnrollStudentUseCase
 
         var dto = new EnrollmentDto
         {
-            EnrollmentId = enrollment.Id,
+            Id = enrollment.Id,
             StudentId = enrollment.StudentId,
             ClassId = enrollment.ClassId,
             SchoolYearId = enrollment.SchoolYearId,
@@ -113,7 +114,7 @@ public class WithdrawStudentUseCase
             return Result.Failure("Can only withdraw active enrollments");
         }
 
-        enrollment.Withdraw(request.WithdrawalDate, request.WithdrawalReason);
+        enrollment.Withdraw(request.WithdrawalDate, request.WithdrawalReason, withdrawnByUserId);
         await _enrollmentRepository.SaveChangesAsync();
 
         await _auditService.LogAsync(
@@ -193,7 +194,7 @@ public class TransferStudentUseCase
             }
 
             // Withdraw from current class
-            currentEnrollment.Withdraw(request.EffectiveDate, $"Transfer to {targetClass.Name}");
+            currentEnrollment.Withdraw(request.EffectiveDate, $"Transfer to {targetClass.Name}", transferredByUserId);
 
             // Enroll in new class
             var gradeLevel = request.MaintainGradeLevel ? currentEnrollment.GradeLevel : targetClass.GradeLevel;

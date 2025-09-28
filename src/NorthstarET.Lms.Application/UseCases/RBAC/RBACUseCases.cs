@@ -1,7 +1,8 @@
 using NorthstarET.Lms.Application.Common;
-using NorthstarET.Lms.Application.DTOs.RBAC;
+using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Domain.Enums;
 using NorthstarET.Lms.Domain.ValueObjects;
 
 namespace NorthstarET.Lms.Application.UseCases.RBAC;
@@ -54,16 +55,16 @@ public class AssignRoleUseCase
             request.UserId,
             request.RoleDefinitionId,
             request.SchoolId,
+            assignedByUserId, // This will be the assignedBy parameter
             request.ClassId,
             request.SchoolYearId,
-            request.EffectiveDate,
             request.ExpirationDate);
 
-        // Handle delegation if specified
-        if (request.DelegatedByUserId != null)
-        {
-            assignment.SetDelegation(request.DelegatedByUserId.Value, request.DelegationExpiry);
-        }
+        // TODO: Handle delegation if specified
+        // if (request.DelegatedByUserId != null)
+        // {
+        //     assignment.SetDelegation(request.DelegatedByUserId.Value, request.DelegationExpiry);
+        // }
 
         await _roleAssignmentRepository.AddAsync(assignment);
         await _roleAssignmentRepository.SaveChangesAsync();
@@ -88,8 +89,8 @@ public class AssignRoleUseCase
             EffectiveDate = assignment.EffectiveDate,
             ExpirationDate = assignment.ExpirationDate,
             IsActive = assignment.IsActive,
-            DelegatedByUserId = assignment.DelegatedByUserId,
-            DelegationExpiry = assignment.DelegationExpiry
+            DelegatedByUserId = null, // Not implemented yet
+            DelegationExpiry = null // Not implemented yet
         };
 
         return Result<RoleAssignmentDto>.Success(dto);

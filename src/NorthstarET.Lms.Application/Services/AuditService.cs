@@ -28,6 +28,22 @@ public class AuditService : IAuditService
         _unitOfWork = unitOfWork;
     }
 
+    public async Task LogAsync(string eventType, string entityType, Guid entityId, string userId, object changeDetails)
+    {
+        var auditDto = new CreateAuditRecordDto
+        {
+            Action = eventType,
+            EntityType = entityType,
+            EntityId = entityId,
+            UserId = userId,
+            Details = System.Text.Json.JsonSerializer.Serialize(changeDetails),
+            IpAddress = "127.0.0.1", // Default for internal operations
+            UserAgent = "System"
+        };
+
+        await LogAuditEventAsync(auditDto);
+    }
+
     public async Task<AuditRecord> LogAuditEventAsync(CreateAuditRecordDto auditDto)
     {
         var tenantId = _tenantContext.GetCurrentTenantId();
@@ -75,7 +91,15 @@ public class AuditService : IAuditService
 
     public async Task<PagedResult<AuditRecord>> QueryAuditRecordsAsync(AuditQueryDto queryDto)
     {
-        return await _auditRepository.QueryAsync(queryDto);
+        return await _auditRepository.QueryAsync(
+            queryDto.EntityType, 
+            null, // entityId
+            queryDto.UserId, 
+            null, // eventType - AuditQueryDto doesn't have this field
+            queryDto.StartDate, 
+            queryDto.EndDate, 
+            queryDto.Page, 
+            queryDto.PageSize);
     }
 
     public async Task<AuditExportResultDto> ExportAuditRecordsAsync(AuditExportDto exportDto)

@@ -1,5 +1,5 @@
 using NorthstarET.Lms.Application.Common;
-using NorthstarET.Lms.Application.DTOs.Audit;
+using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
 
