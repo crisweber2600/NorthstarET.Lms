@@ -22,4 +22,8 @@
     <ProjectReference Include="..\NorthstarET.Lms.ServiceDefaults\NorthstarET.Lms.ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" />
+  </ItemGroup>
+
 </Project>

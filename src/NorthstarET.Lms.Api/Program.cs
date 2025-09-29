@@ -4,7 +4,7 @@ using NorthstarET.Lms.Api.Authentication;
 using NorthstarET.Lms.Api.Middleware;
 using NorthstarET.Lms.Application.Services;
 using NorthstarET.Lms.Infrastructure.Data;
-using NorthstarET.Lms.Infrastructure.DependencyInjection;
+using NorthstarET.Lms.Infrastructure;
 using Serilog;
 using System.Reflection;
 using HealthChecks.UI.Client;

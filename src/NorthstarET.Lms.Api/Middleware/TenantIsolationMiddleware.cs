@@ -1,5 +1,4 @@
 using NorthstarET.Lms.Application.Interfaces;
-using NorthstarET.Lms.Domain.Common;
 using System.Security.Claims;
 
 namespace NorthstarET.Lms.Api.Middleware;

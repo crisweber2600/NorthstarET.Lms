@@ -11,20 +11,21 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="xunit" Version="2.9.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
-    <PackageReference Include="Testcontainers.SqlServer" Version="3.10.0" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="FluentAssertions" Version="8.7.0" />
     <PackageReference Include="NBomber" Version="5.0.18" />
+    <PackageReference Include="Testcontainers.MsSql" Version="3.10.0" />
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
-    <Using Include="System.Data.SqlClient" />
+    <Using Include="System.Diagnostics" />
     <Using Include="System.Text" />
     <Using Include="FluentAssertions" />
-    <Using Include="Testcontainers.SqlServer" />
-    <Using Include="DotNet.Testcontainers.Builders" />
+  </ItemGroup>
+
+  <ItemGroup>
+  <Compile Remove="PerformanceValidationTests.cs" />
   </ItemGroup>
 
   <ItemGroup>

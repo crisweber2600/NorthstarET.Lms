@@ -1,0 +1,8 @@
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.AppHost\obj\Debug\net8.0\NorthstarET.Lms.AppHost.csproj.AssemblyReference.cache
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.AppHost\obj\Debug\net8.0\NorthstarET.Lms.AppHost.GeneratedMSBuildEditorConfig.editorconfig
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.AppHost\obj\Debug\net8.0\NorthstarET.Lms.AppHost.AssemblyInfoInputs.cache
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.AppHost\obj\Debug\net8.0\NorthstarET.Lms.AppHost.AssemblyInfo.cs
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.AppHost\obj\Debug\net8.0\NorthstarET.Lms.AppHost.csproj.CoreCompileInputs.cache
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.AppHost\obj\Debug\net8.0\Aspire\references\.ProjectMetadata.g.cs
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.AppHost\obj\Debug\net8.0\Aspire\references\_AppHost.ProjectMetadata.g.cs
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.AppHost\obj\Debug\net8.0\NorthstarET.Lms.AppHost.sourcelink.json

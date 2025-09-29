@@ -1,0 +1,15 @@
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\bin\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.deps.json
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\bin\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.dll
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\bin\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.pdb
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\bin\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.xml
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.csproj.AssemblyReference.cache
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.AssemblyInfoInputs.cache
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.AssemblyInfo.cs
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.csproj.CoreCompileInputs.cache
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.sourcelink.json
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.dll
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\refint\NorthstarET.Lms.ServiceDefaults.dll
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.xml
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\NorthstarET.Lms.ServiceDefaults.pdb
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.ServiceDefaults\obj\Debug\net8.0\ref\NorthstarET.Lms.ServiceDefaults.dll

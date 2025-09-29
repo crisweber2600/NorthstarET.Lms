@@ -1,7 +1,9 @@
+using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Configurations;
+using DotNet.Testcontainers.Containers;
 using Microsoft.Data.SqlClient;
 using System.Diagnostics;
 using System.Text;
-using Testcontainers.SqlServer;
 using Xunit.Abstractions;
 
 namespace NorthstarET.Lms.Tests.Performance;
@@ -9,7 +11,8 @@ namespace NorthstarET.Lms.Tests.Performance;
 public class PerformanceValidationTests : IAsyncDisposable
 {
     private readonly ITestOutputHelper _output;
-    private SqlServerContainer? _sqlContainer;
+    private IContainer? _sqlContainer;
+    private string? _connectionString;
 
     public PerformanceValidationTests(ITestOutputHelper output)
     {
@@ -20,13 +23,7 @@ public class PerformanceValidationTests : IAsyncDisposable
     public async Task ValidateCrudOperationsSLA_ShouldMeetPR001_200msP95()
     {
         // Arrange: Setup test container
-        _sqlContainer = new SqlServerBuilder()
-            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-            .WithPassword("Test123!")
-            .WithEnvironment("ACCEPT_EULA", "Y")
-            .Build();
-
-        await _sqlContainer.StartAsync();
+        _sqlContainer = await StartSqlContainerAsync();
 
         // Setup test table
         await SetupTestTable(_sqlContainer.GetConnectionString());
@@ -65,13 +62,7 @@ public class PerformanceValidationTests : IAsyncDisposable
     public async Task ValidateBulkOperationsSLA_ShouldMeetPR002_120sMax()
     {
         // Arrange
-        _sqlContainer = new SqlServerBuilder()
-            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-            .WithPassword("Test123!")
-            .WithEnvironment("ACCEPT_EULA", "Y")
-            .Build();
-
-        await _sqlContainer.StartAsync();
+        _sqlContainer = await StartSqlContainerAsync();
         await SetupTestTable(_sqlContainer.GetConnectionString());
 
         var stopwatch = new Stopwatch();
@@ -95,13 +86,7 @@ public class PerformanceValidationTests : IAsyncDisposable
     public async Task ValidateAuditQueriesSLA_ShouldMeetPR003_2sMax()
     {
         // Arrange
-        _sqlContainer = new SqlServerBuilder()
-            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-            .WithPassword("Test123!")
-            .WithEnvironment("ACCEPT_EULA", "Y")
-            .Build();
-
-        await _sqlContainer.StartAsync();
+        _sqlContainer = await StartSqlContainerAsync();
 
         // Setup audit data
         await SetupAuditTestData(_sqlContainer.GetConnectionString(), 100000);
@@ -336,10 +321,32 @@ public class PerformanceValidationTests : IAsyncDisposable
         results.Count.Should().BeGreaterThan(0, "Query should return aggregated results");
     }
 
+    private async Task<IContainer> StartSqlContainerAsync()
+    {
+        const string password = "Test123!";
+
+        var container = new ContainerBuilder()
+            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+            .WithEnvironment("ACCEPT_EULA", "Y")
+            .WithEnvironment("MSSQL_SA_PASSWORD", password)
+            .WithPortBinding(1433, true)
+            .Build();
+
+        await container.StartAsync();
+
+        var mappedPort = container.GetMappedPublicPort(1433);
+        _connectionString = $"Server=localhost,{mappedPort};Database=master;User Id=sa;Password={password};TrustServerCertificate=True;Encrypt=False;";
+
+        await WaitForSqlReady(_connectionString);
+
+        return container;
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_sqlContainer != null)
         {
+            await _sqlContainer.StopAsync();
             await _sqlContainer.DisposeAsync();
         }
     }

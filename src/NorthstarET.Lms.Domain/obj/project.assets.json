@@ -9,7 +9,7 @@
           "buildTransitive/Microsoft.CodeAnalysis.Analyzers.targets": {}
         }
       },
-      "Microsoft.CodeAnalysis.NetAnalyzers/8.0.0": {
+      "Microsoft.CodeAnalysis.NetAnalyzers/9.0.0": {
         "type": "package",
         "build": {
           "buildTransitive/Microsoft.CodeAnalysis.NetAnalyzers.props": {},
@@ -721,10 +721,10 @@
         "tools/uninstall.ps1"
       ]
     },
-    "Microsoft.CodeAnalysis.NetAnalyzers/8.0.0": {
-      "sha512": "DxiTgkCl3CGq1rYmBX2wjY7XGbxiBdL4J+/AJIAFLKy5z70NxhnVRnPghnicXZ8oF6JKVXlW3xwznRbI3ioEKg==",
+    "Microsoft.CodeAnalysis.NetAnalyzers/9.0.0": {
+      "sha512": "JajbvkrBgtdRghavIjcJuNHMOja4lqBmEezbhZyqWPYh2cpLhT5mPpfC7NQVDO4IehWQum9t/nwF4v+qQGtYWg==",
       "type": "package",
-      "path": "microsoft.codeanalysis.netanalyzers/8.0.0",
+      "path": "microsoft.codeanalysis.netanalyzers/9.0.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -764,6 +764,16 @@
         "buildTransitive/DisableNETAnalyzersForNuGetPackage.props",
         "buildTransitive/Microsoft.CodeAnalysis.NetAnalyzers.props",
         "buildTransitive/Microsoft.CodeAnalysis.NetAnalyzers.targets",
+        "buildTransitive/config/analysislevel_10_all.globalconfig",
+        "buildTransitive/config/analysislevel_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevel_10_default.globalconfig",
+        "buildTransitive/config/analysislevel_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevel_10_minimum.globalconfig",
+        "buildTransitive/config/analysislevel_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevel_10_none.globalconfig",
+        "buildTransitive/config/analysislevel_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevel_10_recommended.globalconfig",
+        "buildTransitive/config/analysislevel_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysislevel_5_all.globalconfig",
         "buildTransitive/config/analysislevel_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysislevel_5_default.globalconfig",
@@ -814,6 +824,16 @@
         "buildTransitive/config/analysislevel_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysislevel_9_recommended.globalconfig",
         "buildTransitive/config/analysislevel_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_all.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_default.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_minimum.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_none.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_recommended.globalconfig",
+        "buildTransitive/config/analysisleveldesign_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysisleveldesign_5_all.globalconfig",
         "buildTransitive/config/analysisleveldesign_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysisleveldesign_5_default.globalconfig",
@@ -864,6 +884,16 @@
         "buildTransitive/config/analysisleveldesign_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysisleveldesign_9_recommended.globalconfig",
         "buildTransitive/config/analysisleveldesign_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_all.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_default.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_minimum.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_none.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_recommended.globalconfig",
+        "buildTransitive/config/analysisleveldocumentation_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysisleveldocumentation_5_all.globalconfig",
         "buildTransitive/config/analysisleveldocumentation_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysisleveldocumentation_5_default.globalconfig",
@@ -914,6 +944,16 @@
         "buildTransitive/config/analysisleveldocumentation_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysisleveldocumentation_9_recommended.globalconfig",
         "buildTransitive/config/analysisleveldocumentation_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_all.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_default.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_minimum.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_none.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_recommended.globalconfig",
+        "buildTransitive/config/analysislevelglobalization_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelglobalization_5_all.globalconfig",
         "buildTransitive/config/analysislevelglobalization_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelglobalization_5_default.globalconfig",
@@ -964,6 +1004,16 @@
         "buildTransitive/config/analysislevelglobalization_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelglobalization_9_recommended.globalconfig",
         "buildTransitive/config/analysislevelglobalization_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_all.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_default.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_minimum.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_none.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_recommended.globalconfig",
+        "buildTransitive/config/analysislevelinteroperability_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelinteroperability_5_all.globalconfig",
         "buildTransitive/config/analysislevelinteroperability_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelinteroperability_5_default.globalconfig",
@@ -1014,6 +1064,16 @@
         "buildTransitive/config/analysislevelinteroperability_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelinteroperability_9_recommended.globalconfig",
         "buildTransitive/config/analysislevelinteroperability_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_all.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_default.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_minimum.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_none.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_recommended.globalconfig",
+        "buildTransitive/config/analysislevelmaintainability_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelmaintainability_5_all.globalconfig",
         "buildTransitive/config/analysislevelmaintainability_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelmaintainability_5_default.globalconfig",
@@ -1064,6 +1124,16 @@
         "buildTransitive/config/analysislevelmaintainability_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelmaintainability_9_recommended.globalconfig",
         "buildTransitive/config/analysislevelmaintainability_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_all.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_default.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_minimum.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_none.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_recommended.globalconfig",
+        "buildTransitive/config/analysislevelnaming_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelnaming_5_all.globalconfig",
         "buildTransitive/config/analysislevelnaming_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelnaming_5_default.globalconfig",
@@ -1114,6 +1184,16 @@
         "buildTransitive/config/analysislevelnaming_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelnaming_9_recommended.globalconfig",
         "buildTransitive/config/analysislevelnaming_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_all.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_default.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_minimum.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_none.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_recommended.globalconfig",
+        "buildTransitive/config/analysislevelperformance_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelperformance_5_all.globalconfig",
         "buildTransitive/config/analysislevelperformance_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelperformance_5_default.globalconfig",
@@ -1164,6 +1244,16 @@
         "buildTransitive/config/analysislevelperformance_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelperformance_9_recommended.globalconfig",
         "buildTransitive/config/analysislevelperformance_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_all.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_default.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_minimum.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_none.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_recommended.globalconfig",
+        "buildTransitive/config/analysislevelreliability_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelreliability_5_all.globalconfig",
         "buildTransitive/config/analysislevelreliability_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelreliability_5_default.globalconfig",
@@ -1214,6 +1304,16 @@
         "buildTransitive/config/analysislevelreliability_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelreliability_9_recommended.globalconfig",
         "buildTransitive/config/analysislevelreliability_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_all.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_default.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_minimum.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_none.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_recommended.globalconfig",
+        "buildTransitive/config/analysislevelsecurity_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelsecurity_5_all.globalconfig",
         "buildTransitive/config/analysislevelsecurity_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelsecurity_5_default.globalconfig",
@@ -1264,6 +1364,16 @@
         "buildTransitive/config/analysislevelsecurity_9_none_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelsecurity_9_recommended.globalconfig",
         "buildTransitive/config/analysislevelsecurity_9_recommended_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_all.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_all_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_default.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_default_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_minimum.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_minimum_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_none.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_none_warnaserror.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_recommended.globalconfig",
+        "buildTransitive/config/analysislevelusage_10_recommended_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelusage_5_all.globalconfig",
         "buildTransitive/config/analysislevelusage_5_all_warnaserror.globalconfig",
         "buildTransitive/config/analysislevelusage_5_default.globalconfig",
@@ -1345,7 +1455,7 @@
         "editorconfig/SecurityRulesEnabled/.editorconfig",
         "editorconfig/UsageRulesDefault/.editorconfig",
         "editorconfig/UsageRulesEnabled/.editorconfig",
-        "microsoft.codeanalysis.netanalyzers.8.0.0.nupkg.sha512",
+        "microsoft.codeanalysis.netanalyzers.9.0.0.nupkg.sha512",
         "microsoft.codeanalysis.netanalyzers.nuspec",
         "rulesets/AllRulesDefault.ruleset",
         "rulesets/AllRulesDisabled.ruleset",
@@ -1382,29 +1492,36 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "Microsoft.CodeAnalysis.Analyzers >= 3.11.0",
-      "Microsoft.CodeAnalysis.NetAnalyzers >= 8.0.0"
+      "Microsoft.CodeAnalysis.NetAnalyzers >= 9.0.0"
     ]
   },
   "packageFolders": {
-    "/Users/cris/.nuget/packages/": {}
+    "C:\\Users\\CrisWeber\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/NorthstarET.Lms.Domain.csproj",
+      "projectUniqueName": "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Domain\\NorthstarET.Lms.Domain.csproj",
       "projectName": "NorthstarET.Lms.Domain",
-      "projectPath": "/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/NorthstarET.Lms.Domain.csproj",
-      "packagesPath": "/Users/cris/.nuget/packages/",
-      "outputPath": "/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/",
+      "projectPath": "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Domain\\NorthstarET.Lms.Domain.csproj",
+      "packagesPath": "C:\\Users\\CrisWeber\\.nuget\\packages\\",
+      "outputPath": "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Domain\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/cris/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\CrisWeber\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1438,7 +1555,7 @@
           "Microsoft.CodeAnalysis.NetAnalyzers": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[8.0.0, )"
+            "version": "[9.0.0, )"
           }
         },
         "imports": [
@@ -1457,7 +1574,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

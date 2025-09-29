@@ -12,3 +12,17 @@
 /Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.xml
 /Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/NorthstarET.Lms.Domain.pdb
 /Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/obj/Debug/net9.0/ref/NorthstarET.Lms.Domain.dll
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\bin\Debug\net9.0\NorthstarET.Lms.Domain.deps.json
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\bin\Debug\net9.0\NorthstarET.Lms.Domain.dll
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\bin\Debug\net9.0\NorthstarET.Lms.Domain.pdb
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\bin\Debug\net9.0\NorthstarET.Lms.Domain.xml
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\NorthstarET.Lms.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\NorthstarET.Lms.Domain.AssemblyInfoInputs.cache
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\NorthstarET.Lms.Domain.AssemblyInfo.cs
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\NorthstarET.Lms.Domain.csproj.CoreCompileInputs.cache
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\NorthstarET.Lms.Domain.sourcelink.json
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\NorthstarET.Lms.Domain.dll
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\refint\NorthstarET.Lms.Domain.dll
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\NorthstarET.Lms.Domain.xml
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\NorthstarET.Lms.Domain.pdb
+D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.Domain\obj\Debug\net9.0\ref\NorthstarET.Lms.Domain.dll

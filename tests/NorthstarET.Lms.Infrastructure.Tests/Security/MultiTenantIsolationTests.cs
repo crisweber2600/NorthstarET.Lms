@@ -6,7 +6,7 @@ using NorthstarET.Lms.Domain.ValueObjects;
 using NorthstarET.Lms.Infrastructure.Data;
 using NorthstarET.Lms.Infrastructure.Security;
 using System.Data;
-using Testcontainers.SqlServer;
+using Testcontainers.MsSql;
 using Xunit;
 
 namespace NorthstarET.Lms.Infrastructure.Tests.Security;
@@ -17,7 +17,7 @@ namespace NorthstarET.Lms.Infrastructure.Tests.Security;
 /// </summary>
 public class MultiTenantIsolationTests : IAsyncLifetime
 {
-    private readonly SqlServerContainer _sqlServerContainer;
+    private readonly MsSqlContainer _sqlServerContainer;
     private string _connectionString = string.Empty;
 
     // Test tenant contexts
@@ -37,7 +37,7 @@ public class MultiTenantIsolationTests : IAsyncLifetime
 
     public MultiTenantIsolationTests()
     {
-        _sqlServerContainer = new SqlServerBuilder()
+        _sqlServerContainer = new MsSqlBuilder()
             .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("TestPassword123!")
             .WithCleanUp(true)

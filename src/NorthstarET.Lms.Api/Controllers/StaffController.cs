@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NorthstarET.Lms.Application.Commands.Staff;
-using NorthstarET.Lms.Application.DTOs.Staff;
-using NorthstarET.Lms.Application.Queries.Staff;
+using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.Services;
 
 namespace NorthstarET.Lms.Api.Controllers;

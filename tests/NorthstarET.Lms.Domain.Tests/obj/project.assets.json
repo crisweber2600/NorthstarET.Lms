@@ -3154,33 +3154,40 @@
     ]
   },
   "packageFolders": {
-    "/Users/cris/.nuget/packages/": {}
+    "C:\\Users\\CrisWeber\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Domain.Tests/NorthstarET.Lms.Domain.Tests.csproj",
+      "projectUniqueName": "D:\\specify\\NorthstarET.Lms\\tests\\NorthstarET.Lms.Domain.Tests\\NorthstarET.Lms.Domain.Tests.csproj",
       "projectName": "NorthstarET.Lms.Domain.Tests",
-      "projectPath": "/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Domain.Tests/NorthstarET.Lms.Domain.Tests.csproj",
-      "packagesPath": "/Users/cris/.nuget/packages/",
-      "outputPath": "/Users/cris/git/NorthstarET.Lms/tests/NorthstarET.Lms.Domain.Tests/obj/",
+      "projectPath": "D:\\specify\\NorthstarET.Lms\\tests\\NorthstarET.Lms.Domain.Tests\\NorthstarET.Lms.Domain.Tests.csproj",
+      "packagesPath": "C:\\Users\\CrisWeber\\.nuget\\packages\\",
+      "outputPath": "D:\\specify\\NorthstarET.Lms\\tests\\NorthstarET.Lms.Domain.Tests\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/cris/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\CrisWeber\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/NorthstarET.Lms.Domain.csproj": {
-              "projectPath": "/Users/cris/git/NorthstarET.Lms/src/NorthstarET.Lms.Domain/NorthstarET.Lms.Domain.csproj"
+            "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Domain\\NorthstarET.Lms.Domain.csproj": {
+              "projectPath": "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Domain\\NorthstarET.Lms.Domain.csproj"
             }
           }
         }
@@ -3250,7 +3257,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
