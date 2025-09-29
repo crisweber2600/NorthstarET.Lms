@@ -377,21 +377,26 @@ public class MultiTenantIsolationTests : IAsyncLifetime
 // Helper class for testing tenant context
 public class TestTenantContextAccessor : ITenantContextAccessor
 {
-    private TenantContext _tenant;
+    private ITenantContext? _tenant;
 
-    public TestTenantContextAccessor(TenantContext tenant)
+    public TestTenantContextAccessor(ITenantContext? tenant)
     {
         _tenant = tenant;
     }
 
-    public TenantContext GetTenant()
+    public ITenantContext? GetTenant()
     {
         return _tenant;
     }
 
-    public void SetTenant(TenantContext tenant)
+    public void SetTenant(ITenantContext? tenant)
     {
         _tenant = tenant;
+    }
+
+    public string? GetCurrentTenantId()
+    {
+        return _tenant?.TenantId;
     }
 }
 

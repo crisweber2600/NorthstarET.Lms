@@ -261,17 +261,6 @@ public class UpdateDistrictDto
     public DistrictQuotasDto? Quotas { get; set; }
 }
 
-public class DistrictDto
-{
-    public Guid Id { get; set; }
-    public string Slug { get; set; } = null!;
-    public string DisplayName { get; set; } = null!;
-    public string Status { get; set; } = null!; // Will be converted from enum
-    public DistrictQuotasDto Quotas { get; set; } = null!;
-    public DateTime CreatedDate { get; set; }
-    public string CreatedByUserId { get; set; } = null!;
-}
-
 public class DistrictQuotasDto
 {
     public int MaxStudents { get; set; }

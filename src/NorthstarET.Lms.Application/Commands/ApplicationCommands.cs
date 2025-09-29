@@ -2,47 +2,6 @@ using NorthstarET.Lms.Application.DTOs;
 
 namespace NorthstarET.Lms.Application.Commands;
 
-// District Commands
-public class CreateDistrictCommand
-{
-    public CreateDistrictDto District { get; }
-    public string CreatedBy { get; }
-
-    public CreateDistrictCommand(CreateDistrictDto district, string createdBy)
-    {
-        District = district;
-        CreatedBy = createdBy;
-    }
-}
-
-public class UpdateDistrictQuotasCommand
-{
-    public Guid DistrictId { get; }
-    public DistrictQuotasDto Quotas { get; }
-    public string UpdatedBy { get; }
-
-    public UpdateDistrictQuotasCommand(Guid districtId, DistrictQuotasDto quotas, string updatedBy)
-    {
-        DistrictId = districtId;
-        Quotas = quotas;
-        UpdatedBy = updatedBy;
-    }
-}
-
-public class SuspendDistrictCommand
-{
-    public Guid DistrictId { get; }
-    public string Reason { get; }
-    public string SuspendedBy { get; }
-
-    public SuspendDistrictCommand(Guid districtId, string reason, string suspendedBy)
-    {
-        DistrictId = districtId;
-        Reason = reason;
-        SuspendedBy = suspendedBy;
-    }
-}
-
 // Student Commands
 public class CreateStudentCommand
 {

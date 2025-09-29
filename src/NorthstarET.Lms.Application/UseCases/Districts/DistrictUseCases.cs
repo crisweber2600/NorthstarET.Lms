@@ -1,5 +1,5 @@
 using NorthstarET.Lms.Application.Common;
-using NorthstarET.Lms.Application.DTOs;
+using NorthstarET.Lms.Application.DTOs.Districts;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
 using NorthstarET.Lms.Domain.ValueObjects;
@@ -19,7 +19,7 @@ public class CreateDistrictUseCase
         _auditService = auditService;
     }
 
-    public async Task<Result<DistrictDto>> ExecuteAsync(CreateDistrictRequest request, string createdByUserId)
+    public async Task<Result<DistrictDto>> ExecuteAsync(CreateDistrictDto request, string createdByUserId)
     {
         // Validate business rules
         if (await _districtRepository.SlugExistsAsync(request.Slug))
@@ -56,10 +56,10 @@ public class CreateDistrictUseCase
         // Map to DTO
         var dto = new DistrictDto
         {
-            Id = district.Id,
+            DistrictId = district.Id,
             Slug = district.Slug,
             DisplayName = district.DisplayName,
-            Status = district.Status.ToString(),
+            Status = district.Status,
             Quotas = new DistrictQuotasDto
             {
                 MaxStudents = district.Quotas.MaxStudents,
@@ -67,7 +67,7 @@ public class CreateDistrictUseCase
                 MaxAdmins = district.Quotas.MaxAdmins
             },
             CreatedDate = district.CreatedAt,
-            CreatedByUserId = district.CreatedByUserId
+            LastModifiedDate = district.LastModifiedDate ?? district.CreatedAt
         };
 
         return Result<DistrictDto>.Success(dto);
@@ -93,10 +93,10 @@ public class GetDistrictUseCase
 
         var dto = new DistrictDto
         {
-            Id = district.Id,
+            DistrictId = district.Id,
             Slug = district.Slug,
             DisplayName = district.DisplayName,
-            Status = district.Status.ToString(),
+            Status = district.Status,
             Quotas = new DistrictQuotasDto
             {
                 MaxStudents = district.Quotas.MaxStudents,
@@ -104,7 +104,7 @@ public class GetDistrictUseCase
                 MaxAdmins = district.Quotas.MaxAdmins
             },
             CreatedDate = district.CreatedAt,
-            CreatedByUserId = district.CreatedByUserId
+            LastModifiedDate = district.LastModifiedDate ?? district.CreatedAt
         };
 
         return Result<DistrictDto>.Success(dto);

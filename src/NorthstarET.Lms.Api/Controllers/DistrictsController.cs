@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NorthstarET.Lms.Application.Commands.Districts;
+using NorthstarET.Lms.Application.Commands;
+using NorthstarET.Lms.Application.Queries;
 using NorthstarET.Lms.Application.DTOs.Districts;
+using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Application.Queries.Districts;
 using NorthstarET.Lms.Application.Services;

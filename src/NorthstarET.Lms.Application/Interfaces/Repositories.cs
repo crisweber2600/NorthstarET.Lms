@@ -191,6 +191,8 @@ public class PagedResult<T>
     public int PageSize { get; }
     public int TotalCount { get; }
     public int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
+    public bool HasNextPage => Page < TotalPages;
+    public bool HasPreviousPage => Page > 1;
 
     public PagedResult(IEnumerable<T> items, int page, int pageSize, int totalCount)
     {
