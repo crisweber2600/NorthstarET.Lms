@@ -2117,40 +2117,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\CrisWeber\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/home/runner/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Application\\NorthstarET.Lms.Application.csproj",
+      "projectUniqueName": "/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/src/NorthstarET.Lms.Application/NorthstarET.Lms.Application.csproj",
       "projectName": "NorthstarET.Lms.Application",
-      "projectPath": "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Application\\NorthstarET.Lms.Application.csproj",
-      "packagesPath": "C:\\Users\\CrisWeber\\.nuget\\packages\\",
-      "outputPath": "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Application\\obj\\",
+      "projectPath": "/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/src/NorthstarET.Lms.Application/NorthstarET.Lms.Application.csproj",
+      "packagesPath": "/home/runner/.nuget/packages/",
+      "outputPath": "/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/src/NorthstarET.Lms.Application/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\CrisWeber\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/runner/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Domain\\NorthstarET.Lms.Domain.csproj": {
-              "projectPath": "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.Domain\\NorthstarET.Lms.Domain.csproj"
+            "/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/src/NorthstarET.Lms.Domain/NorthstarET.Lms.Domain.csproj": {
+              "projectPath": "/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/src/NorthstarET.Lms.Domain/NorthstarET.Lms.Domain.csproj"
             }
           }
         }
@@ -2211,7 +2203,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
