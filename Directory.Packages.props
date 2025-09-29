@@ -1,0 +1,80 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- .NET Aspire -->
+    <PackageVersion Include="Aspire.Hosting" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Hosting.Azure.Storage" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    
+    <!-- ASP.NET Core -->
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authorization" Version="9.0.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.8.1" />
+    
+    <!-- Entity Framework Core -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
+    
+    <!-- MediatR -->
+    <PackageVersion Include="MediatR" Version="12.4.1" />
+    <PackageVersion Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    
+    <!-- Microsoft Graph SDK -->
+    <PackageVersion Include="Microsoft.Graph" Version="5.66.0" />
+    <PackageVersion Include="Microsoft.Graph.Authentication" Version="2.2.0" />
+    
+    <!-- Background Jobs -->
+    <PackageVersion Include="Hangfire.Core" Version="1.8.15" />
+    <PackageVersion Include="Hangfire.SqlServer" Version="1.8.15" />
+    <PackageVersion Include="Hangfire.AspNetCore" Version="1.8.15" />
+    
+    <!-- BDD Testing - Reqnroll -->
+    <PackageVersion Include="Reqnroll" Version="2.1.0" />
+    <PackageVersion Include="Reqnroll.xUnit" Version="2.1.0" />
+    <PackageVersion Include="Reqnroll.Tools.MsBuild.Generation" Version="2.1.0" />
+    
+    <!-- Testing -->
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="FluentAssertions" Version="6.12.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="Testcontainers" Version="3.10.0" />
+    <PackageVersion Include="Testcontainers.SqlServer" Version="3.10.0" />
+    <PackageVersion Include="Testcontainers.Azurite" Version="3.10.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
+    
+    <!-- Playwright -->
+    <PackageVersion Include="Microsoft.Playwright" Version="1.48.0" />
+    <PackageVersion Include="Microsoft.Playwright.NUnit" Version="1.48.0" />
+    
+    <!-- Validation -->
+    <PackageVersion Include="FluentValidation" Version="11.10.0" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+    
+    <!-- Serialization -->
+    <PackageVersion Include="System.Text.Json" Version="9.0.0" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    
+    <!-- Azure SDK -->
+    <PackageVersion Include="Azure.Storage.Blobs" Version="12.22.1" />
+    <PackageVersion Include="Azure.Identity" Version="1.12.1" />
+    
+    <!-- Code Analysis -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
+    <PackageVersion Include="AsyncFixer" Version="1.6.0" />
+    
+    <!-- Additional Utilities -->
+    <PackageVersion Include="Serilog.AspNetCore" Version="8.0.3" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
+  </ItemGroup>
+</Project>

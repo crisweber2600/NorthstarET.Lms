@@ -5,10 +5,10 @@
 
 ## Phase 3.1 Setup
 
-- [ ] T001 Establish Clean Architecture solution skeleton (`NorthstarET.Lms.sln`) with projects under `src/Domain`, `src/Application`, `src/Infrastructure`, `src/Presentation/Api`, `src/Presentation/Aspire/AppHost`, and mirrored test projects in `tests/`.
-- [ ] T002 Author `Directory.Build.props` at repo root enabling nullable reference types, strict warnings-as-errors, analyzers, and shared code style aligned with constitution.
-- [ ] T003 Configure `Directory.Packages.props` (or per-csproj packages) to reference .NET Aspire, ASP.NET Core Minimal APIs, EF Core 9, MediatR, Microsoft Graph SDK, Hangfire-compatible scheduler, Reqnroll, xUnit, FluentAssertions, Testcontainers, and Playwright.
-- [ ] T004 Seed solution-level tooling: add `.editorconfig`, reusable `global.json`, and bootstrap scripts in `build/` to standardize local dev plus CI lint/test hooks.
+- [x] T001 Establish Clean Architecture solution skeleton (`NorthstarET.Lms.sln`) with projects under `src/Domain`, `src/Application`, `src/Infrastructure`, `src/Presentation/Api`, `src/Presentation/Aspire/AppHost`, and mirrored test projects in `tests/`.
+- [x] T002 Author `Directory.Build.props` at repo root enabling nullable reference types, strict warnings-as-errors, analyzers, and shared code style aligned with constitution.
+- [x] T003 Configure `Directory.Packages.props` (or per-csproj packages) to reference .NET Aspire, ASP.NET Core Minimal APIs, EF Core 9, MediatR, Microsoft Graph SDK, Hangfire-compatible scheduler, Reqnroll, xUnit, FluentAssertions, Testcontainers, and Playwright.
+- [x] T004 Seed solution-level tooling: add `.editorconfig`, reusable `global.json`, and bootstrap scripts in `build/` to standardize local dev plus CI lint/test hooks.
 
 ## Phase 3.2 BDD Features & Tests (Red Phase)
 
