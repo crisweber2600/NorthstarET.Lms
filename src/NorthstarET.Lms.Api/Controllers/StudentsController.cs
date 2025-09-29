@@ -39,9 +39,9 @@ public class StudentsController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Creating student with number: {StudentNumber}", request.StudentNumber);
+            _logger.LogInformation("Creating student with number: {StudentNumber}", request.Student.StudentNumber);
             
-            var result = await _studentService.CreateStudentAsync(request);
+            var result = await _studentService.CreateStudentAsync(request.Student, request.CreatedBy);
             
             if (!result.IsSuccess)
             {
@@ -54,7 +54,7 @@ public class StudentsController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating student with number: {StudentNumber}", request.StudentNumber);
+            _logger.LogError(ex, "Error creating student with number: {StudentNumber}", request.Student.StudentNumber);
             return StatusCode(500, new { error = "An unexpected error occurred" });
         }
     }
@@ -131,14 +131,15 @@ public class StudentsController : ControllerBase
     [Authorize(Roles = "DistrictAdmin,SchoolUser")]
     public async Task<ActionResult<StudentDto>> UpdateStudent(
         Guid userId,
-        [FromBody] UpdateStudentCommand request)
+        [FromBody] UpdateStudentDto studentUpdate)
     {
         try
         {
-            request.UserId = userId;
             _logger.LogInformation("Updating student: {StudentId}", userId);
             
-            var result = await _studentService.UpdateStudentAsync(request);
+            // TODO: Get current user for updatedBy parameter
+            var command = new UpdateStudentCommand(userId, studentUpdate, "system");
+            var result = await _studentService.UpdateStudentAsync(command);
             
             if (!result.IsSuccess)
             {
