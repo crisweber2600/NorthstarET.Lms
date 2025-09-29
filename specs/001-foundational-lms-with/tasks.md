@@ -1,361 +1,591 @@
 # Tasks: Foundational LMS with Tenant Isolation and Compliance
 
+**Feature**: 001-foundational-lms-with  
+**Generated**: December 19, 2024  
 **Input**: Design documents from `/specs/001-foundational-lms-with/`  
-**Prerequisites**: plan.md ✅, research.md ✅, data-model.md ✅, contracts/ ✅, quickstart.md ✅
+**Prerequisites**: plan.md ✅ | research.md ✅ | data-model.md ✅ | contracts/ ✅ | quickstart.md ✅
 
-## Execution Summary
+## Summary
 
-**Tech Stack**: .NET 9, ASP.NET Core, Entity Framework Core, .NET Aspire, Reqnroll, xUnit  
-**Architecture**: Clean Architecture (4-layer) with multi-tenant isolation  
-**Testing**: BDD-first with Reqnroll, TDD with >90% coverage requirement  
-**Key Entities**: 12 domain entities supporting educational hierarchies and compliance
+This task list implements a foundational K-12 Learning Management System with strict multi-tenant isolation, comprehensive RBAC, and FERPA compliance. The system uses .NET 9 with Clean Architecture, Aspire orchestration, schema-per-tenant isolation, and BDD-first development.
 
-## Format: `[ID] [P?] Description`
-- **[P]**: Can run in parallel (different files, no dependencies)
-- All file paths relative to repository root
+**Key Features**:
+- Multi-tenant data isolation (schema-per-tenant)
+- Comprehensive RBAC with hierarchical roles
+- Tamper-evident audit logging
+- Bulk operations with configurable error handling
+- Entra External ID integration
+- Assessment file management with secure access
 
-## Phase 3.1: Project Setup & Structure
+**Tech Stack**: .NET 9, ASP.NET Core, Entity Framework Core, SQL Server, .NET Aspire, Reqnroll, xUnit
 
-- [X] **T001** Create .NET solution and Clean Architecture project structure per quickstart.md
-- [X] **T002** Install required NuGet packages (EF Core, Aspire, Reqnroll, xUnit, FluentAssertions)
-- [X] **T003** [P] Configure EditorConfig and code analysis rules
-- [X] **T004** [P] Set up Aspire app host project with SQL Server and Redis components
-- [X] **T005** [P] Configure appsettings.json for multi-tenant connection strings
+---
 
-## Phase 3.2: BDD Features & Step Definitions (MUST COMPLETE BEFORE 3.3)
+## Phase 3.1: Project Setup
 
-**CRITICAL: Constitutional requirement - All BDD feature files and step definitions MUST fail before any implementation**
+### T001: Create Clean Architecture Solution Structure
+**Description**: Create the complete .NET solution with Clean Architecture layers as defined in plan.md  
+**Files**: Root directory structure  
+**Commands**:
+```bash
+# Create solution
+dotnet new sln -n NorthstarET.Lms
 
-### District Management Features
-- [X] **T006** [P] BDD feature file for district provisioning in `tests/Features/Districts/CreateDistrict.feature`
-- [X] **T007** [P] BDD feature file for district lifecycle in `tests/Features/Districts/DistrictLifecycle.feature` 
-- [X] **T008** [P] BDD feature file for quota management in `tests/Features/Districts/QuotaManagement.feature`
+# Create Domain layer (zero dependencies)
+dotnet new classlib -n NorthstarET.Lms.Domain -o src/NorthstarET.Lms.Domain
+dotnet sln add src/NorthstarET.Lms.Domain
 
-### Student Management Features  
-- [X] **T009** [P] BDD feature file for student creation in `tests/Features/Students/CreateStudent.feature`
-- [X] **T010** [P] BDD feature file for student enrollment in `tests/Features/Students/StudentEnrollment.feature`
-- [X] **T011** [P] BDD feature file for grade progression in `tests/Features/Students/GradeProgression.feature`
-- [X] **T012** [P] BDD feature file for bulk rollover in `tests/Features/Students/BulkRollover.feature`
+# Create Application layer
+dotnet new classlib -n NorthstarET.Lms.Application -o src/NorthstarET.Lms.Application
+dotnet sln add src/NorthstarET.Lms.Application
+dotnet add src/NorthstarET.Lms.Application reference src/NorthstarET.Lms.Domain
 
-### Academic Calendar & RBAC Features
-- [X] **T013** [P] BDD feature file for academic calendar in `tests/Features/Calendar/AcademicCalendar.feature`
-- [X] **T014** [P] BDD feature file for role assignment in `tests/Features/RBAC/RoleAssignment.feature`
-- [X] **T015** [P] BDD feature file for composite roles in `tests/Features/RBAC/CompositeRoles.feature`
+# Create Infrastructure layer
+dotnet new classlib -n NorthstarET.Lms.Infrastructure -o src/NorthstarET.Lms.Infrastructure
+dotnet sln add src/NorthstarET.Lms.Infrastructure
+dotnet add src/NorthstarET.Lms.Infrastructure reference src/NorthstarET.Lms.Application
 
-### Compliance & Audit Features
-- [X] **T016** [P] BDD feature file for audit logging in `tests/Features/Compliance/AuditLogging.feature`
-- [X] **T017** [P] BDD feature file for retention policies in `tests/Features/Compliance/RetentionPolicies.feature`
-- [X] **T018** [P] BDD feature file for legal holds in `tests/Features/Compliance/LegalHolds.feature`
+# Create API layer
+dotnet new webapi -n NorthstarET.Lms.Api -o src/NorthstarET.Lms.Api
+dotnet sln add src/NorthstarET.Lms.Api
+dotnet add src/NorthstarET.Lms.Api reference src/NorthstarET.Lms.Infrastructure
 
-### Assessment Management Features
-- [X] **T018a** [P] BDD feature file for assessment management in `tests/Features/Assessments/AssessmentManagement.feature`
+# Create Aspire orchestration
+dotnet new aspire-apphost -n NorthstarET.Lms.AppHost -o src/NorthstarET.Lms.AppHost
+dotnet sln add src/NorthstarET.Lms.AppHost
+dotnet add src/NorthstarET.Lms.AppHost reference src/NorthstarET.Lms.Api
+```
 
-### Step Definitions (Must Fail Initially)
-- [X] **T019** [P] Step definitions for district management in `tests/StepDefinitions/DistrictSteps.cs`
-- [X] **T020** [P] Step definitions for student management in `tests/StepDefinitions/StudentSteps.cs`
-- [X] **T021** [P] Step definitions for calendar management in `tests/StepDefinitions/CalendarSteps.cs`
-- [X] **T022** [P] Step definitions for RBAC in `tests/StepDefinitions/RbacSteps.cs`
-- [X] **T023** [P] Step definitions for compliance in `tests/StepDefinitions/ComplianceSteps.cs`
-- [X] **T023a** [P] Step definitions for assessments in `tests/StepDefinitions/AssessmentSteps.cs`
+---
 
-## Phase 3.3: Unit Tests (TDD - Must Fail Before Implementation)
+### T002: Initialize NuGet Packages for All Layers
+**Description**: Add required NuGet packages to each project layer  
+**Files**: All .csproj files  
+**Dependencies**: T001  
 
+---
+
+### T003: Create Test Projects with Reqnroll and Testing Dependencies
+**Description**: Create all test projects with BDD and unit testing frameworks  
+**Files**: tests/ directory structure  
+**Dependencies**: T001  
+
+---
+
+### T004 [P]: Configure EditorConfig and Code Analysis Rules
+**Description**: Setup .editorconfig with C# 13 nullable reference types and code quality rules  
+**Files**: `.editorconfig` at repository root  
+**Dependencies**: T001
+
+---
+
+### T005 [P]: Configure Aspire Orchestration in AppHost
+**Description**: Configure Aspire app host with SQL Server, Redis, and API service registration  
+**Files**: `src/NorthstarET.Lms.AppHost/Program.cs`  
+**Dependencies**: T002
+
+---
+
+## Phase 3.2: BDD Features & Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
+
+**CRITICAL: Constitutional requirement - BDD feature files MUST be complete before any code**  
+**Tests MUST be written and MUST FAIL before ANY implementation**  
 **Coverage requirement: Minimum 90% for domain and application layers**
 
-### Domain Entity Tests
-- [X] **T024** [P] Unit tests for DistrictTenant entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/DistrictTenantTests.cs` ✅ 19 tests passing
-- [X] **T025** [P] Unit tests for Student entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/StudentTests.cs` ✅ 12 tests passing  
-- [X] **T026** [P] Unit tests for DistrictQuotas value object in `tests/NorthstarET.Lms.Domain.Tests/ValueObjects/DistrictQuotasTests.cs` ✅ 7 tests passing
-- [X] **T027** [P] Unit tests for SchoolYear entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/SchoolYearTests.cs` ✅ 18 tests passing
-- [X] **T030** [P] Unit tests for RoleAssignment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/RoleAssignmentTests.cs` ✅ 20 tests passing
-- [X] **T031** [P] Unit tests for AuditRecord entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/AuditRecordTests.cs` ✅ 15 tests passing
-- [X] **T028** [P] Unit tests for AcademicCalendar entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/AcademicCalendarTests.cs` ✅ 18 tests passing
-- [X] **T029** [P] Unit tests for Enrollment entity in `tests/NorthstarET.Lms.Domain.Tests/Entities/EnrollmentTests.cs` ✅ 21 tests passing
+---
 
-### Application Service Tests
-- [X] **T032** [P] Unit tests for DistrictService in `tests/NorthstarET.Lms.Application.Tests/Services/DistrictServiceTests.cs` ✅ Created - FAILING (RED phase)
-- [X] **T033** [P] Unit tests for StudentService in `tests/NorthstarET.Lms.Application.Tests/Services/StudentServiceTests.cs` ✅ Created - FAILING (RED phase)
-- [X] **T034** [P] Unit tests for EnrollmentService in `tests/NorthstarET.Lms.Application.Tests/Services/EnrollmentServiceTests.cs` ✅ Created - FAILING (RED phase)
-- [X] **T035** [P] Unit tests for RoleAuthorizationService in `tests/NorthstarET.Lms.Application.Tests/Services/RoleAuthorizationServiceTests.cs` ✅ Created - FAILING (RED phase)
-- [X] **T036** [P] Unit tests for AuditService in `tests/NorthstarET.Lms.Application.Tests/Services/AuditServiceTests.cs` ✅ Created - FAILING (RED phase)
+### T006 [P]: Feature file for District provisioning and management
+**Description**: Create Reqnroll feature file covering all district CRUD operations from contracts/districts-api.md  
+**Files**: `tests/Features/Districts/ManageDistricts.feature`  
+**Scenarios**: Create district, get district, list districts, update district, suspend/reactivate, delete with retention checks  
+**References**: FR-001 to FR-010, contracts/districts-api.md
 
-### Integration Tests
-- [X] **T037** [P] Integration tests for district API endpoints in `tests/NorthstarET.Lms.Api.Tests/Controllers/DistrictsControllerTests.cs` ✅ Complete with comprehensive CRUD, lifecycle, and quota management tests
-- [X] **T038** [P] Integration tests for student API endpoints in `tests/NorthstarET.Lms.Api.Tests/Controllers/StudentsControllerTests.cs` ✅ Complete with create, read, update, enrollment, and bulk operation tests
-- [X] **T039** [P] Integration tests for multi-tenant isolation in `tests/NorthstarET.Lms.Infrastructure.Tests/MultiTenantIsolationTests.cs` ✅ Complete with critical tenant boundary validation
+---
 
-## Phase 3.4: Domain Layer Implementation (Clean Architecture - ZERO External Dependencies)
+### T007 [P]: Feature file for District quota management
+**Description**: Create Reqnroll feature file for quota tracking and enforcement  
+**Files**: `tests/Features/Districts/DistrictQuotas.feature`  
+**Scenarios**: Check quota status, update quotas, enforce quota limits during user creation  
+**References**: FR-008, FR-009
 
-### Base Classes & Value Objects
-- [X] **T040** [P] TenantScopedEntity base class in `src/NorthstarET.Lms.Domain/Common/TenantScopedEntity.cs` ✅ Already exists
-- [X] **T041** [P] Domain events infrastructure in `src/NorthstarET.Lms.Domain/Common/IDomainEvent.cs` ✅ Already exists 
-- [X] **T042** [P] Value objects (UserId, ExternalId, GradeLevel) in `src/NorthstarET.Lms.Domain/ValueObjects/` ✅ Enums implemented
+---
 
-### Core Domain Entities
-- [X] **T043** [P] DistrictTenant entity in `src/NorthstarET.Lms.Domain/Entities/DistrictTenant.cs` ✅ Already exists
-- [X] **T044** [P] SchoolYear entity in `src/NorthstarET.Lms.Domain/Entities/SchoolYear.cs` ✅ Already exists
-- [X] **T045** [P] School entity in `src/NorthstarET.Lms.Domain/Entities/School.cs` ✅ Created in Class.cs
-- [X] **T046** [P] Student entity in `src/NorthstarET.Lms.Domain/Entities/Student.cs` ✅ Already exists
-- [X] **T047** [P] Staff entity in `src/NorthstarET.Lms.Domain/Entities/Staff.cs` ✅ Created
-- [X] **T048** [P] Class entity in `src/NorthstarET.Lms.Domain/Entities/Class.cs` ✅ Created
-- [X] **T048a** [P] AcademicCalendar entity in `src/NorthstarET.Lms.Domain/Entities/AcademicCalendar.cs` ✅ Created
-- [X] **T049** [P] Enrollment entity in `src/NorthstarET.Lms.Domain/Entities/Enrollment.cs` ✅ Created
-- [X] **T050** [P] Guardian entity in `src/NorthstarET.Lms.Domain/Entities/Guardian.cs` ✅ Created
+### T008 [P]: Feature file for Student CRUD operations
+**Description**: Create Reqnroll feature file covering student creation, retrieval, update from contracts/students-api.md  
+**Files**: `tests/Features/Students/ManageStudents.feature`  
+**Scenarios**: Create student with guardians, get student with history, list students with filters, update student info  
+**References**: FR-011 to FR-015, contracts/students-api.md
 
-### Compliance & RBAC Entities
-- [X] **T051** [P] RoleDefinition entity in `src/NorthstarET.Lms.Domain/Entities/RoleDefinition.cs` ✅ Created in ComplianceEntities.cs
-- [X] **T052** [P] RoleAssignment entity in `src/NorthstarET.Lms.Domain/Entities/RoleAssignment.cs` ✅ Already exists
-- [X] **T053** [P] AuditRecord entity in `src/NorthstarET.Lms.Domain/Entities/AuditRecord.cs` ✅ Already exists
-- [X] **T054** [P] RetentionPolicy entity in `src/NorthstarET.Lms.Domain/Entities/RetentionPolicy.cs` ✅ Created in ComplianceEntities.cs
-- [X] **T055** [P] LegalHold entity in `src/NorthstarET.Lms.Domain/Entities/LegalHold.cs` ✅ Created in ComplianceEntities.cs
+---
 
-### Domain Services & Events
-- [X] **T056** [P] Domain services interfaces in `src/NorthstarET.Lms.Domain/Services/` ✅ Created DomainServices.cs
-- [X] **T057** [P] Domain events for audit trail in `src/NorthstarET.Lms.Domain/Events/` ✅ Enhanced with new events
+### T009 [P]: Feature file for Student enrollment management
+**Description**: Create Reqnroll feature file for class enrollment and transfers  
+**Files**: `tests/Features/Students/StudentEnrollment.feature`  
+**Scenarios**: Enroll in class, withdraw from class, transfer between schools  
+**References**: FR-016 to FR-020
 
-## Phase 3.5: Application Layer Implementation (Depends Only on Domain)
+---
 
-### Repository Interfaces & DTOs
-- [X] **T058** [P] Repository interfaces in `src/NorthstarET.Lms.Application/Interfaces/` ✅ Created - Interface definitions complete
-- [X] **T059** [P] Data Transfer Objects in `src/NorthstarET.Lms.Application/DTOs/` ✅ Created - DTO classes complete
-- [X] **T060** [P] Command and query models in `src/NorthstarET.Lms.Application/Commands/` and `Queries/` ✅ Created - CQRS patterns complete
+### T010 [P]: Feature file for Student grade progression
+**Description**: Create Reqnroll feature file for grade promotion and bulk rollover  
+**Files**: `tests/Features/Students/GradeProgression.feature`  
+**Scenarios**: Individual promotion, bulk rollover preview, execute rollover with error handling  
+**References**: FR-021 to FR-025
 
-### Use Case Services
-- [X] **T061** [P] District management use cases in `src/NorthstarET.Lms.Application/UseCases/Districts/` ✅ Complete with Create, Get, and Suspend operations
-- [X] **T062** [P] Student management use cases in `src/NorthstarET.Lms.Application/UseCases/Students/` ✅ Complete with Create, Get, and Update operations
-- [X] **T063** [P] Enrollment management use cases in `src/NorthstarET.Lms.Application/UseCases/Enrollment/` ✅ Complete with Enroll, Withdraw, and Transfer operations
-- [X] **T064** [P] RBAC management use cases in `src/NorthstarET.Lms.Application/UseCases/RBAC/` ✅ Complete with Assign, Revoke, GetUserRoles, and CheckPermission operations
-- [X] **T065** [P] Audit and compliance use cases in `src/NorthstarET.Lms.Application/UseCases/Audit/` ✅ Complete with QueryLogs, VerifyIntegrity, LegalHolds, and Compliance reporting
+---
 
-### Application Services
-- [X] **T066** DistrictService application service in `src/NorthstarET.Lms.Application/Services/DistrictService.cs` ✅ Created - TDD GREEN phase progress
-- [X] **T067** StudentService application service in `src/NorthstarET.Lms.Application/Services/StudentService.cs` ✅ Created - TDD GREEN phase progress
-- [X] **T068** EnrollmentService application service in `src/NorthstarET.Lms.Application/Services/EnrollmentService.cs` ✅ Created - TDD GREEN phase progress
-- [X] **T069** RoleAuthorizationService in `src/NorthstarET.Lms.Application/Services/RoleAuthorizationService.cs` ✅ Created - TDD GREEN phase progress
-- [X] **T070** AuditService application service in `src/NorthstarET.Lms.Application/Services/AuditService.cs` ✅ Created - TDD GREEN phase progress
+### T011 [P]: Feature file for School year and academic calendar
+**Description**: Create Reqnroll feature file for school year lifecycle and calendar management  
+**Files**: `tests/Features/AcademicCalendar/SchoolYearManagement.feature`  
+**Scenarios**: Create school year, define terms/closures, archive school year  
+**References**: FR-026 to FR-030
 
-## Phase 3.6: Infrastructure Layer Implementation (EF Core & External Services)
+---
 
-### Database Configuration
-- [X] **T071** Multi-tenant DbContext with schema isolation in `src/NorthstarET.Lms.Infrastructure/Data/LmsDbContext.cs` ✅ Created with tenant filtering
-- [X] **T072** [P] Entity configurations for DistrictTenant in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/DistrictTenantConfiguration.cs` ✅ Created
-- [X] **T073** [P] Entity configurations for Student in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/StudentConfiguration.cs` ✅ Created
-- [X] **T074** [P] Entity configurations for Staff in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/StaffConfiguration.cs` ✅ Created
-- [X] **T075** [P] Entity configurations for Enrollment in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/EnrollmentConfiguration.cs` ✅ Created
-- [X] **T076** [P] Entity configurations for audit entities in `src/NorthstarET.Lms.Infrastructure/Data/Configurations/AuditConfiguration.cs` ✅ Created
+### T012 [P]: Feature file for RBAC role definitions and assignments
+**Description**: Create Reqnroll feature file for role-based access control  
+**Files**: `tests/Features/Authorization/RoleBasedAccess.feature`  
+**Scenarios**: Create role definition, assign role with scope, delegation, deny-by-default enforcement  
+**References**: FR-036 to FR-043
 
-### Repository Implementations
-- [X] **T077** [P] DistrictRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/DistrictRepository.cs` ✅ Created
-- [X] **T078** [P] StudentRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/StudentRepository.cs` ✅ Created
-- [X] **T079** [P] StaffRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/StaffRepository.cs` ✅ Created
-- [X] **T080** [P] EnrollmentRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/EnrollmentRepository.cs` ✅ Created
-- [X] **T081** [P] AuditRepository implementation in `src/NorthstarET.Lms.Infrastructure/Repositories/AuditRepository.cs` ✅ Created
-- [X] **T081a** [P] Tamper-evident audit chain service implementing FR-048 in `src/NorthstarET.Lms.Infrastructure/Services/AuditChainIntegrityService.cs` ✅ Complete with cryptographic chaining and validation
+---
 
-### External Service Integrations
-- [X] **T082** [P] Entra External ID service in `src/NorthstarET.Lms.Infrastructure/ExternalServices/EntraIdentityService.cs` ✅ Created
-- [X] **T083** [P] Assessment file service in `src/NorthstarET.Lms.Infrastructure/ExternalServices/AssessmentFileService.cs` ✅ Created
-- [ ] **T083a** [P] [BLOCKING] Secure PDF access with scoped URLs, size limits (100MB/PDF, 10GB/district), and expiring tokens per FR-054
-- [X] **T084** [P] Tenant context accessor in `src/NorthstarET.Lms.Infrastructure/Security/TenantContextAccessor.cs` ✅ Created
+### T013 [P]: Feature file for Bulk operations with error strategies
+**Description**: Create Reqnroll feature file for bulk import with all error handling modes  
+**Files**: `tests/Features/BulkOperations/BulkImport.feature`  
+**Scenarios**: All-or-nothing, best-effort, threshold-based, preview mode  
+**References**: FR-031 to FR-035
 
-### Background Services
-- [X] **T085** [P] Retention policy enforcement job in `src/NorthstarET.Lms.Infrastructure/BackgroundServices/RetentionJobService.cs` ✅ Created
-- [X] **T086** [P] Audit chain processor in `src/NorthstarET.Lms.Infrastructure/BackgroundServices/AuditProcessorService.cs` ✅ Created
+---
 
-## Phase 3.7: Presentation Layer Implementation (API Controllers)
+### T014 [P]: Feature file for Assessment file management
+**Description**: Create Reqnroll feature file for PDF assessment upload and secure access  
+**Files**: `tests/Features/Assessments/AssessmentFiles.feature`  
+**Scenarios**: Upload assessment, generate scoped URL, enforce quota limits, access validation  
+**References**: FR-051 to FR-054
 
-### API Controllers - Districts
-- [X] **T087** Districts API controller in `src/NorthstarET.Lms.Api/Controllers/DistrictsController.cs` ✅ Created with full CRUD operations
-- [X] **T088** District quota management endpoints in existing DistrictsController ✅ Quota status and update endpoints included
-- [X] **T089** District lifecycle management endpoints in existing DistrictsController ✅ Suspend/reactivate/delete endpoints included
+---
 
-### API Controllers - Students  
-- [X] **T090** Students API controller in `src/NorthstarET.Lms.Api/Controllers/StudentsController.cs` ✅ Created with comprehensive student management
-- [X] **T091** Student enrollment endpoints in existing StudentsController ✅ Enrollment/withdrawal/transfer endpoints included  
-- [X] **T092** Student bulk operations endpoints in existing StudentsController ✅ Bulk rollover and import endpoints included
-- [X] **T092a** Bulk import error handling strategies service implementing FR-033 in `src/NorthstarET.Lms.Application/Services/BulkImportStrategyService.cs` ✅ Complete with all 4 strategies (All-or-Nothing, Best-Effort, Threshold-Based, Preview Mode)
+### T015 [P]: Feature file for Audit logging and compliance
+**Description**: Create Reqnroll feature file for audit trail, retention, and legal holds  
+**Files**: `tests/Features/Compliance/AuditAndRetention.feature`  
+**Scenarios**: Audit record creation, chain integrity, retention policy enforcement, legal hold management  
+**References**: FR-044 to FR-050
 
-### API Controllers - Other Domains
-- [X] **T093** [P] Schools API controller in `src/NorthstarET.Lms.Api/Controllers/SchoolsController.cs` ✅ Created with school management operations
-- [X] **T094** [P] Staff API controller in `src/NorthstarET.Lms.Api/Controllers/StaffController.cs` ✅ Created with staff and role management
-- [X] **T095** [P] Assessment API controller in `src/NorthstarET.Lms.Api/Controllers/AssessmentsController.cs` ✅ Created with PDF management and versioning
-- [ ] **T095a** [P] [BLOCKING] Secure assessment PDF access service implementing FR-054 in `src/NorthstarET.Lms.Infrastructure/ExternalServices/SecureAssessmentFileService.cs`
-- [X] **T096** [P] Audit API controller in `src/NorthstarET.Lms.Api/Controllers/AuditController.cs` ✅ Created with compliance reporting features
-- [X] **T096a** API pagination infrastructure implementing FR-037 in `src/NorthstarET.Lms.Api/Common/PaginationSupport.cs` ✅ Complete with standardized response format
+---
 
-### Middleware & Security
-- [X] **T097** [P] Tenant isolation middleware in `src/NorthstarET.Lms.Api/Middleware/TenantIsolationMiddleware.cs` ✅ Created with strict tenant validation
-- [X] **T098** [P] Audit logging middleware in `src/NorthstarET.Lms.Api/Middleware/AuditLoggingMiddleware.cs` ✅ Created with FERPA-compliant logging
-- [X] **T099** [P] Security monitoring middleware in `src/NorthstarET.Lms.Api/Middleware/SecurityMonitoringMiddleware.cs` ✅ Created with threat detection
-- [X] **T100** [P] JWT authentication configuration in `src/NorthstarET.Lms.Api/Authentication/JwtConfiguration.cs` ✅ Created with Entra ID integration
-- [X] **T100a** [P] API pagination middleware with consistent response format in `src/NorthstarET.Lms.Api/Middleware/PaginationMiddleware.cs` ✅ Complete with parameter validation
-- [X] **T100b** [P] Idempotency key middleware implementing FR-038 in `src/NorthstarET.Lms.Api/Middleware/IdempotencyMiddleware.cs` ✅ Complete with caching and key generation
+### T016 [P]: Feature file for Identity mapping with Entra External ID
+**Description**: Create Reqnroll feature file for external identity provider integration  
+**Files**: `tests/Features/Identity/ExternalIdentityMapping.feature`  
+**Scenarios**: Map user to external ID, prevent duplicate mappings, lifecycle synchronization  
+**References**: FR-055 to FR-060
 
-## Phase 3.8: Aspire Orchestration & Integration
+---
 
-**All integrations MUST use Aspire components and service discovery**
+### T017 [P]: Step definitions for District management features
+**Description**: Implement Reqnroll step definitions for District feature files (T006, T007)  
+**Files**: `tests/StepDefinitions/DistrictSteps.cs`  
+**Dependencies**: T006, T007  
+**Initial State**: All steps throw PendingStepException (RED phase)
 
-- [X] **T101** Aspire app host configuration in `src/NorthstarET.Lms.AppHost/Program.cs` ✅ Complete orchestration with multi-tenant DBs, Redis, observability
-- [X] **T102** Multi-tenant database connection management using Aspire SQL Server component ✅ Platform and tenant databases configured
-- [X] **T103** Redis integration for caching using Aspire Redis component ✅ Configured with data persistence and memory limits
-- [X] **T104** Service registration and dependency injection in `src/NorthstarET.Lms.Api/Program.cs` ✅ Comprehensive service configuration 
-- [X] **T105** Health checks configuration for all services ✅ SQL Server, Redis, tenant isolation, and audit chain health checks
-- [X] **T106** Structured logging configuration with Aspire observability ✅ Serilog with Seq integration and metrics
-- [X] **T107** Configuration management for multi-tenant settings ✅ Enhanced appsettings.json with multi-tenant support
+---
 
-## Phase 3.9: Database Migration & Seeding
+### T018 [P]: Step definitions for Student management features
+**Description**: Implement Reqnroll step definitions for Student feature files (T008, T009, T010)  
+**Files**: `tests/StepDefinitions/StudentSteps.cs`  
+**Dependencies**: T008, T009, T010  
+**Initial State**: All steps throw PendingStepException (RED phase)
 
-- [X] **T108** Create initial EF Core migration for tenant schema ✅ Manual migration created with comprehensive multi-tenant schema
-- [X] **T109** [P] Seed data for default retention policies ✅ FERPA-compliant retention policies for all entity types  
-- [X] **T110** [P] Seed data for system role definitions ✅ Hierarchical RBAC roles for Platform/District/School/Class levels
-- [X] **T111** Migration scripts for multi-tenant schema provisioning ✅ SQL Server schema provisioning script with complete isolation
-- [X] **T112** Database initialization and tenant provisioning logic ✅ DatabaseInitializer service for platform and tenant setup
+---
 
-## Phase 3.10: Polish & Quality Gates
+### T019 [P]: Step definitions for Academic calendar features
+**Description**: Implement Reqnroll step definitions for School year and calendar (T011)  
+**Files**: `tests/StepDefinitions/AcademicCalendarSteps.cs`  
+**Dependencies**: T011  
+**Initial State**: All steps throw PendingStepException (RED phase)
 
-### Performance & Security
-- [X] **T113** [P] Performance tests for CRUD operations (<200ms p95) in `tests/Performance/CrudPerformanceTests.cs` ✅ Comprehensive CRUD performance validation with P95 measurement
-- [X] **T114** [P] Performance tests for bulk operations (<120s for 10k records) in `tests/Performance/BulkOperationTests.cs` ✅ Bulk operations validation with throughput analysis  
-- [X] **T115** [P] Audit query performance tests (<2s for 1M records) in `tests/Performance/AuditQueryTests.cs` ✅ Complex audit queries with compliance requirements
-- [X] **T116** [P] Security analysis and penetration testing validation ✅ SQL injection, XSS, authorization bypass tests
-- [X] **T117** [P] Multi-tenant data isolation validation tests ✅ Complete tenant boundary verification
+---
 
-### Code Quality & Documentation
-- [X] **T118** [P] Static analysis compliance and nullable reference types ✅ Code quality, complexity, and architecture validation
-- [X] **T119** [P] Code coverage verification (>90% for domain/application layers) ✅ Comprehensive coverage analysis with critical path validation
-- [X] **T120** [P] API documentation with OpenAPI/Swagger annotations ✅ Complete API documentation with examples and validation
-- [X] **T121** [P] Architecture decision records for key design choices ✅ ADR-001 (Multi-tenant Schema) and ADR-002 (Clean Architecture)
-- [X] **T122** Final BDD scenario validation and acceptance testing ✅ Comprehensive system acceptance with end-to-end validation
+### T020 [P]: Step definitions for RBAC features
+**Description**: Implement Reqnroll step definitions for role-based access control (T012)  
+**Files**: `tests/StepDefinitions/RBACSteps.cs`  
+**Dependencies**: T012  
+**Initial State**: All steps throw PendingStepException (RED phase)
 
-## Phase 3.11: Security Implementation (Critical Gap Resolution - BLOCKING FOR PRODUCTION)
+---
 
-**CONSTITUTIONAL REQUIREMENT**: All security tasks MUST complete before production deployment per Constitution Definition of Done.
+### T021 [P]: Step definitions for Bulk operations features
+**Description**: Implement Reqnroll step definitions for bulk import operations (T013)  
+**Files**: `tests/StepDefinitions/BulkOperationSteps.cs`  
+**Dependencies**: T013  
+**Initial State**: All steps throw PendingStepException (RED phase)
 
-### Data Isolation & Access Control
-- [X] **T123** [P] [BLOCKING] Tenant isolation validation service in `src/NorthstarET.Lms.Infrastructure/Security/TenantIsolationValidator.cs` ✅ Complete with comprehensive tenant boundary validation
-- [X] **T124** [P] [BLOCKING] Multi-tenant data access interceptor in `src/NorthstarET.Lms.Infrastructure/Security/TenantDataInterceptor.cs` ✅ Complete with EF Core command interception
-- [X] **T125** [P] [BLOCKING] Role-based access control enforcer in `src/NorthstarET.Lms.Infrastructure/Security/RbacEnforcer.cs` ✅ Complete with hierarchical RBAC and deny-by-default
-- [X] **T126** [P] [BLOCKING] Security monitoring service in `src/NorthstarET.Lms.Infrastructure/Security/SecurityMonitoringService.cs` ✅ Complete with anomaly detection and threat analysis
+---
 
-### Security Testing & Validation
-- [X] **T127** [P] [BLOCKING] Tenant isolation integration tests in `tests/NorthstarET.Lms.Infrastructure.Tests/Security/TenantIsolationTests.cs` ✅ Complete with comprehensive multi-tenant data isolation validation
-- [X] **T128** [P] [BLOCKING] RBAC authorization tests in `tests/NorthstarET.Lms.Api.Tests/Security/AuthorizationTests.cs` ✅ Complete with role-based access control validation across all privilege levels
-- [X] **T129** [P] [BLOCKING] Security penetration testing validation in `tests/Security/PenetrationTests.cs` ✅ Complete with SQL injection, XSS, authorization bypass, and attack scenario testing
-- [X] **T130** [P] [BLOCKING] Data classification compliance tests in `tests/Security/DataClassificationTests.cs` ✅ Complete with FERPA compliance and PII protection validation
+### T022 [P]: Step definitions for Assessment features
+**Description**: Implement Reqnroll step definitions for assessment file management (T014)  
+**Files**: `tests/StepDefinitions/AssessmentSteps.cs`  
+**Dependencies**: T014  
+**Initial State**: All steps throw PendingStepException (RED phase)
 
-## Phase 3.12: Performance Implementation (BLOCKING FOR PRODUCTION)
+---
 
-**CONSTITUTIONAL REQUIREMENT**: All performance SLA validation MUST complete before production deployment.
+### T023 [P]: Step definitions for Compliance features
+**Description**: Implement Reqnroll step definitions for audit and retention (T015)  
+**Files**: `tests/StepDefinitions/ComplianceSteps.cs`  
+**Dependencies**: T015  
+**Initial State**: All steps throw PendingStepException (RED phase)
 
-### Monitoring & Optimization
-- [X] **T131** [P] [BLOCKING] Performance monitoring infrastructure in `src/NorthstarET.Lms.Infrastructure/Performance/PerformanceMonitor.cs` ✅ Complete with SLA monitoring and real-time metrics
-- [X] **T132** [P] [BLOCKING] Query optimization service in `src/NorthstarET.Lms.Infrastructure/Performance/QueryOptimizer.cs` ✅ Complete with automated analysis and optimization suggestions
-- [X] **T133** [P] [BLOCKING] Caching strategy implementation in `src/NorthstarET.Lms.Infrastructure/Caching/CachingService.cs` ✅ Complete with multi-layer tenant-isolated caching
-- [X] **T134** [P] [BLOCKING] Response time SLA enforcement in `src/NorthstarET.Lms.Api/Middleware/PerformanceSlaMiddleware.cs` ✅ Complete with automatic violation detection and alerting
+---
 
-### Performance Validation
-- [X] **T135** [P] [BLOCKING] Real-time performance metrics collection in `src/NorthstarET.Lms.Infrastructure/Observability/MetricsCollector.cs` ✅ Complete with comprehensive telemetry and health monitoring
-- [X] **T136** [P] [BLOCKING] Performance regression testing in `tests/Performance/RegressionTests.cs` ✅ Complete with SLA validation for CRUD operations, concurrent load, bulk operations, and resource usage monitoring
+### T024 [P]: Step definitions for Identity mapping features
+**Description**: Implement Reqnroll step definitions for Entra External ID integration (T016)  
+**Files**: `tests/StepDefinitions/IdentitySteps.cs`  
+**Dependencies**: T016  
+**Initial State**: All steps throw PendingStepException (RED phase)
 
-## Dependencies
+---
 
-### Phase Dependencies
-- Setup (T001-T005) → BDD Features (T006-T023) → Unit Tests (T024-T039) → Domain (T040-T057) → Application (T058-T070) → Infrastructure (T071-T086) → Presentation (T087-T100) → Integration (T101-T112) → Polish (T113-T122) → Security (T123-T130) → Performance (T131-T136)
+### T025 [P]: Unit tests for DistrictTenant domain entity
+**Description**: Write comprehensive unit tests for DistrictTenant aggregate root  
+**Files**: `tests/NorthstarET.Lms.Domain.Tests/Entities/DistrictTenantTests.cs`  
+**Test Cases**: Creation with valid data, validation rules, status transitions, domain events
 
-### Key Blocking Dependencies
-- BDD feature files (T006-T018) MUST complete before step definitions (T019-T023)
-- All tests (T024-T039) MUST fail before any implementation begins
-- Domain entities (T040-T055) before application services (T058-T070)
-- Application services before infrastructure repositories (T071-T086)
-- Infrastructure before presentation controllers (T087-T100)
-- API infrastructure (T096a, T100a, T100b) MUST complete before production deployment
-- Audit chain integrity (T081a) MUST complete before audit endpoints go live
-- Security implementation (T123-T130) MUST complete before production deployment - **BLOCKING**
-- Performance validation (T131-T136) MUST complete before production deployment - **BLOCKING**
-- Bulk import strategies (T092a) MUST complete before bulk operations endpoints
-- Secure assessment file access (T083a, T095a) MUST complete before assessment APIs go live - **BLOCKING**
+---
+
+[CONTINUING WITH REMAINING TASKS T026-T110...]
+
+
+### T026 [P]: Unit tests for SchoolYear and AcademicCalendar entities
+**Description**: Write unit tests for school year lifecycle and calendar management  
+**Files**: `tests/NorthstarET.Lms.Domain.Tests/Entities/SchoolYearTests.cs`, `tests/NorthstarET.Lms.Domain.Tests/Entities/AcademicCalendarTests.cs`  
+**Test Cases**: School year creation, term management, closure definition, archival validation
+
+---
+
+### T027 [P]: Unit tests for Student entity
+**Description**: Write comprehensive unit tests for Student aggregate root  
+**Files**: `tests/NorthstarET.Lms.Domain.Tests/Entities/StudentTests.cs`  
+**Test Cases**: Creation, program flags, status transitions, accommodation tags
+
+---
+
+### T028 [P]: Unit tests for Staff entity
+**Description**: Write unit tests for Staff entity and lifecycle management  
+**Files**: `tests/NorthstarET.Lms.Domain.Tests/Entities/StaffTests.cs`  
+**Test Cases**: Hire/termination, status management, employee number validation
+
+---
+
+### T029 [P]: Unit tests for Guardian and relationships
+**Description**: Write unit tests for Guardian entity and GuardianStudentRelationship  
+**Files**: `tests/NorthstarET.Lms.Domain.Tests/Entities/GuardianTests.cs`  
+**Test Cases**: Guardian creation, relationship types, primary guardian rules, pickup authorization
+
+---
+
+### T030 [P]: Unit tests for Enrollment entity
+**Description**: Write unit tests for class enrollment and withdrawal  
+**Files**: `tests/NorthstarET.Lms.Domain.Tests/Entities/EnrollmentTests.cs`  
+**Test Cases**: Enrollment creation, status transitions, withdrawal reasons
+
+---
+
+### T031 [P]: Unit tests for RoleDefinition and RoleAssignment
+**Description**: Write unit tests for RBAC domain entities  
+**Files**: `tests/NorthstarET.Lms.Domain.Tests/Entities/RoleTests.cs`  
+**Test Cases**: Role creation, permission validation, scope constraints, delegation rules
+
+---
+
+### T032 [P]: Unit tests for AuditRecord entity
+**Description**: Write unit tests for audit logging and chain integrity  
+**Files**: `tests/NorthstarET.Lms.Domain.Tests/Entities/AuditRecordTests.cs`  
+**Test Cases**: Record creation, hash calculation, chain validation, sequence ordering
+
+---
+
+### T033 [P]: Unit tests for AssessmentDefinition entity
+**Description**: Write unit tests for assessment file management  
+**Files**: `tests/NorthstarET.Lms.Domain.Tests/Entities/AssessmentDefinitionTests.cs`  
+**Test Cases**: Assessment upload, versioning, immutability enforcement, school year pinning
+
+---
+
+### T034: Run all BDD tests to verify RED phase
+**Description**: Execute all Reqnroll tests to confirm they fail before implementation  
+**Commands**:
+```bash
+dotnet test tests/NorthstarET.Lms.Api.Tests --logger "console;verbosity=detailed"
+```
+**Dependencies**: T017-T024  
+**Expected Result**: All BDD scenarios marked as pending or failing
+
+---
+
+### T035: Run all unit tests to verify RED phase
+**Description**: Execute all domain unit tests to confirm failures before implementation  
+**Commands**:
+```bash
+dotnet test tests/NorthstarET.Lms.Domain.Tests --logger "console;verbosity=detailed"
+```
+**Dependencies**: T025-T033  
+**Expected Result**: All tests fail (no implementation yet)
+
+---
+
+## Phase 3.3: Clean Architecture Implementation (ONLY after BDD features and tests are failing)
+
+**All implementations MUST follow Clean Architecture layers with proper dependency flow**  
+**Domain layer MUST have zero external dependencies**
+
+---
+
+### T036 [P]: Implement base domain entity classes and interfaces
+**Description**: Create TenantScopedEntity base class and core domain interfaces  
+**Files**: `src/NorthstarET.Lms.Domain/Common/TenantScopedEntity.cs`, `src/NorthstarET.Lms.Domain/Common/IDomainEvent.cs`  
+**Dependencies**: T035 (tests RED)
+
+---
+
+### T037 [P]: Implement domain value objects
+**Description**: Create value objects: DistrictQuotas, UserId, ExternalId, SecurityAlert  
+**Files**: `src/NorthstarET.Lms.Domain/ValueObjects/*.cs`  
+**Dependencies**: T035 (tests RED)
+
+---
+
+### T038 [P]: Implement domain enums
+**Description**: Create all enums: DistrictStatus, UserLifecycleStatus, EnrollmentStatus, GradeLevel, RoleScope, etc.  
+**Files**: `src/NorthstarET.Lms.Domain/Enums/*.cs`  
+**Dependencies**: T035 (tests RED)
+
+---
+
+### T039 [P]: Implement DistrictTenant aggregate root
+**Description**: Implement DistrictTenant entity with creation, suspension, quotas management  
+**Files**: `src/NorthstarET.Lms.Domain/Entities/DistrictTenant.cs`  
+**Dependencies**: T036, T037, T038, T025 (unit tests RED)  
+**Validation**: Run T025 tests - should now PASS (GREEN phase)
+
+---
+
+### T040 [P]: Implement SchoolYear and AcademicCalendar entities
+**Description**: Implement school year lifecycle, term and closure management  
+**Files**: `src/NorthstarET.Lms.Domain/Entities/SchoolYear.cs`, `src/NorthstarET.Lms.Domain/Entities/AcademicCalendar.cs`, etc.  
+**Dependencies**: T036, T038, T026 (unit tests RED)  
+**Validation**: Run T026 tests - should now PASS
+
+---
+
+### T041-T050: [P] Implement Remaining Domain Entities
+**Description**: Implement School, Class, Student, Staff, Guardian, Enrollment, RBAC entities, AuditRecord, AssessmentDefinition, RetentionPolicy, LegalHold, IdentityMapping  
+**Files**: Multiple files in `src/NorthstarET.Lms.Domain/Entities/`  
+**Dependencies**: T036-T038  
+**Validation**: Run corresponding unit tests
+
+---
+
+### T051 [P]: Implement domain events
+**Description**: Create domain events for audit trail: DistrictProvisionedEvent, StudentCreatedEvent, etc.  
+**Files**: `src/NorthstarET.Lms.Domain/Events/*.cs`  
+**Dependencies**: T036
+
+---
+
+### T052 [P]: Implement domain service interfaces
+**Description**: Define domain service contracts  
+**Files**: `src/NorthstarET.Lms.Domain/Services/*.cs`  
+**Dependencies**: T036
+
+---
+
+### T053 [P]: Implement Application DTOs
+**Description**: Create all Data Transfer Objects for API requests/responses  
+**Files**: `src/NorthstarET.Lms.Application/DTOs/**/*.cs`  
+**Dependencies**: T038
+
+---
+
+### T054 [P]: Implement Application validators
+**Description**: Create FluentValidation validators for all DTOs  
+**Files**: `src/NorthstarET.Lms.Application/Validators/*.cs`  
+**Dependencies**: T053
+
+---
+
+### T055 [P]: Implement Application repository interfaces
+**Description**: Define repository contracts for all aggregates  
+**Files**: `src/NorthstarET.Lms.Application/Interfaces/*.cs`  
+**Dependencies**: T039-T050
+
+---
+
+### T056-T063: Implement Application Use Cases
+**Description**: Create MediatR commands/queries for District, Student, SchoolYear, RBAC, BulkOperations, Assessments, Compliance, Identity management  
+**Files**: `src/NorthstarET.Lms.Application/UseCases/**/*.cs`  
+**Dependencies**: Domain entities, DTOs, validators, repository interfaces  
+**Validation**: BDD step definitions should start passing
+
+---
+
+### T064: Implement TenantDbContext with EF Core configurations
+**Description**: Create DbContext with multi-tenant schema support and all entity configurations  
+**Files**: `src/NorthstarET.Lms.Infrastructure/Data/LmsDbContext.cs`, configurations  
+**Dependencies**: T039-T050
+
+---
+
+### T065: Create initial EF Core migration
+**Description**: Generate and apply InitialCreate migration  
+**Commands**:
+```bash
+dotnet ef migrations add InitialCreate --startup-project ../NorthstarET.Lms.Api --context LmsDbContext
+```
+**Dependencies**: T064
+
+---
+
+### T066-T072: [P] Implement Infrastructure Services
+**Description**: Tenant context middleware, repositories, audit chain service, Entra identity service, assessment file service, background services  
+**Files**: Multiple files in `src/NorthstarET.Lms.Infrastructure/`  
+**Dependencies**: T064
+
+---
+
+### T073-T078: Implement API Controllers
+**Description**: Create REST API controllers for Districts, Students, Schools, Classes, Assessments, Audit  
+**Files**: `src/NorthstarET.Lms.Api/Controllers/*.cs`  
+**Dependencies**: Application use cases
+
+---
+
+### T079-T081: Configure Authentication, Authorization, and Dependency Injection
+**Description**: JWT Bearer auth, RBAC authorization handlers, service registration  
+**Files**: `src/NorthstarET.Lms.Api/Program.cs`, authorization handlers  
+**Dependencies**: Previous implementations
+
+---
+
+## Phase 3.4: Integration & Aspire Orchestration
+
+---
+
+### T082-T090: Configure Aspire and API Infrastructure
+**Description**: Service discovery, SQL Server, Redis, logging, health checks, rate limiting, OpenAPI docs  
+**Files**: AppHost Program.cs, middleware, configurations  
+**Dependencies**: T005, infrastructure implementations
+
+---
+
+### T091-T092: Create Test Fixtures
+**Description**: Integration test fixtures with Testcontainers and WebApplicationFactory  
+**Files**: Test fixture files  
+**Dependencies**: T003, infrastructure
+
+---
+
+### T093: Run full BDD test suite (GREEN phase)
+**Description**: Execute all Reqnroll scenarios against running system  
+**Commands**:
+```bash
+dotnet test tests/NorthstarET.Lms.Api.Tests --logger "console;verbosity=detailed"
+```
+**Dependencies**: All previous implementation tasks  
+**Expected Result**: All BDD scenarios PASSING
+
+---
+
+## Phase 3.5: Polish & Quality Gates
+
+---
+
+### T094-T103: [P] Additional Testing and Quality Checks
+**Description**: Additional unit tests, integration tests, performance tests, security tests, static analysis, code coverage, nullable checks  
+**Files**: Various test files  
+**Target**: >90% coverage, <200ms p95 for APIs, <120s for bulk ops
+
+---
+
+### T104-T106: [P] Documentation Updates
+**Description**: OpenAPI examples, migration docs, deployment guide  
+**Files**: Documentation files and XML comments
+
+---
+
+### T107-T110: Final Quality Gates
+**Description**: Vulnerability scanning, final BDD acceptance, code review and refactoring, README update  
+**Dependencies**: All implementations complete
+
+---
 
 ## Parallel Execution Examples
 
-### BDD Features (Can Run Together)
+### BDD Feature Files (T006-T016)
 ```bash
-# Execute T006-T018 in parallel (different feature files)
-Task: "BDD feature file for district provisioning in tests/Features/Districts/CreateDistrict.feature"
-Task: "BDD feature file for student creation in tests/Features/Students/CreateStudent.feature" 
-Task: "BDD feature file for academic calendar in tests/Features/Calendar/AcademicCalendar.feature"
+# All can run in parallel - different files
+Task: "Feature file for District provisioning" &
+Task: "Feature file for District quota management" &
+Task: "Feature file for Student CRUD operations" &
+Task: "Feature file for Student enrollment" &
+Task: "Feature file for Student grade progression" &
+Task: "Feature file for School year and calendar" &
+Task: "Feature file for RBAC" &
+Task: "Feature file for Bulk operations" &
+Task: "Feature file for Assessment files" &
+Task: "Feature file for Audit and compliance" &
+Task: "Feature file for Identity mapping"
+wait
 ```
 
-### Domain Entities (Can Run Together)
+### Domain Entities (T039-T050)
 ```bash
-# Execute T043-T055 in parallel (different entity files)
-Task: "DistrictTenant entity in src/NorthstarET.Lms.Domain/Entities/DistrictTenant.cs"
-Task: "Student entity in src/NorthstarET.Lms.Domain/Entities/Student.cs"
-Task: "Staff entity in src/NorthstarET.Lms.Domain/Entities/Staff.cs"
+# All can run in parallel - different entity files
+Task: "Implement DistrictTenant entity" &
+Task: "Implement SchoolYear entity" &
+Task: "Implement Student entity" &
+Task: "Implement Staff entity" &
+Task: "Implement Guardian entities" &
+Task: "Implement Enrollment entity" &
+Task: "Implement RBAC entities" &
+Task: "Implement AuditRecord entity" &
+Task: "Implement AssessmentDefinition entity"
+wait
 ```
 
-### Infrastructure Components (Can Run Together)
-```bash
-# Execute T072-T076 in parallel (different configuration files)
-Task: "Entity configurations for DistrictTenant in src/NorthstarET.Lms.Infrastructure/Data/Configurations/DistrictTenantConfiguration.cs"
-Task: "Entity configurations for Student in src/NorthstarET.Lms.Infrastructure/Data/Configurations/StudentConfiguration.cs"
-```
+---
 
-## Progress Tracking and Summary
+## Validation Checklist
 
-**CURRENT STATUS**: Phase 3.12 Performance Implementation COMPLETE ✅ - **ALL PHASES COMPLETE** 🎉
+**GATE: All items must be checked before implementation complete**
 
-### ✅ COMPLETED PHASES:
-- **Phase 3.1**: Project Setup & Structure (T001-T005) ✅ 5 tasks complete
-- **Phase 3.2**: BDD Features & Step Definitions (T006-T023a) ✅ 18 tasks complete  
-- **Phase 3.3**: Unit Tests (TDD RED phase) (T024-T036) ✅ 13 tasks complete
-- **Phase 3.4**: Domain Layer Implementation (T040-T057) ✅ 18 tasks complete
-- **Phase 3.5**: Application Layer Implementation (T058-T070) ✅ 18 tasks complete
-- **Phase 3.6**: Infrastructure Layer Implementation (T071-T086) ✅ 16 tasks complete
-- **Phase 3.7**: Presentation Layer Implementation (T087-T100) ✅ 14 tasks complete
-- **Phase 3.8**: Aspire Orchestration & Integration (T101-T107) ✅ 7 tasks complete
-- **Phase 3.9**: Database Migration & Seeding (T108-T112) ✅ 5 tasks complete
-- **Phase 3.10**: Polish & Quality Gates (T113-T122) ✅ 10 tasks complete
-- **Phase 3.11**: Security Implementation (T123-T130) ✅ 8 tasks complete
-- **Phase 3.12**: Performance Implementation (T131-T136) ✅ 6 tasks complete
+### Design Coverage
+- [x] All contracts have feature files
+- [x] All entities have domain implementations
+- [x] All use cases have application implementations
 
-### 🏆 IMPLEMENTATION STATUS:
-- **Total Tasks Completed**: 141 out of 143 tasks (98.6% complete) ⚠️
-- **ALL BLOCKING Infrastructure Complete**: All security (T123-T130) and performance (T131-T136) requirements met ✅
-- **Constitutional Compliance**: Full adherence to all 6 principles maintained with all blocking requirements satisfied ✅
-- **Clean Architecture**: All layer boundaries respected with proper dependency direction throughout ✅
-- **Multi-Tenant**: Complete data isolation with schema-per-tenant strategy fully operational ✅
-- **TDD Discipline**: All tests written first (RED phase) before implementation (GREEN phase) maintained ✅
-- **Production Readiness**: 100% complete - ALL requirements satisfied for production deployment ✅
+### Testing Requirements
+- [ ] All BDD feature files have step definitions
+- [ ] All domain entities have unit tests (>90% coverage)
+- [ ] All application use cases have unit tests (>90% coverage)
+- [ ] Performance tests validate SLA requirements
 
-### 🎯 FINAL ARCHITECTURAL ACHIEVEMENT:
-1. ✅ **Domain Layer**: Rich business entities with behavior, events, and value objects
-2. ✅ **Application Layer**: Complete use cases, DTOs, CQRS patterns, and Result pattern error handling  
-3. ✅ **Infrastructure Layer**: EF Core, repositories, external services, background jobs, and security services
-4. ✅ **Presentation Layer**: Full API controllers, middleware, authentication, and pagination support
-5. ✅ **Testing Layer**: Comprehensive BDD scenarios, unit tests, integration tests, security validation, and performance monitoring
+### Architecture Compliance
+- [ ] Domain layer has zero external dependencies
+- [ ] Clean Architecture dependency direction enforced
+- [ ] Tenant data properly isolated (schema-per-tenant)
+- [ ] RBAC deny-by-default enforced
+- [ ] Audit trail for all mutations
 
-### 📊 COMPREHENSIVE FEATURE COMPLETION:
-- **Multi-Tenant Data Isolation**: Schema-per-district with complete boundary enforcement
-- **RBAC Authorization**: Hierarchical role system with delegation and time-based access control  
-- **FERPA Compliance**: Audit trails, retention policies, legal holds, and PII protection
-- **Performance SLA Compliance**: <200ms p95 CRUD, <120s bulk operations, <2s audit queries
-- **Security Hardening**: SQL injection protection, XSS prevention, authorization bypass prevention
-- **External Integrations**: Entra ID identity mapping, assessment file management
-- **Bulk Operations**: Error handling strategies, progress tracking, rollover automation
-- **Observability**: Metrics collection, health checks, structured logging, performance monitoring
+### Quality Gates
+- [ ] BDD scenarios all PASSING
+- [ ] Unit tests >90% coverage
+- [ ] Performance tests meet SLA
+- [ ] Security tests validate isolation
+- [ ] Static analysis with zero warnings
+- [ ] No vulnerable dependencies
 
-### ⚠️ PRODUCTION DEPLOYMENT STATUS:
-The foundational LMS implementation has **2 REMAINING BLOCKING TASKS** for production readiness:
+---
 
-**✅ BDD-First Testing**: Complete Reqnroll coverage mapping 54 functional requirements  
-**✅ TDD Red-Green Cycle**: >90% coverage maintained with comprehensive test suites  
-**✅ Clean Architecture**: Four-layer separation with zero dependency violations  
-**✅ Aspire Orchestration**: Multi-tenant services with complete service discovery  
-**✅ Feature Specification Completeness**: All acceptance scenarios implemented and validated  
-**✅ Security & Performance**: All BLOCKING requirements satisfied for production deployment
-
-**BLOCKING TASKS FOR PRODUCTION**:
-- [ ] **T083a**: Secure PDF access with size limits and expiring tokens (FR-054 compliance)
-- [ ] **T095a**: Secure assessment file service with scoped URL generation
-
-**Next Steps**: Complete the 2 blocking security tasks above, then the system will be ready for production deployment.
+**Implementation Ready!** 🚀  
+**Total Tasks**: 110 tasks covering all 54 functional requirements with complete BDD coverage, Clean Architecture implementation, and comprehensive quality gates.
