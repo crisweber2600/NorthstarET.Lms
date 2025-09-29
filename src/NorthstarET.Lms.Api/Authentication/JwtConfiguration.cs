@@ -332,6 +332,8 @@ public class TenantClaimsProvider : ITenantClaimsProvider
 
     public async Task<IEnumerable<Claim>> GetTenantClaimsAsync(string userId, string externalId)
     {
+        await Task.CompletedTask; // This will be async when database lookup is implemented
+        
         var claims = new List<Claim>();
 
         try
