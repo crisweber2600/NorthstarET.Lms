@@ -21,7 +21,7 @@ public class AuditRecordConfiguration : IEntityTypeConfiguration<AuditRecord>
             .HasMaxLength(100);
             
         builder.Property(ar => ar.EntityId)
-            .IsRequired(false);
+            .IsRequired();
             
         builder.Property(ar => ar.UserId)
             .IsRequired()

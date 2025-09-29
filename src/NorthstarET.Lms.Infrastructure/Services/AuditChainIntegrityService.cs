@@ -169,8 +169,8 @@ public class AuditChainIntegrityService : IAuditChainIntegrityService
             {
                 SequenceNumber = r.SequenceNumber,
                 Timestamp = r.Timestamp,
-                RecordHash = r.RecordHash,
-                PreviousRecordHash = r.PreviousRecordHash,
+                RecordHash = r.RecordHash ?? string.Empty,
+                PreviousRecordHash = r.PreviousRecordHash ?? string.Empty,
                 EntityType = r.EntityType,
                 EntityId = r.EntityId.ToString(),
                 Action = r.Action,
