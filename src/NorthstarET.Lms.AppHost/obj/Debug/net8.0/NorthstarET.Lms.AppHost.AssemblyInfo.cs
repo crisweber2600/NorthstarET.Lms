@@ -11,22 +11,23 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("c0ac866c-17e1-4a0e-b7e5-decad92f2313")]
-[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("C:\\Users\\CrisWeber\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.0\\too" +
-    "ls\\dcp.exe"))]
-[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("C:\\Users\\CrisWeber\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.0\\too" +
-    "ls\\ext\\"))]
-[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", ("C:\\Users\\CrisWeber\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.5.0\\too" +
-    "ls\\ext\\bin\\"))]
-[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.AppHost")]
+[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("/home/runner/.nuget/packages/aspire.hosting.orchestration.linux-x64/9.5.0/tools/d" +
+    "cp"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("/home/runner/.nuget/packages/aspire.hosting.orchestration.linux-x64/9.5.0/tools/e" +
+    "xt/"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", ("/home/runner/.nuget/packages/aspire.hosting.orchestration.linux-x64/9.5.0/tools/e" +
+    "xt/bin/"))]
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/src/NorthstarET.Lms.AppHost")]
 [assembly: System.Reflection.AssemblyMetadata("apphostprojectname", "NorthstarET.Lms.AppHost.csproj")]
-[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("C:\\Users\\CrisWeber\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\9.5.0\\tools\\Aspir" +
-    "e.Dashboard.exe"))]
-[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", "D:\\specify\\NorthstarET.Lms\\src\\NorthstarET.Lms.AppHost\\obj\\")]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("/home/runner/.nuget/packages/aspire.dashboard.sdk.linux-x64/9.5.0/tools/Aspire.Da" +
+    "shboard"))]
+[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", ("/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/src/NorthstarET.Lms.AppHost/obj" +
+    "/"))]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Northstar Educational Technologies")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © 2024 Northstar Educational Technologies")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+612a08194c3a10a2f744f35e86e491ed5e3d71d2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c8387b5ba0ec5ff977e2af71ccd84817c24c1b6")]
 [assembly: System.Reflection.AssemblyProductAttribute("Northstar LMS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NorthstarET.Lms.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
