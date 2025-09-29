@@ -1,0 +1,103 @@
+openapi: 3.1.0
+info:
+  title: District Provisioning API
+  version: 0.1.0
+paths:
+  /api/v1/districts:
+    post:
+      summary: Provision a new school district
+      description: PlatformAdmin-only operation that creates a tenant with default quotas and grants DistrictAdmin role to the creator.
+      operationId: createDistrict
+      tags: [Districts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDistrictRequest"
+      responses:
+        "201":
+          description: District created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DistrictSummary"
+        "409":
+          description: Slug already exists
+        "422":
+          description: Validation error
+  /api/v1/districts/{slug}/status:
+    patch:
+      summary: Update district lifecycle status
+      description: Activate, suspend, reactivate, or delete a district with retention/legal hold validation.
+      operationId: updateDistrictStatus
+      tags: [Districts]
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDistrictStatusRequest"
+      responses:
+        "202":
+          description: Status update accepted
+        "409":
+          description: Retention or legal hold prevents deletion
+components:
+  schemas:
+    CreateDistrictRequest:
+      type: object
+      required: [slug, displayName]
+      properties:
+        slug:
+          type: string
+          pattern: "^[a-z0-9-]+$"
+        displayName:
+          type: string
+          maxLength: 150
+        quotaOverrides:
+          type: object
+          additionalProperties:
+            type: integer
+    DistrictSummary:
+      type: object
+      required: [id, slug, displayName, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        displayName:
+          type: string
+        status:
+          type: string
+          enum: [Active, Suspended, Deleted]
+        quotas:
+          type: object
+          properties:
+            students:
+              type: integer
+            staff:
+              type: integer
+            admins:
+              type: integer
+        createdAt:
+          type: string
+          format: date-time
+    UpdateDistrictStatusRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [Activate, Suspend, Reactivate, Delete]
+        reason:
+          type: string
+          maxLength: 250

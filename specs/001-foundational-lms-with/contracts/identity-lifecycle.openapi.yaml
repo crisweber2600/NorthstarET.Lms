@@ -1,0 +1,92 @@
+openapi: 3.1.0
+info:
+  title: Identity Lifecycle API
+  version: 0.1.0
+paths:
+  /api/v1/identities/mappings:
+    post:
+      summary: Map an internal user to Entra External ID
+      operationId: mapIdentity
+      tags: [Identity]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MapIdentityRequest"
+      responses:
+        "201":
+          description: Mapping created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdentityMapping"
+        "409":
+          description: Duplicate external identity detected
+  /api/v1/identities/{mappingId}/events:
+    post:
+      summary: Record lifecycle event (join, suspend, reinstate, leave)
+      operationId: recordLifecycleEvent
+      tags: [Identity]
+      parameters:
+        - name: mappingId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LifecycleEventRequest"
+      responses:
+        "202":
+          description: Event enqueued for processing
+components:
+  schemas:
+    MapIdentityRequest:
+      type: object
+      required: [internalUserId, externalId, issuer]
+      properties:
+        internalUserId:
+          type: string
+          format: uuid
+        externalId:
+          type: string
+        issuer:
+          type: string
+          enum: [MicrosoftEntraExternalId]
+    IdentityMapping:
+      type: object
+      required: [id, internalUserId, externalId, issuer, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        internalUserId:
+          type: string
+        externalId:
+          type: string
+        issuer:
+          type: string
+        status:
+          type: string
+          enum: [Active, Suspended]
+        mappedAt:
+          type: string
+          format: date-time
+    LifecycleEventRequest:
+      type: object
+      required: [eventType, occurredAt]
+      properties:
+        eventType:
+          type: string
+          enum: [Join, Suspend, Reinstate, Leave]
+        occurredAt:
+          type: string
+          format: date-time
+        notes:
+          type: string
+          maxLength: 250

@@ -1,0 +1,75 @@
+openapi: 3.1.0
+info:
+  title: Academic Calendar API
+  version: 0.1.0
+paths:
+  /api/v1/school-years/{schoolYearId}/calendar:
+    put:
+      summary: Define or update academic calendar terms and closures
+      operationId: upsertAcademicCalendar
+      tags: [AcademicCalendar]
+      parameters:
+        - name: schoolYearId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcademicCalendarRequest"
+      responses:
+        "200":
+          description: Calendar saved
+        "409":
+          description: Overlapping terms detected
+        "422":
+          description: Term range outside SchoolYear bounds
+components:
+  schemas:
+    AcademicCalendarRequest:
+      type: object
+      required: [terms]
+      properties:
+        terms:
+          type: array
+          items:
+            $ref: "#/components/schemas/Term"
+        closures:
+          type: array
+          items:
+            $ref: "#/components/schemas/Closure"
+    Term:
+      type: object
+      required: [id, name, startDate, endDate]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+    Closure:
+      type: object
+      required: [id, name, startDate, endDate]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        reason:
+          type: string
+          maxLength: 200

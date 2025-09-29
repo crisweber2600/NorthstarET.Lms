@@ -1,0 +1,139 @@
+openapi: 3.1.0
+info:
+  title: Compliance & Audit API
+  version: 0.1.0
+paths:
+  /api/v1/audit/records:
+    get:
+      summary: Query audit records by filter criteria
+      operationId: queryAuditRecords
+      tags: [Compliance]
+      parameters:
+        - name: actorId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: entityType
+          in: query
+          schema:
+            type: string
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: schoolYearId
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Audit results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuditPage"
+  /api/v1/legal-holds:
+    post:
+      summary: Apply a legal hold to an entity
+      operationId: applyLegalHold
+      tags: [Compliance]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApplyLegalHoldRequest"
+      responses:
+        "201":
+          description: Legal hold applied
+  /api/v1/retention/policies:
+    put:
+      summary: Override retention policy for an entity type
+      operationId: upsertRetentionPolicy
+      tags: [Compliance]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertRetentionPolicyRequest"
+      responses:
+        "200":
+          description: Policy updated
+components:
+  schemas:
+    AuditPage:
+      type: object
+      required: [items, page, size, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuditRecord"
+        page:
+          type: integer
+        size:
+          type: integer
+        total:
+          type: integer
+    AuditRecord:
+      type: object
+      required:
+        [id, timestamp, actorId, action, entityType, entityId, currentHash]
+      properties:
+        id:
+          type: string
+          format: uuid
+        timestamp:
+          type: string
+          format: date-time
+        actorId:
+          type: string
+          format: uuid
+        action:
+          type: string
+        entityType:
+          type: string
+        entityId:
+          type: string
+        correlationId:
+          type: string
+        previousHash:
+          type: string
+        currentHash:
+          type: string
+    ApplyLegalHoldRequest:
+      type: object
+      required: [entityType, entityId, reason]
+      properties:
+        entityType:
+          type: string
+        entityId:
+          type: string
+        reason:
+          type: string
+          maxLength: 250
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+    UpsertRetentionPolicyRequest:
+      type: object
+      required: [entityType, retentionYears]
+      properties:
+        entityType:
+          type: string
+        retentionYears:
+          type: integer
+          minimum: 1
+        gracePeriodDays:
+          type: integer
+          default: 30

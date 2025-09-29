@@ -1,10 +1,10 @@
+# Implementation Plan: Foundational LMS with Tenant Isolation and Compliance
 
-# Implementation Plan: [FEATURE]
-
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Branch**: `001-foundational-lms-with` | **Date**: 2025-09-29 | **Spec**: [`specs/001-foundational-lms-with/spec.md`](../001-foundational-lms-with/spec.md)
+**Input**: Feature specification from `specs/001-foundational-lms-with/spec.md`
 
 ## Execution Flow (/plan command scope)
+
 ```
 1. Load feature spec from Input path
    → If not found: ERROR "No feature spec at {path}"
@@ -27,41 +27,48 @@
 ```
 
 **IMPORTANT**: The /plan command STOPS at step 7. Phases 2-4 are executed by other commands:
+
 - Phase 2: /tasks command creates tasks.md
 - Phase 3-4: Implementation execution (manual or via tools)
 
 ## Summary
-[Extract from feature spec: primary requirement + technical approach from research]
+
+Deliver a multi-tenant K-12 LMS that enforces per-district isolation, FERPA-aligned retention, comprehensive RBAC, and auditable operations using a .NET 9 Clean Architecture stack orchestrated through .NET Aspire. The system exposes REST APIs for district provisioning, identity lifecycle, academic calendars, role assignments, enrollments, and assessments while guaranteeing audit traceability and performance SLAs.
 
 ## Technical Context
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+
+**Language/Version**: C# 13 / .NET 9.0  
+**Primary Dependencies**: ASP.NET Core Minimal APIs, EF Core 9 (SQL Server provider), .NET Aspire, MediatR, Reqnroll, xUnit, FluentAssertions, Testcontainers  
+**Storage**: SQL Server 2022 with per-district schemas and blob storage for assessment PDFs  
+**Testing**: Reqnroll (BDD), xUnit (unit/integration), FluentAssertions, Testcontainers, Playwright (contract smoke)  
+**Target Platform**: Containerized Linux workloads orchestrated via .NET Aspire  
+**Project Type**: Single solution (backend-focused Clean Architecture with layered projects)  
+**Performance Goals**: CRUD 95th percentile <200ms; bulk ops (10k rows) <120s; audit queries <2s @ 1M rows  
+**Constraints**: Tenant isolation, FERPA retention (Students 7y, Staff 5y, Assessments 3y), 100MB max PDF, 10GB district storage, deny-by-default RBAC, tamper-evident audits  
+**Scale/Scope**: 1-5 platform admins, up to 200 districts, 50k students & 5k staff per district, peak 500 concurrent staff actions
 
 ## Constitution Check
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-**BDD-First Testing**: Are complete Reqnroll feature files with scenarios written before any code? Step definitions MUST be implemented first and fail.
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-**TDD Red-Green Cycle**: Will tests be written first and shown to fail before implementation? Red-Green-Refactor cycle MUST be strictly enforced with >90% coverage.
+**BDD-First Testing**: Every functional requirement will be expressed as Reqnroll feature files before any implementation. Step definitions will be added to the BDD test project and intentionally assert `PendingStep` until domain/application logic exists, guaranteeing a failing red state.
 
-**Clean Architecture**: Does design maintain proper layer separation (Domain → Application → Infrastructure → Presentation)? Domain layer MUST have zero external dependencies.
+**TDD Red-Green Cycle**: Unit and integration projects will receive failing tests (xUnit + FluentAssertions) derived from BDD scenarios prior to coding. Coverage dashboards will guard >90% in Domain/Application and refactoring steps are limited to green builds only.
 
-**Aspire Orchestration**: Are services orchestrated using .NET Aspire? Service discovery, configuration, and health checks MUST use Aspire abstractions.
+**Clean Architecture**: Planned solution splits Domain, Application, Infrastructure, and Presentation projects with compile-time enforcement via project references. Domain remains dependency-free; application depends only on domain; infrastructure depends on application for abstractions; presentation depends on infrastructure.
 
-**Feature Specification Completeness**: Is there a complete specification with user scenarios, acceptance criteria, and edge cases? All requirements MUST be testable and unambiguous.
+**Aspire Orchestration**: Aspire AppHost will coordinate API, worker jobs, SQL Server, and blob emulator. Service discovery, configuration, and health checks leverage Aspire components (`SqlServerServerResource`, `Aspire.Hosting`).
+
+**Feature Specification Completeness**: The provided spec includes clarified requirements, acceptance scenarios, edge cases, and constraints. No outstanding clarifications remain, so planning proceeds under approved scope.
 
 ## Project Structure
 
+src/
+
 ### Documentation (this feature)
+
 ```
-specs/[###-feature]/
+specs/001-foundational-lms-with/
 ├── plan.md              # This file (/plan command output)
 ├── research.md          # Phase 0 output (/plan command)
 ├── data-model.md        # Phase 1 output (/plan command)
@@ -71,58 +78,62 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
+
 ```
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+
+├── Domain/
+│   ├── Entities/
+│   ├── ValueObjects/
+│   ├── Events/
+│   └── Services/
+├── Application/
+│   ├── Abstractions/
+│   ├── Commands/
+│   ├── Queries/
+│   ├── DTOs/
+│   └── Validators/
+├── Infrastructure/
+│   ├── Persistence/
+│   │   ├── Configurations/
+│   │   └── Migrations/
+│   ├── Identity/
+│   ├── Files/
+│   ├── Audit/
+│   └── BackgroundJobs/
+└── Presentation/
+      ├── Api/
+      │   ├── Controllers/
+      │   ├── Contracts/
+      │   └── Filters/
+      ├── Aspire/
+      │   └── AppHost/
+      └── CompositionRoot/
 
 tests/
-├── contract/
-├── integration/
-└── unit/
+├── Domain/
+├── Application/
+├── Infrastructure/
+├── Presentation/
+└── Bdd/
+      ├── Features/
+      └── StepDefinitions/
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+build/
+└── pipelines/
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Single .NET solution with Clean Architecture layering; ASP.NET Core APIs, background workers, and supporting jobs orchestrated by a shared Aspire AppHost. Testing projects mirror layer boundaries plus BDD suite for Reqnroll.
 
 ## Phase 0: Outline & Research
+
 1. **Extract unknowns from Technical Context** above:
+
    - For each NEEDS CLARIFICATION → research task
    - For each dependency → best practices task
    - For each integration → patterns task
 
 2. **Generate and dispatch research agents**:
+
    ```
    For each unknown in Technical Context:
      Task: "Research {unknown} for {feature context}"
@@ -135,29 +146,33 @@ directories captured above]
    - Rationale: [why chosen]
    - Alternatives considered: [what else evaluated]
 
-**Output**: research.md with all NEEDS CLARIFICATION resolved
+**Output**: research.md with all NEEDS CLARIFICATION resolved and technology choices justified (multi-tenant EF Core strategy, audit hashing, bulk job orchestration, retention pipeline, Entra External ID integration)
 
 ## Phase 1: Design & Contracts
-*Prerequisites: research.md complete*
+
+_Prerequisites: research.md complete_
 
 1. **Extract entities from feature spec** → `data-model.md`:
+
    - Entity name, fields, relationships
    - Validation rules from requirements
    - State transitions if applicable
 
 2. **Generate API contracts** from functional requirements:
-   - For each user action → endpoint
-   - Use standard REST/GraphQL patterns
-   - Output OpenAPI/GraphQL schema to `/contracts/`
+
+   - RESTful endpoints grouped by bounded contexts (DistrictProvisioning, IdentityLifecycle, AcademicCalendar, RBAC, Enrollment, Assessments, Compliance)
+   - Define request/response schemas with tenant-implicit context
+   - Output segmented OpenAPI fragments (`contracts/{context}.openapi.yaml`)
 
 3. **Generate contract tests** from contracts:
-   - One test file per endpoint
-   - Assert request/response schemas
-   - Tests must fail (no implementation yet)
+
+   - Create placeholder Reqnroll-ready contract smoke tests in `tests/Bdd/Features` and xUnit contract approval tests in `tests/Presentation`
+   - Each test asserts schema presence using `Assert.Fail("Pending implementation")`
 
 4. **Extract test scenarios** from user stories:
-   - Each story → integration test scenario
-   - Quickstart test = story validation steps
+
+   - Translate seven acceptance scenarios into QuickStart flow verifying high-level API interactions
+   - Capture bulk rollover, legal hold, and security alert detection as dedicated walkthrough steps
 
 5. **Update agent file incrementally** (O(1) operation):
    - Run `.specify/scripts/bash/update-agent-context.sh copilot`
@@ -168,21 +183,24 @@ directories captured above]
    - Keep under 150 lines for token efficiency
    - Output to repository root
 
-**Output**: data-model.md, /contracts/*, failing tests, quickstart.md, agent-specific file
+**Output**: data-model.md, /contracts/\*, failing tests, quickstart.md, agent-specific file
 
 ## Phase 2: Task Planning Approach
-*This section describes what the /tasks command will do - DO NOT execute during /plan*
+
+_This section describes what the /tasks command will do - DO NOT execute during /plan_
 
 **Task Generation Strategy**:
+
 - Load `.specify/templates/tasks-template.md` as base
 - Generate tasks from Phase 1 design docs (contracts, data model, quickstart)
 - Each contract → contract test task [P]
-- Each entity → model creation task [P] 
+- Each entity → model creation task [P]
 - Each user story → integration test task
 - Implementation tasks to make tests pass
 
 **Ordering Strategy**:
-- TDD order: Tests before implementation 
+
+- TDD order: Tests before implementation
 - Dependency order: Models before services before UI
 - Mark [P] for parallel execution (independent files)
 
@@ -191,37 +209,41 @@ directories captured above]
 **IMPORTANT**: This phase is executed by the /tasks command, NOT by /plan
 
 ## Phase 3+: Future Implementation
-*These phases are beyond the scope of the /plan command*
+
+_These phases are beyond the scope of the /plan command_
 
 **Phase 3**: Task execution (/tasks command creates tasks.md)  
 **Phase 4**: Implementation (execute tasks.md following constitutional principles)  
 **Phase 5**: Validation (run tests, execute quickstart.md, performance validation)
 
 ## Complexity Tracking
-*Fill ONLY if Constitution Check has violations that must be justified*
+
+_Fill ONLY if Constitution Check has violations that must be justified_
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
-
+| --------- | ---------- | ------------------------------------ |
+| _None_    | —          | —                                    |
 
 ## Progress Tracking
-*This checklist is updated during execution flow*
+
+_This checklist is updated during execution flow_
 
 **Phase Status**:
-- [ ] Phase 0: Research complete (/plan command)
-- [ ] Phase 1: Design complete (/plan command)
+
+- [x] Phase 0: Research complete (/plan command)
+- [x] Phase 1: Design complete (/plan command)
 - [ ] Phase 2: Task planning complete (/plan command - describe approach only)
 - [ ] Phase 3: Tasks generated (/tasks command)
 - [ ] Phase 4: Implementation complete
 - [ ] Phase 5: Validation passed
 
 **Gate Status**:
-- [ ] Initial Constitution Check: PASS
-- [ ] Post-Design Constitution Check: PASS
-- [ ] All NEEDS CLARIFICATION resolved
-- [ ] Complexity deviations documented
+
+- [x] Initial Constitution Check: PASS
+- [x] Post-Design Constitution Check: PASS
+- [x] All NEEDS CLARIFICATION resolved
+- [x] Complexity deviations documented
 
 ---
-*Based on Constitution v1.0.0 - See `.specify/memory/constitution.md`*
+
+_Based on Constitution v1.0.0 - See `.specify/memory/constitution.md`_

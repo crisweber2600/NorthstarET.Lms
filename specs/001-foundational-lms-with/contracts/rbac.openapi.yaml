@@ -1,0 +1,134 @@
+openapi: 3.1.0
+info:
+  title: RBAC Management API
+  version: 0.1.0
+paths:
+  /api/v1/roles:
+    post:
+      summary: Create a role definition within a district
+      operationId: createRoleDefinition
+      tags: [RBAC]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRoleDefinitionRequest"
+      responses:
+        "201":
+          description: Role definition created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDefinition"
+  /api/v1/roles/{roleId}/assignments:
+    post:
+      summary: Assign a role to a user with scope predicates
+      operationId: assignRole
+      tags: [RBAC]
+      parameters:
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRoleAssignmentRequest"
+      responses:
+        "201":
+          description: Assignment created
+        "409":
+          description: Duplicate active assignment
+  /api/v1/assignments/{assignmentId}/delegations:
+    post:
+      summary: Delegate a role temporarily
+      operationId: delegateRole
+      tags: [RBAC]
+      parameters:
+        - name: assignmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DelegateRoleRequest"
+      responses:
+        "202":
+          description: Delegation activated
+components:
+  schemas:
+    CreateRoleDefinitionRequest:
+      type: object
+      required: [name, permissions]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        scopes:
+          type: array
+          items:
+            type: string
+            enum: [District, School, Class, SchoolYear]
+    RoleDefinition:
+      type: object
+      required: [id, name, permissions]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        scopes:
+          type: array
+          items:
+            type: string
+    CreateRoleAssignmentRequest:
+      type: object
+      required: [userId]
+      properties:
+        userId:
+          type: string
+          format: uuid
+        schoolId:
+          type: string
+          format: uuid
+          nullable: true
+        classId:
+          type: string
+          format: uuid
+          nullable: true
+        schoolYearId:
+          type: string
+          format: uuid
+          nullable: true
+    DelegateRoleRequest:
+      type: object
+      required: [delegateUserId, expiresAt]
+      properties:
+        delegateUserId:
+          type: string
+          format: uuid
+        expiresAt:
+          type: string
+          format: date-time

@@ -1,0 +1,99 @@
+openapi: 3.1.0
+info:
+  title: Enrollment Management API
+  version: 0.1.0
+paths:
+  /api/v1/classes/{classId}/enrollments:
+    post:
+      summary: Enroll a student into a class within a SchoolYear
+      operationId: enrollStudent
+      tags: [Enrollment]
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnrollStudentRequest"
+      responses:
+        "201":
+          description: Enrollment created
+        "409":
+          description: Duplicate active enrollment
+  /api/v1/bulk/enrollments/rollover:
+    post:
+      summary: Initiate grade-level bulk rollover with configurable strategy
+      operationId: startBulkRollover
+      tags: [Bulk]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkRolloverRequest"
+      responses:
+        "202":
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkJobStatus"
+components:
+  schemas:
+    EnrollStudentRequest:
+      type: object
+      required: [studentId, schoolYearId, status]
+      properties:
+        studentId:
+          type: string
+          format: uuid
+        schoolYearId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [Active, Transferred, Withdrawn]
+        entryDate:
+          type: string
+          format: date
+    BulkRolloverRequest:
+      type: object
+      required: [fromGrade, toGrade, schoolYearId, mode]
+      properties:
+        fromGrade:
+          type: string
+        toGrade:
+          type: string
+        schoolYearId:
+          type: string
+          format: uuid
+        previewOnly:
+          type: boolean
+          default: false
+        mode:
+          type: string
+          enum: [AllOrNothing, BestEffort, Threshold]
+        thresholdPercentage:
+          type: number
+          minimum: 1
+          maximum: 25
+    BulkJobStatus:
+      type: object
+      required: [jobId, status]
+      properties:
+        jobId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [Accepted, Running, Completed, Failed]
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100

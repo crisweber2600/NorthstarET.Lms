@@ -1,0 +1,143 @@
+openapi: 3.1.0
+info:
+  title: Assessment Management API
+  version: 0.1.0
+paths:
+  /api/v1/assessments:
+    post:
+      summary: Create a new assessment definition with optional SchoolYear pinning
+      operationId: createAssessment
+      tags: [Assessments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAssessmentRequest"
+      responses:
+        "201":
+          description: Assessment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssessmentSummary"
+        "413":
+          description: File exceeds 100MB limit
+    get:
+      summary: List assessments with pagination
+      operationId: listAssessments
+      tags: [Assessments]
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: size
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        "200":
+          description: Paginated assessments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssessmentPage"
+  /api/v1/assessments/{assessmentId}/file:
+    post:
+      summary: Upload assessment PDF and return scoped URL
+      operationId: uploadAssessmentFile
+      tags: [Assessments]
+      parameters:
+        - name: assessmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: File stored with scoped URL returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScopedUrlResponse"
+        "403":
+          description: Unauthorized to upload PDF
+components:
+  schemas:
+    CreateAssessmentRequest:
+      type: object
+      required: [title, subject, version]
+      properties:
+        title:
+          type: string
+        subject:
+          type: string
+        version:
+          type: integer
+        gradeLevels:
+          type: array
+          items:
+            type: string
+        pinnedSchoolYearId:
+          type: string
+          format: uuid
+          nullable: true
+    AssessmentSummary:
+      type: object
+      required: [id, title, version]
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        subject:
+          type: string
+        version:
+          type: integer
+        pinnedSchoolYearId:
+          type: string
+          format: uuid
+          nullable: true
+    AssessmentPage:
+      type: object
+      required: [items, page, size, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssessmentSummary"
+        page:
+          type: integer
+        size:
+          type: integer
+        total:
+          type: integer
+    ScopedUrlResponse:
+      type: object
+      required: [url, expiresAt]
+      properties:
+        url:
+          type: string
+          format: uri
+        expiresAt:
+          type: string
+          format: date-time
