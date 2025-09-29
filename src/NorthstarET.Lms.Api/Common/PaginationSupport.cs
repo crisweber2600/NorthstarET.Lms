@@ -1,4 +1,4 @@
-using NorthstarET.Lms.Application.Common;
+using NorthstarET.Lms.Application.Interfaces;
 
 namespace NorthstarET.Lms.Api.Common;
 

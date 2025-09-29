@@ -255,6 +255,12 @@ public class CreateDistrictDto
     public DistrictQuotasDto? Quotas { get; set; }
 }
 
+public class UpdateDistrictDto
+{
+    public string? DisplayName { get; set; }
+    public DistrictQuotasDto? Quotas { get; set; }
+}
+
 public class DistrictDto
 {
     public Guid Id { get; set; }
@@ -507,4 +513,81 @@ public class StaffSummaryDto
     public string FullName { get; set; } = string.Empty;
     public string Department { get; set; } = string.Empty;
     public UserLifecycleStatus Status { get; set; }
+}
+
+public class SchoolSummaryDto
+{
+    public Guid SchoolId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public int TotalStudents { get; set; }
+    public int TotalStaff { get; set; }
+}
+
+public class ClassSummaryDto
+{
+    public Guid ClassId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string CourseCode { get; set; } = string.Empty;
+    public int EnrolledStudents { get; set; }
+}
+
+public class DistrictSummaryDto
+{
+    public Guid Id { get; set; }
+    public string Slug { get; set; } = string.Empty;
+    public string DisplayName { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
+    public int TotalSchools { get; set; }
+    public int TotalStudents { get; set; }
+}
+
+public class AuditRecordDetailDto : AuditRecordDto
+{
+    public string EntityTypeName { get; set; } = string.Empty;
+    public string EventTypeName { get; set; } = string.Empty;
+    public string UserDisplayName { get; set; } = string.Empty;
+    public string? ChangeDetailsJson { get; set; }
+}
+
+public class AuditChainVerificationDto
+{
+    public bool IsValid { get; set; }
+    public DateTime VerificationTime { get; set; }
+    public long FirstSequence { get; set; }
+    public long LastSequence { get; set; }
+    public int RecordsVerified { get; set; }
+    public List<string> Errors { get; set; } = new();
+}
+
+public class AuditStatisticsDto
+{
+    public DateTime ReportDate { get; set; }
+    public int TotalRecords { get; set; }
+    public int TodayRecords { get; set; }
+    public Dictionary<string, int> RecordsByEventType { get; set; } = new();
+    public Dictionary<string, int> RecordsByEntityType { get; set; } = new();
+}
+
+public class UserActivityDto
+{
+    public string UserId { get; set; } = string.Empty;
+    public string UserDisplayName { get; set; } = string.Empty;
+    public DateTime ActivityDate { get; set; }
+    public string Action { get; set; } = string.Empty;
+    public string EntityType { get; set; } = string.Empty;
+    public Guid? EntityId { get; set; }
+}
+
+public class BulkOperationJobDto
+{
+    public Guid JobId { get; set; }
+    public string JobType { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
+    public int TotalItems { get; set; }
+    public int ProcessedItems { get; set; }
+    public int SuccessCount { get; set; }
+    public int FailureCount { get; set; }
+    public DateTime StartedAt { get; set; }
+    public DateTime? CompletedAt { get; set; }
+    public List<string> Errors { get; set; } = new();
 }

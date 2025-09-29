@@ -35,29 +35,6 @@ public class Result<T> : Result
     public static implicit operator Result<T>(T value) => Success(value);
 }
 
-public class PagedResult<T>
-{
-    public IEnumerable<T> Items { get; set; } = Enumerable.Empty<T>();
-    public int Page { get; set; }
-    public int PageSize { get; set; }
-    public int TotalCount { get; set; }
-    public int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
-    public bool HasPreviousPage => Page > 1;
-    public bool HasNextPage => Page < TotalPages;
-
-    public PagedResult()
-    {
-    }
-
-    public PagedResult(IEnumerable<T> items, int page, int pageSize, int totalCount)
-    {
-        Items = items;
-        Page = page;
-        PageSize = pageSize;
-        TotalCount = totalCount;
-    }
-}
-
 public static class ResultExtensions
 {
     public static Result<TOut> Map<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> mapper)
