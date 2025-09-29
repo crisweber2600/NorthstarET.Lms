@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthstarET.Lms.Performance
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthstarET.Lms.ServiceDefaults", "src\NorthstarET.Lms.ServiceDefaults\NorthstarET.Lms.ServiceDefaults.csproj", "{3AB35B0D-A518-42B3-9F3B-83EDE866219F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthstarET.Lms.AppHost", "src\NorthstarET.Lms.AppHost\NorthstarET.Lms.AppHost.csproj", "{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,18 @@ Global
 		{3AB35B0D-A518-42B3-9F3B-83EDE866219F}.Release|x64.Build.0 = Release|Any CPU
 		{3AB35B0D-A518-42B3-9F3B-83EDE866219F}.Release|x86.ActiveCfg = Release|Any CPU
 		{3AB35B0D-A518-42B3-9F3B-83EDE866219F}.Release|x86.Build.0 = Release|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Debug|x64.Build.0 = Debug|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Debug|x86.Build.0 = Debug|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Release|x64.ActiveCfg = Release|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Release|x64.Build.0 = Release|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Release|x86.ActiveCfg = Release|Any CPU
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,5 +186,6 @@ Global
 		{D4D98E61-02DA-431E-9B44-1917CEEF8222} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{158BD5DA-2D4A-4DC0-B7EF-5E59FB6A95A7} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{3AB35B0D-A518-42B3-9F3B-83EDE866219F} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{9BCC7E0B-DAC0-475A-80C6-6AD22230955B} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal

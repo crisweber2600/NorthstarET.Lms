@@ -66,6 +66,14 @@
               "version": "[9.5.0, )",
               "autoReferenced": true
             },
+            "Aspire.Hosting.Redis": {
+              "target": "Package",
+              "version": "[9.5.0, )"
+            },
+            "Aspire.Hosting.SqlServer": {
+              "target": "Package",
+              "version": "[9.5.0, )"
+            },
             "Microsoft.CodeAnalysis.Analyzers": {
               "suppressParent": "All",
               "target": "Package",

@@ -106,7 +106,11 @@ public class DatabaseInitializer
             }
 
             var connectionString = _configuration.GetConnectionString("TenantConnection");
-            
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("TenantConnection string not found in configuration");
+            }
+
             // Execute tenant schema provisioning script
             await ExecuteTenantProvisioningScript(connectionString, tenantSlug, schemaName, displayName);
 
