@@ -2,12 +2,15 @@ namespace NorthstarET.Lms.Application.Queries.Districts;
 
 public class GetDistrictQuery
 {
-    public Guid DistrictId { get; }
+    public Guid Id { get; set; }
+}
 
-    public GetDistrictQuery(Guid districtId)
-    {
-        DistrictId = districtId;
-    }
+public class ListDistrictsQuery
+{
+    public int Page { get; set; } = 1;
+    public int Size { get; set; } = 20;
+    public string? SearchTerm { get; set; }
+    public string? Status { get; set; }
 }
 
 public class GetDistrictsQuery
@@ -28,10 +31,5 @@ public class GetDistrictsQuery
 
 public class GetDistrictQuotaStatusQuery
 {
-    public Guid DistrictId { get; }
-
-    public GetDistrictQuotaStatusQuery(Guid districtId)
-    {
-        DistrictId = districtId;
-    }
+    public Guid DistrictId { get; set; }
 }

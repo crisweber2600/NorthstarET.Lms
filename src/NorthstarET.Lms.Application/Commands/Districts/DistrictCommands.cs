@@ -4,66 +4,43 @@ namespace NorthstarET.Lms.Application.Commands.Districts;
 
 public class CreateDistrictCommand
 {
-    public CreateDistrictDto District { get; }
-    public string CreatedBy { get; }
-
-    public CreateDistrictCommand(CreateDistrictDto district, string createdBy)
-    {
-        District = district;
-        CreatedBy = createdBy;
-    }
+    public string Slug { get; set; } = string.Empty;
+    public string DisplayName { get; set; } = string.Empty;
+    public DistrictQuotasDto? Quotas { get; set; }
+    public string CreatedBy { get; set; } = string.Empty;
 }
 
 public class UpdateDistrictQuotasCommand
 {
-    public Guid DistrictId { get; }
-    public DistrictQuotasDto Quotas { get; }
-    public string UpdatedBy { get; }
-
-    public UpdateDistrictQuotasCommand(Guid districtId, DistrictQuotasDto quotas, string updatedBy)
-    {
-        DistrictId = districtId;
-        Quotas = quotas;
-        UpdatedBy = updatedBy;
-    }
+    public Guid Id { get; set; }
+    public DistrictQuotasDto Quotas { get; set; } = new();
+    public string UpdatedBy { get; set; } = string.Empty;
 }
 
 public class SuspendDistrictCommand
 {
-    public Guid DistrictId { get; }
-    public string Reason { get; }
-    public string SuspendedBy { get; }
-
-    public SuspendDistrictCommand(Guid districtId, string reason, string suspendedBy)
-    {
-        DistrictId = districtId;
-        Reason = reason;
-        SuspendedBy = suspendedBy;
-    }
+    public Guid Id { get; set; }
+    public string Reason { get; set; } = string.Empty;
+    public string SuspendedBy { get; set; } = string.Empty;
 }
 
 public class ReactivateDistrictCommand
 {
-    public Guid DistrictId { get; }
-    public string ReactivatedBy { get; }
+    public Guid Id { get; set; }
+    public string ReactivatedBy { get; set; } = string.Empty;
+}
 
-    public ReactivateDistrictCommand(Guid districtId, string reactivatedBy)
-    {
-        DistrictId = districtId;
-        ReactivatedBy = reactivatedBy;
-    }
+public class UpdateDistrictCommand
+{
+    public Guid Id { get; set; }
+    public string? DisplayName { get; set; }
+    public DistrictQuotasDto? Quotas { get; set; }
+    public string UpdatedBy { get; set; } = string.Empty;
 }
 
 public class DeleteDistrictCommand
 {
-    public Guid DistrictId { get; }
-    public string DeletedBy { get; }
-    public string Reason { get; }
-
-    public DeleteDistrictCommand(Guid districtId, string deletedBy, string reason)
-    {
-        DistrictId = districtId;
-        DeletedBy = deletedBy;
-        Reason = reason;
-    }
+    public Guid Id { get; set; }
+    public string DeletedBy { get; set; } = string.Empty;
+    public string Reason { get; set; } = string.Empty;
 }

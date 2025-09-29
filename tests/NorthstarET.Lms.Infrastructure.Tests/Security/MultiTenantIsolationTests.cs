@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
+using NorthstarET.Lms.Domain.Enums;
 using NorthstarET.Lms.Domain.ValueObjects;
 using NorthstarET.Lms.Infrastructure.Data;
 using NorthstarET.Lms.Infrastructure.Security;
@@ -276,22 +277,16 @@ public class MultiTenantIsolationTests : IAsyncLifetime
         await tenant2Context.Database.EnsureCreatedAsync();
 
         var audit1 = new AuditRecord(
-            "TestEvent1",
+            AuditEventType.Create,
             "Student",
             Guid.NewGuid(),
-            "user1",
-            "127.0.0.1",
-            "TestAgent",
-            "{}");
+            "user1");
 
         var audit2 = new AuditRecord(
-            "TestEvent2",
+            AuditEventType.Update,
             "Student", 
             Guid.NewGuid(),
-            "user2",
-            "127.0.0.1",
-            "TestAgent",
-            "{}");
+            "user2");
 
         // Act
         tenant1Context.AuditRecords.Add(audit1);
@@ -305,10 +300,10 @@ public class MultiTenantIsolationTests : IAsyncLifetime
         var tenant2Audits = await tenant2Context.AuditRecords.ToListAsync();
 
         tenant1Audits.Should().HaveCount(1);
-        tenant1Audits.First().EventType.Should().Be("TestEvent1");
+        tenant1Audits.First().EventType.Should().Be(AuditEventType.Create);
 
         tenant2Audits.Should().HaveCount(1);
-        tenant2Audits.First().EventType.Should().Be("TestEvent2");
+        tenant2Audits.First().EventType.Should().Be(AuditEventType.Update);
 
         // Verify no cross-tenant audit access
         tenant1Audits.Should().NotContain(a => a.Id == audit2.Id);
@@ -377,27 +372,33 @@ public class MultiTenantIsolationTests : IAsyncLifetime
 // Helper class for testing tenant context
 public class TestTenantContextAccessor : ITenantContextAccessor
 {
-    private TenantContext _tenant;
+    private ITenantContext? _tenant;
 
-    public TestTenantContextAccessor(TenantContext tenant)
+    public TestTenantContextAccessor(ITenantContext? tenant = null)
     {
         _tenant = tenant;
     }
 
-    public TenantContext GetTenant()
+    public ITenantContext? GetTenant()
     {
         return _tenant;
     }
 
-    public void SetTenant(TenantContext tenant)
+    public void SetTenant(ITenantContext? tenant)
     {
         _tenant = tenant;
     }
+
+    public string? GetCurrentTenantId()
+    {
+        return _tenant?.TenantId;
+    }
 }
 
-public class TenantContext
+public class TenantContext : ITenantContext
 {
     public string TenantId { get; set; } = string.Empty;
     public string SchemaName { get; set; } = string.Empty;
     public string ConnectionString { get; set; } = string.Empty;
+    public string DisplayName { get; set; } = string.Empty;
 }

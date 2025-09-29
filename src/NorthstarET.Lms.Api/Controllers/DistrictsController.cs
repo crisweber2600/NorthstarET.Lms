@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NorthstarET.Lms.Application.Commands.Districts;
+using NorthstarET.Lms.Application.DTOs;
 using NorthstarET.Lms.Application.DTOs.Districts;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Application.Queries.Districts;
@@ -31,7 +32,7 @@ public class DistrictsController : ControllerBase
     /// <returns>Created district information</returns>
     [HttpPost]
     [Authorize(Roles = "PlatformAdmin")]
-    public async Task<ActionResult<DistrictDto>> CreateDistrict(
+    public async Task<ActionResult<Application.DTOs.Districts.DistrictDto>> CreateDistrict(
         [FromBody] CreateDistrictCommand request)
     {
         try
@@ -63,7 +64,7 @@ public class DistrictsController : ControllerBase
     /// <returns>District information</returns>
     [HttpGet("{id:guid}")]
     [Authorize(Roles = "PlatformAdmin,DistrictAdmin")]
-    public async Task<ActionResult<DistrictDto>> GetDistrict(Guid id)
+    public async Task<ActionResult<Application.DTOs.Districts.DistrictDto>> GetDistrict(Guid id)
     {
         try
         {
@@ -126,7 +127,7 @@ public class DistrictsController : ControllerBase
     /// <returns>Updated district information</returns>
     [HttpPut("{id:guid}")]
     [Authorize(Roles = "PlatformAdmin")]
-    public async Task<ActionResult<DistrictDto>> UpdateDistrict(
+    public async Task<ActionResult<Application.DTOs.Districts.DistrictDto>> UpdateDistrict(
         Guid id,
         [FromBody] UpdateDistrictCommand request)
     {
