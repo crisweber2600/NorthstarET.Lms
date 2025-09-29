@@ -27,13 +27,13 @@ $ARGUMENTS
 4. Execute implementation following the task plan:
    - **Phase-by-phase execution**: Complete each phase before moving to the next
    - **Respect dependencies**: Run sequential tasks in order, parallel tasks [P] can run together  
-   - **Follow TDD approach**: Execute test tasks before their corresponding implementation tasks
+   - **Phase-start tests**: Begin each phase by authoring or updating the failing tests defined for that phase before implementing production code
    - **File-based coordination**: Tasks affecting the same files must run sequentially
-   - **Validation checkpoints**: Verify each phase completion before proceeding
+   - **Validation checkpoints**: Before leaving a phase, run the full solution build and complete automated test suite; advance only when they pass
 
 5. Implementation execution rules:
    - **Setup first**: Initialize project structure, dependencies, configuration
-   - **Tests before code**: If you need to write tests for contracts, entities, and integration scenarios
+   - **Tests before code**: Expand the phase's test suite first so it fails, covering contracts, entities, and integration scenarios
    - **Core development**: Implement models, services, CLI commands, endpoints
    - **Integration work**: Database connections, middleware, logging, external services
    - **Polish and validation**: Unit tests, performance optimization, documentation
@@ -49,7 +49,7 @@ $ARGUMENTS
 7. Completion validation:
    - Verify all required tasks are completed
    - Check that implemented features match the original specification
-   - Validate that tests pass and coverage meets requirements
+   - Validate that the final full solution build and entire automated test suite succeed with required coverage
    - Confirm the implementation follows the technical plan
    - Report final status with summary of completed work
 
