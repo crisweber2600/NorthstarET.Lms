@@ -59,6 +59,18 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "AspNetCore.HealthChecks.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "AspNetCore.HealthChecks.UI": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "AspNetCore.HealthChecks.UI.Client": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[9.0.9, )"

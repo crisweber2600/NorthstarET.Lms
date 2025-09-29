@@ -13,15 +13,15 @@ namespace NorthstarET.Lms.Api.Controllers;
 [Authorize] // Always require authentication
 public class AssessmentsController : ControllerBase
 {
-    private readonly IAssessmentService _assessmentService;
     private readonly ILogger<AssessmentsController> _logger;
+    // TODO: Implement IAssessmentService
+    // private readonly IAssessmentService _assessmentService;
 
     public AssessmentsController(
-        IAssessmentService assessmentService,
         ILogger<AssessmentsController> logger)
     {
-        _assessmentService = assessmentService ?? throw new ArgumentNullException(nameof(assessmentService));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        // _assessmentService = assessmentService ?? throw new ArgumentNullException(nameof(assessmentService));
     }
 
     /// <summary>

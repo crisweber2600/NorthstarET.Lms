@@ -39,3 +39,21 @@ public class GetAssessmentPdfQuery
         RequestedBy = requestedBy;
     }
 }
+
+public class ListAssessmentsQuery
+{
+    public int Page { get; }
+    public int PageSize { get; }
+    public Guid? SchoolYearId { get; }
+    public string? SearchTerm { get; }
+    public bool? IsImmutable { get; }
+
+    public ListAssessmentsQuery(int page, int pageSize, Guid? schoolYearId = null, string? searchTerm = null, bool? isImmutable = null)
+    {
+        Page = Math.Max(1, page);
+        PageSize = Math.Clamp(pageSize, 1, 100);
+        SchoolYearId = schoolYearId;
+        SearchTerm = searchTerm;
+        IsImmutable = isImmutable;
+    }
+}

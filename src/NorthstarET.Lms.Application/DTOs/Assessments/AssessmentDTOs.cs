@@ -51,3 +51,23 @@ public class AssessmentPdfUploadDto
     public string FileName { get; set; } = string.Empty;
     public string UploadedBy { get; set; } = string.Empty;
 }
+
+public class AssessmentSummaryDto
+{
+    public Guid AssessmentId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Version { get; set; } = string.Empty;
+    public bool IsImmutable { get; set; }
+    public Guid? PinnedSchoolYearId { get; set; }
+    public DateTime CreatedDate { get; set; }
+}
+
+public class AssessmentVersionDto
+{
+    public Guid VersionId { get; set; }
+    public Guid AssessmentId { get; set; }
+    public string Version { get; set; } = string.Empty;
+    public string? FileUrl { get; set; }
+    public DateTime UploadedDate { get; set; }
+    public string UploadedBy { get; set; } = string.Empty;
+}

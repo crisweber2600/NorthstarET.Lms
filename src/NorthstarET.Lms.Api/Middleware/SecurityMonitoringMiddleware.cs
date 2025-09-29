@@ -457,7 +457,56 @@ public interface ISecurityMonitoringService
     Task LogSecurityIncident(SecurityThreatAssessment assessment);
 }
 
-// Additional supporting types would be defined here...
+// Security monitoring types
+public class RateLimitCheck
+{
+    public bool IsLimited { get; set; }
+    public int RequestCount { get; set; }
+    public int Limit { get; set; }
+    public TimeSpan Window { get; set; }
+}
+
+public class IpActivityAnalysis
+{
+    public string IpAddress { get; set; } = string.Empty;
+    public int RequestCount { get; set; }
+    public int DistinctUsers { get; set; }
+    public bool IsSuspicious { get; set; }
+    public string? Reason { get; set; }
+}
+
+public class AuthenticationAnomalyAnalysis
+{
+    public string UserId { get; set; } = string.Empty;
+    public bool IsAnomalous { get; set; }
+    public string? Reason { get; set; }
+}
+
+public class CrossTenantAccessCheck
+{
+    public bool IsViolation { get; set; }
+    public string? Reason { get; set; }
+}
+
+public class PrivilegeEscalationCheck
+{
+    public bool IsEscalation { get; set; }
+    public string? Reason { get; set; }
+}
+
+public class ErrorPatternAnalysis
+{
+    public bool IsPattern { get; set; }
+    public int ErrorCount { get; set; }
+    public string? Reason { get; set; }
+}
+
+public class ComplianceCheck
+{
+    public bool IsViolation { get; set; }
+    public string? Reason { get; set; }
+    public string? ComplianceRule { get; set; }
+}
 
 /// <summary>
 /// Extension methods for registering security monitoring middleware

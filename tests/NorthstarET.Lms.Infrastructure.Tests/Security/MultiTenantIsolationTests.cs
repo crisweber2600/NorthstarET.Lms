@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
 using NorthstarET.Lms.Domain.ValueObjects;
 using NorthstarET.Lms.Infrastructure.Data;
