@@ -4,13 +4,16 @@
 **Prerequisites**: plan.md (required), research.md, data-model.md, contracts/, quickstart.md
 
 ## Phase 3.1 Setup
+
 - [ ] T001 Establish Clean Architecture solution skeleton (`NorthstarET.Lms.sln`) with projects under `src/Domain`, `src/Application`, `src/Infrastructure`, `src/Presentation/Api`, `src/Presentation/Aspire/AppHost`, and mirrored test projects in `tests/`.
 - [ ] T002 Author `Directory.Build.props` at repo root enabling nullable reference types, strict warnings-as-errors, analyzers, and shared code style aligned with constitution.
 - [ ] T003 Configure `Directory.Packages.props` (or per-csproj packages) to reference .NET Aspire, ASP.NET Core Minimal APIs, EF Core 9, MediatR, Microsoft Graph SDK, Hangfire-compatible scheduler, Reqnroll, xUnit, FluentAssertions, Testcontainers, and Playwright.
 - [ ] T004 Seed solution-level tooling: add `.editorconfig`, reusable `global.json`, and bootstrap scripts in `build/` to standardize local dev plus CI lint/test hooks.
 
 ## Phase 3.2 BDD Features & Tests (Red Phase)
+
 ### Feature Files
+
 - [ ] T005 [P] Create `tests/Bdd/Features/DistrictProvisioning.feature` covering district creation and auto-assigned admin rights.
 - [ ] T006 [P] Create `tests/Bdd/Features/IdentityLifecycle.feature` covering identity mapping and lifecycle events (join/suspend/reinstate/leave).
 - [ ] T007 [P] Create `tests/Bdd/Features/AcademicCalendar.feature` enforcing non-overlapping terms and boundary validation.
@@ -20,6 +23,7 @@
 - [ ] T011 [P] Create `tests/Bdd/Features/SecurityMonitoring.feature` simulating anomaly detection tiers.
 
 ### Step Definitions (Failing)
+
 - [ ] T012 [P] Scaffold failing step definitions in `tests/Bdd/StepDefinitions/DistrictProvisioningSteps.cs` using `PendingStep()` placeholders.
 - [ ] T013 [P] Scaffold failing step definitions in `tests/Bdd/StepDefinitions/IdentityLifecycleSteps.cs`.
 - [ ] T014 [P] Scaffold failing step definitions in `tests/Bdd/StepDefinitions/AcademicCalendarSteps.cs`.
@@ -29,6 +33,7 @@
 - [ ] T018 [P] Scaffold failing step definitions in `tests/Bdd/StepDefinitions/SecurityMonitoringSteps.cs`.
 
 ### Contract Tests (Failing)
+
 - [ ] T019 [P] Add failing approval/contract tests for `contracts/district-provisioning.openapi.yaml` in `tests/Presentation/Contracts.Tests/DistrictProvisioningContractTests.cs`.
 - [ ] T020 [P] Add failing contract tests for `contracts/identity-lifecycle.openapi.yaml`.
 - [ ] T021 [P] Add failing contract tests for `contracts/academic-calendar.openapi.yaml`.
@@ -38,6 +43,7 @@
 - [ ] T025 [P] Add failing contract tests for `contracts/compliance.openapi.yaml`.
 
 ### Domain & Integration Test Scaffolds (Failing)
+
 - [ ] T026 [P] Create failing unit tests in `tests/Domain/DistrictTenantTests.cs` covering slug immutability, quota defaults, and lifecycle transitions.
 - [ ] T027 [P] Create failing unit tests in `tests/Domain/AcademicCalendarTests.cs` validating non-overlapping terms and closure overrides.
 - [ ] T028 [P] Create failing unit tests in `tests/Domain/RbacAggregateTests.cs` for role definitions, assignments, and delegation expiry.
@@ -49,7 +55,9 @@
 - [ ] T034 [P] Add failing integration scenario `tests/Integration/Quickstart/SecurityMonitoringFlowTests.cs` simulating Tier 2 alert suspension.
 
 ## Phase 3.3 Domain & Application Implementation
+
 ### Domain Entities & Value Objects
+
 - [ ] T035 Implement shared tenant base abstractions (`TenantScopedEntity`, `TenantSlug`, program/accommodation value objects) in `src/Domain` (sequential dependency for following tasks).
 - [ ] T036 [P] Implement `DistrictTenant` aggregate root in `src/Domain/Entities/DistrictTenant.cs` with lifecycle domain events.
 - [ ] T037 [P] Implement `SchoolYear` aggregate in `src/Domain/Entities/SchoolYear.cs` with archive semantics.
@@ -70,6 +78,7 @@
 - [ ] T052 [P] Implement `BulkJob` aggregate with `BulkJobItem` value object in `src/Domain/Entities/BulkJob.cs`.
 
 ### Application Layer (Commands/Queries)
+
 - [ ] T053 [P] Create `CreateDistrictCommand` + handler in `src/Application/Commands/Districts/CreateDistrictCommand.cs` wiring tenant provisioning and auto role assignment.
 - [ ] T054 [P] Create `UpdateDistrictStatusCommand` + handler managing retention/legal hold checks in `src/Application/Commands/Districts/UpdateDistrictStatusCommand.cs`.
 - [ ] T055 [P] Create `MapIdentityCommand` + handler in `src/Application/Commands/Identity/MapIdentityCommand.cs` handling conflicts.
@@ -89,6 +98,7 @@
 - [ ] T069 [P] Create `ProcessSecurityAlertCommand` + handler escalating tiers and suspending identities.
 
 ## Phase 3.4 Infrastructure & Integration
+
 - [ ] T070 Implement `TenantContextAccessor` and middleware in `src/Infrastructure/Tenancy/TenantContextAccessor.cs` to resolve schema per request.
 - [ ] T071 Implement `LmsDbContext` and factory in `src/Infrastructure/Persistence/LmsDbContext.cs` with schema translation using `ITenantContextAccessor`.
 - [ ] T072 Author EF Core configurations in `src/Infrastructure/Persistence/Configurations/` for all domain entities, including indexes and constraints.
@@ -102,6 +112,7 @@
 - [ ] T080 Implement security anomaly detection service in `src/Infrastructure/Monitoring/SecurityAlertService.cs` producing tiered alerts and suspension events.
 
 ## Phase 3.5 Presentation Layer
+
 - [ ] T081 Implement `DistrictsController` in `src/Presentation/Api/Controllers/DistrictsController.cs` with POST /districts and PATCH /districts/{slug}/status endpoints.
 - [ ] T082 Implement `IdentityMappingsController` in `src/Presentation/Api/Controllers/IdentityMappingsController.cs` for identity mapping and lifecycle events.
 - [ ] T083 Implement `AcademicCalendarsController` in `src/Presentation/Api/Controllers/AcademicCalendarsController.cs`.
@@ -116,6 +127,7 @@
 - [ ] T092 Implement `RetentionPoliciesController` in `src/Presentation/Api/Controllers/RetentionPoliciesController.cs`.
 
 ## Phase 3.6 Aspire & Cross-Cutting Integration
+
 - [ ] T093 Configure Aspire AppHost in `src/Presentation/Aspire/AppHost/AppHost.cs` wiring API, background worker(s), SQL Server, Azurite, and configuration secrets.
 - [ ] T094 Register health checks, OpenTelemetry tracing, and structured logging using Aspire instrumentation in `src/Presentation/Api/Program.cs` and `AppHost` resources.
 - [ ] T095 Implement onboarding CLI `tools/Admin/AdminCli.csproj` to provision sample tenants per quickstart Section 2.
@@ -123,6 +135,7 @@
 - [ ] T097 Add background scheduling host configuration (Hangfire/worker) with Aspire integration in `src/Presentation/Aspire/AppHost/Workers.cs`.
 
 ## Phase 3.7 Polish & Quality Gates
+
 - [ ] T098 [P] Expand automated tests to exceed 90% coverage for Domain/Application projects and document metrics.
 - [ ] T099 [P] Author performance tests in `tests/Performance/BulkRolloverPerformanceTests.cs` validating 10k row SLA (<120s).
 - [ ] T100 [P] Integrate security scanning (Codacy CLI + trivy) and resolve findings in pipeline scripts.
@@ -130,6 +143,7 @@
 - [ ] T102 [P] Execute quickstart validation end-to-end (Sections 1-9) and capture evidence in `docs/validation/quickstart-report.md`.
 
 ## Dependencies
+
 - T001 → prerequisite for all subsequent development tasks.
 - T035 must precede T036-T052.
 - Domain tasks (T036-T052) must complete before application handlers (T053-T069).
@@ -138,6 +152,7 @@
 - Polish tasks (T098-T102) require full stack implementation and earlier tests to exist.
 
 ## Parallel Execution Examples
+
 ```
 /task run T005 T006 T007 T008 T009 T010 T011
 /task run T012 T013 T014 T015 T016 T017 T018
