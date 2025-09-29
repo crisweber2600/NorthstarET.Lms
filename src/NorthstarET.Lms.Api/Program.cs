@@ -407,7 +407,7 @@ static async Task InitializeDatabaseAsync(WebApplication app)
 }
 
 // Seed initial system data
-static async Task SeedInitialDataAsync(LmsDbContext context, ILogger logger)
+static async Task SeedInitialDataAsync(LmsDbContext context, Microsoft.Extensions.Logging.ILogger logger)
 {
     // This would be implemented to seed:
     // - Default retention policies

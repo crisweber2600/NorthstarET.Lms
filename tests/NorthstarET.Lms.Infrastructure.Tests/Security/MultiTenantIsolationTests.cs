@@ -280,18 +280,18 @@ public class MultiTenantIsolationTests : IAsyncLifetime
             "Student",
             Guid.NewGuid(),
             "user1",
-            "127.0.0.1",
-            "TestAgent",
-            "{}");
+            changeDetails: null,
+            ipAddress: "127.0.0.1",
+            userAgent: "TestAgent");
 
         var audit2 = new AuditRecord(
             "TestEvent2",
             "Student", 
             Guid.NewGuid(),
             "user2",
-            "127.0.0.1",
-            "TestAgent",
-            "{}");
+            changeDetails: null,
+            ipAddress: "127.0.0.1",
+            userAgent: "TestAgent");
 
         // Act
         tenant1Context.AuditRecords.Add(audit1);
@@ -305,10 +305,10 @@ public class MultiTenantIsolationTests : IAsyncLifetime
         var tenant2Audits = await tenant2Context.AuditRecords.ToListAsync();
 
         tenant1Audits.Should().HaveCount(1);
-        tenant1Audits.First().EventType.Should().Be("TestEvent1");
+        tenant1Audits.First().Action.Should().Be("TestEvent1");
 
         tenant2Audits.Should().HaveCount(1);
-        tenant2Audits.First().EventType.Should().Be("TestEvent2");
+        tenant2Audits.First().Action.Should().Be("TestEvent2");
 
         // Verify no cross-tenant audit access
         tenant1Audits.Should().NotContain(a => a.Id == audit2.Id);
@@ -400,9 +400,10 @@ public class TestTenantContextAccessor : ITenantContextAccessor
     }
 }
 
-public class TenantContext
+public class TenantContext : ITenantContext
 {
     public string TenantId { get; set; } = string.Empty;
     public string SchemaName { get; set; } = string.Empty;
     public string ConnectionString { get; set; } = string.Empty;
+    public string DisplayName { get; set; } = string.Empty;
 }

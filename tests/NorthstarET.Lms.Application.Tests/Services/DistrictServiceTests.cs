@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NorthstarET.Lms.Application.Services;
-using NorthstarET.Lms.Application.DTOs;
+using NorthstarET.Lms.Application.DTOs.Districts;
 using NorthstarET.Lms.Application.Interfaces;
 using NorthstarET.Lms.Domain.Entities;
 using NorthstarET.Lms.Domain.ValueObjects;
