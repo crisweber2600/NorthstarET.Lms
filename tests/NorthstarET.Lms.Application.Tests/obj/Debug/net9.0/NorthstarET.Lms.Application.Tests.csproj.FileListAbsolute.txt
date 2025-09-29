@@ -905,6 +905,3 @@ D:/specify/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net
 /home/runner/work/NorthstarET.Lms/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net9.0/NorthstarET.Lms.Application.Tests.AssemblyInfo.cs
 /home/runner/work/NorthstarET.Lms/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net9.0/NorthstarET.Lms.Application.Tests.csproj.CoreCompileInputs.cache
 /home/runner/work/NorthstarET.Lms/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net9.0/NorthstarET.Lms.Application.Tests.sourcelink.json
-/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net9.0/NorthstarET.Lms.Application.Tests.dll
-/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net9.0/refint/NorthstarET.Lms.Application.Tests.dll
-/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/tests/NorthstarET.Lms.Application.Tests/obj/Debug/net9.0/NorthstarET.Lms.Application.Tests.pdb
