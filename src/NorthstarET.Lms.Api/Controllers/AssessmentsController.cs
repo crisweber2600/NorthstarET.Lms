@@ -14,14 +14,11 @@ namespace NorthstarET.Lms.Api.Controllers;
 public class AssessmentsController : ControllerBase
 {
     private readonly ILogger<AssessmentsController> _logger;
-    // TODO: Implement IAssessmentService
-    // private readonly IAssessmentService _assessmentService;
 
     public AssessmentsController(
         ILogger<AssessmentsController> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        // _assessmentService = assessmentService ?? throw new ArgumentNullException(nameof(assessmentService));
     }
 
     /// <summary>
@@ -36,22 +33,17 @@ public class AssessmentsController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Creating assessment: {AssessmentName}", request.Name);
+            _logger.LogInformation("Creating assessment: {AssessmentName}", request.Assessment.Name);
             
-            var result = await _assessmentService.CreateAssessmentAsync(request);
+            // TODO: Implement assessment service
+            await Task.CompletedTask;
             
-            if (!result.IsSuccess)
-            {
-                _logger.LogWarning("Assessment creation failed: {Error}", result.Error);
-                return BadRequest(new { error = result.Error });
-            }
-
-            _logger.LogInformation("Assessment created successfully: {AssessmentId}", result.Value.Id);
-            return Created($"/api/v1/assessments/{result.Value.Id}", result.Value);
+            _logger.LogInformation("Assessment creation not yet implemented");
+            return StatusCode(501, new { error = "Assessment creation not yet implemented" });
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating assessment: {AssessmentName}", request.Name);
+            _logger.LogError(ex, "Error creating assessment: {AssessmentName}", request.Assessment.Name);
             return StatusCode(500, new { error = "An unexpected error occurred" });
         }
     }

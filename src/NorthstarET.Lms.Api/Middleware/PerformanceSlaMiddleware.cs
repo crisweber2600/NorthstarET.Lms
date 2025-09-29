@@ -335,35 +335,35 @@ public class PerformanceSlaMiddleware
             context.Items["Performance.OperationName"]);
         
         // Could set response headers indicating degraded service
-        context.Response.Headers.Add("X-Service-Status", "Degraded");
+        context.Response.Headers["X-Service-Status"] = "Degraded";
         
         await Task.CompletedTask;
     }
 
     private void AddThrottlingHeaders(HttpContext context)
     {
-        context.Response.Headers.Add("X-RateLimit-Warning", "Performance threshold exceeded");
-        context.Response.Headers.Add("Retry-After", "60"); // Suggest retry after 60 seconds
+        context.Response.Headers["X-RateLimit-Warning"] = "Performance threshold exceeded";
+        context.Response.Headers["Retry-After"] = "60"; // Suggest retry after 60 seconds
     }
 
     private void AddWarningHeaders(HttpContext context, TimeSpan duration, TimeSpan threshold)
     {
-        context.Response.Headers.Add("X-Performance-Warning", 
-            $"Response time {duration.TotalMilliseconds:F0}ms exceeded threshold {threshold.TotalMilliseconds:F0}ms");
+        context.Response.Headers["X-Performance-Warning"] = 
+            $"Response time {duration.TotalMilliseconds:F0}ms exceeded threshold {threshold.TotalMilliseconds:F0}ms";
     }
 
     private void AddPerformanceHeaders(HttpContext context, TimeSpan duration, TimeSpan threshold)
     {
         if (_options.IncludePerformanceHeaders)
         {
-            context.Response.Headers.Add("X-Response-Time", $"{duration.TotalMilliseconds:F2}");
-            context.Response.Headers.Add("X-SLA-Threshold", $"{threshold.TotalMilliseconds:F0}");
-            context.Response.Headers.Add("X-SLA-Compliant", (duration <= threshold).ToString().ToLowerInvariant());
+            context.Response.Headers["X-Response-Time"] = $"{duration.TotalMilliseconds:F2}";
+            context.Response.Headers["X-SLA-Threshold"] = $"{threshold.TotalMilliseconds:F0}";
+            context.Response.Headers["X-SLA-Compliant"] = (duration <= threshold).ToString().ToLowerInvariant();
             
             if (context.Items.ContainsKey("Performance.StartTime"))
             {
                 var startTime = (DateTime)context.Items["Performance.StartTime"]!;
-                context.Response.Headers.Add("X-Processing-Time", $"{(DateTime.UtcNow - startTime).TotalMilliseconds:F2}");
+                context.Response.Headers["X-Processing-Time"] = $"{(DateTime.UtcNow - startTime).TotalMilliseconds:F2}";
             }
         }
     }

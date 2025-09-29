@@ -17,5 +17,5 @@ public class NorthstarET_Lms_AppHost
     /// <summary>
     /// The path to the Aspire Host project.
     /// </summary>
-    public static string ProjectPath => """D:\specify\NorthstarET.Lms\src\NorthstarET.Lms.AppHost""";
+    public static string ProjectPath => """/home/runner/work/NorthstarET.Lms/NorthstarET.Lms/src/NorthstarET.Lms.AppHost""";
 }

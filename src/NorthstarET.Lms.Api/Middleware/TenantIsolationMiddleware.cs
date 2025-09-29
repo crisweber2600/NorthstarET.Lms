@@ -30,7 +30,7 @@ public class TenantIsolationMiddleware
             }
 
             // Extract tenant information from authenticated user claims
-            var tenantContext = await ResolveTenantContextAsync(context);
+            var tenantContext = ResolveTenantContext(context);
             
             if (tenantContext == null)
             {
@@ -49,7 +49,7 @@ public class TenantIsolationMiddleware
                 tenantContext.TenantId, context.Request.Path);
 
             // Validate tenant access permissions
-            if (!await ValidateTenantAccessAsync(context, tenantContext))
+            if (!ValidateTenantAccess(context, tenantContext))
             {
                 _logger.LogWarning("Tenant access validation failed for user {UserId} accessing tenant {TenantId}", 
                     context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value, tenantContext.TenantId);
@@ -82,7 +82,7 @@ public class TenantIsolationMiddleware
         return publicPaths.Any(publicPath => path.StartsWithSegments(publicPath));
     }
 
-    private async Task<TenantContext?> ResolveTenantContextAsync(HttpContext context)
+    private TenantContext? ResolveTenantContext(HttpContext context)
     {
         if (!context.User.Identity?.IsAuthenticated == true)
         {
@@ -128,7 +128,7 @@ public class TenantIsolationMiddleware
         return isPlatformAdmin && isPlatformEndpoint;
     }
 
-    private async Task<bool> ValidateTenantAccessAsync(HttpContext context, TenantContext tenantContext)
+    private bool ValidateTenantAccess(HttpContext context, TenantContext tenantContext)
     {
         var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var roles = context.User.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
