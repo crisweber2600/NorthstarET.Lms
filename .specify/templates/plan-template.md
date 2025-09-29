@@ -47,9 +47,9 @@
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-**BDD-First Testing**: Are complete Reqnroll feature files with scenarios written before any code? Step definitions MUST be implemented first and fail.
+**BDD-First Testing**: Are complete Reqnroll feature files with scenarios written before any code? Step definitions MUST be fully implemented (no `PendingStep()`) at the start of the phase, executed to fail, and linked to the tasks they validate.
 
-**TDD Red-Green Cycle**: Will tests be written first and shown to fail before implementation? Red-Green-Refactor cycle MUST be strictly enforced with >90% coverage.
+**TDD Red-Green Cycle**: Will tests be authored at the start of each phase, shown to fail, and only then implemented against? Red-Green-Refactor MUST be enforced with >90% coverage and evidence of full solution build/test runs for every phase.
 
 **Clean Architecture**: Does design maintain proper layer separation (Domain → Application → Infrastructure → Presentation)? Domain layer MUST have zero external dependencies.
 
@@ -159,7 +159,11 @@ directories captured above]
    - Each story → integration test scenario
    - Quickstart test = story validation steps
 
-5. **Update agent file incrementally** (O(1) operation):
+5. **Record the red state**:
+   - Run a full solution build (even if only scaffolding exists) and execute all authored tests
+   - Capture failing evidence linked to the tasks these tests will unblock
+
+6. **Update agent file incrementally** (O(1) operation):
    - Run `.specify/scripts/bash/update-agent-context.sh copilot`
      **IMPORTANT**: Execute it exactly as specified above. Do not add or remove any arguments.
    - If exists: Add only NEW tech from current plan
@@ -168,7 +172,7 @@ directories captured above]
    - Keep under 150 lines for token efficiency
    - Output to repository root
 
-**Output**: data-model.md, /contracts/*, failing tests, quickstart.md, agent-specific file
+**Output**: data-model.md, /contracts/*, failing tests with recorded evidence, quickstart.md, agent-specific file
 
 ## Phase 2: Task Planning Approach
 *This section describes what the /tasks command will do - DO NOT execute during /plan*
@@ -224,4 +228,4 @@ directories captured above]
 - [ ] Complexity deviations documented
 
 ---
-*Based on Constitution v1.0.0 - See `.specify/memory/constitution.md`*
+*Based on Constitution v1.2.0 - See `.specify/memory/constitution.md`*

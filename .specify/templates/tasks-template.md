@@ -21,7 +21,7 @@
 4. Apply task rules:
    → Different files = mark [P] for parallel
    → Same file = sequential (no [P])
-   → Tests before implementation (TDD)
+   → Tests before implementation (TDD): author tests at the start of each phase, run a full solution build + suite to capture the red state, then plan implementation tasks to return to green
 5. Number tasks sequentially (T001, T002...)
 6. Generate dependency graph
 7. Create parallel execution examples
@@ -35,6 +35,7 @@
 ## Format: `[ID] [P?] Description`
 - **[P]**: Can run in parallel (different files, no dependencies)
 - Include exact file paths in descriptions
+- Reference the verifying test(s) (feature file, test class, suite) that prove the task complete
 
 ## Path Conventions
 - **Single project**: `src/`, `tests/` at repository root
@@ -50,6 +51,8 @@
 ## Phase 3.2: BDD Features & Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
 **CRITICAL: Constitutional requirement - BDD feature files MUST be complete before any code**
 **Tests MUST be written and MUST FAIL before ANY implementation**
+**Step definitions MUST be fully implemented (no placeholders) and executed at the start of this phase**
+**Record a full solution build and failing suite before moving to implementation tasks**
 **Coverage requirement: Minimum 90% for domain and application layers**
 - [ ] T004 [P] Feature file for user registration in Features/UserRegistration.feature
 - [ ] T005 [P] Feature file for user authentication in Features/UserAuthentication.feature  
@@ -59,9 +62,11 @@
 - [ ] T009 [P] Unit tests for UserService application service in Tests/Unit/Application/UserServiceTests.cs
 - [ ] T010 [P] Integration tests for user API endpoints in Tests/Integration/UserApiTests.cs
 
-## Phase 3.3: Clean Architecture Implementation (ONLY after BDD features and tests are failing)
+*Gate*: Before proceeding to Phase 3.3, run a full solution build and execute the entire test suite, capturing the failing evidence tied to the tasks above.
+
+## Phase 3.3: Clean Architecture Implementation (ONLY after Phase 3.2 red state is recorded)
 **All implementations MUST follow Clean Architecture layers with proper dependency flow**
-**Domain layer MUST have zero external dependencies**
+**Domain layer MUST have zero external dependencies and the phase must end with the full suite back to green**
 - [ ] T011 [P] Domain entities and value objects in Domain/Entities/
 - [ ] T012 [P] Domain interfaces in Domain/Interfaces/
 - [ ] T013 [P] Application use cases in Application/UseCases/
@@ -71,6 +76,8 @@
 - [ ] T017 [P] API controllers in Presentation/Controllers/
 - [ ] T018 [P] Aspire service registration and orchestration in Program.cs
 - [ ] T019 Dependency injection configuration with proper layer separation
+
+*Gate*: Before moving to Phase 3.4, run a full solution build and execute the entire suite; only proceed when all tests (including those from earlier phases) return to green.
 
 ## Phase 3.4: Integration & Aspire Orchestration
 **All integrations MUST use Aspire components and abstractions**
@@ -83,6 +90,8 @@
 - [ ] T025 Structured logging implementation with ILogger
 - [ ] T026 Health checks configuration using Aspire abstractions
 - [ ] T027 Service discovery setup for microservices communication
+
+*Gate*: Before transitioning to Phase 3.5, rerun the full solution build and test suite to confirm the integrations leave the system green.
 
 ## Phase 3.5: Polish & Quality Gates
 - [ ] T028 [P] Additional unit tests to achieve >90% coverage
@@ -101,6 +110,7 @@
 - Infrastructure before presentation (T017)
 - Implementation before integration (T020-T027)
 - Integration before polish (T028-T034)
+- Tasks may only be marked complete after their verifying tests pass and a full solution build succeeds
 
 ## Parallel Example
 ```
@@ -117,11 +127,12 @@ Task: "Unit tests for UserService application service in Tests/Unit/Application/
 
 ## Notes
 - [P] tasks = different files, no dependencies
-- Verify BDD feature files are complete and step definitions fail before implementing
-- Verify all tests fail before implementing
+- Verify BDD feature files are complete, step definitions are fully implemented, and they fail before implementing
+- Run a full solution build and execute the entire suite at the start and end of every phase; record evidence linked to task IDs
 - Maintain Clean Architecture layer boundaries
 - Use Aspire for all service orchestration
-- Commit after each task
+- Commit after each task and include references to the verifying tests in commit notes when applicable
+- Do not mark tasks complete until their verifying tests pass and the full suite is green
 - Avoid: vague tasks, same file conflicts
 
 ## Task Generation Rules
@@ -158,3 +169,5 @@ Task: "Unit tests for UserService application service in Tests/Unit/Application/
 - [ ] Parallel tasks truly independent
 - [ ] Each task specifies exact file path
 - [ ] No task modifies same file as another [P] task
+- [ ] Each task references verifying test(s)
+- [ ] Full solution build/test gates recorded for every phase
