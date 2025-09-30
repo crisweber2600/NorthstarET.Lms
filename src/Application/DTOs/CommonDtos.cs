@@ -95,3 +95,66 @@ public record PagedResultDto<T>
     public required List<T> Items { get; init; } = new();
     public required PaginationDto Pagination { get; init; }
 }
+
+/// <summary>
+/// Data transfer object for school information
+/// </summary>
+public record SchoolDto
+{
+    public required Guid Id { get; init; }
+    public required string Name { get; init; }
+    public required string Code { get; init; }
+    public required Guid DistrictId { get; init; }
+    public required string Status { get; init; }
+    public string? Address { get; init; }
+    public string? PhoneNumber { get; init; }
+    public DateTime CreatedAt { get; init; }
+}
+
+/// <summary>
+/// Data transfer object for class information
+/// </summary>
+public record ClassDto
+{
+    public required Guid Id { get; init; }
+    public required string Name { get; init; }
+    public required string Code { get; init; }
+    public required Guid SchoolId { get; init; }
+    public required Guid SchoolYearId { get; init; }
+    public required int MaxCapacity { get; init; }
+    public required int CurrentEnrollment { get; init; }
+    public required string Status { get; init; }
+    public string? Description { get; init; }
+    public DateTime CreatedAt { get; init; }
+}
+
+/// <summary>
+/// Data transfer object for enrollment information
+/// </summary>
+public record EnrollmentDto
+{
+    public required Guid Id { get; init; }
+    public required Guid StudentId { get; init; }
+    public required Guid ClassId { get; init; }
+    public required string Status { get; init; }
+    public required DateTime EnrollmentDate { get; init; }
+    public DateTime? WithdrawalDate { get; init; }
+    public string? WithdrawalReason { get; init; }
+}
+
+/// <summary>
+/// Data transfer object for staff information
+/// </summary>
+public record StaffDto
+{
+    public required Guid Id { get; init; }
+    public required Guid UserId { get; init; }
+    public required string EmployeeNumber { get; init; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
+    public required string FullName { get; init; }
+    public required string EmploymentStatus { get; init; }
+    public string? ExternalIdentifier { get; init; }
+    public DateTime? SuspendedUntil { get; init; }
+    public string? SuspensionReason { get; init; }
+}
