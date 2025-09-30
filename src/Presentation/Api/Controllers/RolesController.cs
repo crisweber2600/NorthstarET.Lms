@@ -29,26 +29,21 @@ public class RolesController : ControllerBase
         _logger.LogInformation("Assigning role {RoleId} to user {UserId}", 
             request.RoleDefinitionId, request.UserId);
         
-        var result = await _roleService.AssignRoleAsync(
+        var assignment = await _roleService.AssignRoleAsync(
             request.UserId,
             request.RoleDefinitionId,
             request.SchoolId,
             request.ClassId,
-            request.SchoolYearId);
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
+            User.Identity?.Name ?? "system");
 
         return CreatedAtAction(nameof(GetRoleAssignment), 
-            new { tenant, id = result.Value }, new { id = result.Value });
+            new { tenant, id = assignment.Id }, new { id = assignment.Id });
     }
 
     [HttpGet("assignments/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetRoleAssignment(string tenant, Guid id)
+    public IActionResult GetRoleAssignment(string tenant, Guid id)
     {
         // Placeholder - would need a GetRoleAssignmentQuery
         return NotFound(new { error = "Role assignment retrieval not implemented" });
@@ -61,32 +56,20 @@ public class RolesController : ControllerBase
         string tenant,
         [FromBody] CheckPermissionRequest request)
     {
-        var result = await _roleService.HasPermissionAsync(
+        var hasPermission = await _roleService.CheckPermissionAsync(
             request.UserId,
             request.Permission,
             request.ResourceId);
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
 
-        return Ok(new { hasPermission = result.Value });
+        return Ok(new { hasPermission });
     }
 
     [HttpDelete("assignments/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> RevokeRole(string tenant, Guid id)
+    public async Task<IActionResult> RevokeRole(string tenant, Guid id, [FromQuery] string reason = "Revoked by admin")
     {
-        var result = await _roleService.RevokeRoleAsync(id);
-        
-        if (!result.IsSuccess)
-        {
-            return result.Error?.Contains("not found") == true
-                ? NotFound(new { error = result.Error })
-                : BadRequest(new { error = result.Error });
-        }
+        await _roleService.RevokeRoleAsync(id, reason, User.Identity?.Name ?? "system");
 
         return NoContent();
     }

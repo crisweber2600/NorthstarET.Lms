@@ -59,13 +59,16 @@ public class DistrictsController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(PagedResultDto<DistrictDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<DistrictDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllDistricts(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20)
     {
-        var query = new GetAllDistrictsQuery { Page = page, PageSize = pageSize };
+        var query = new GetAllDistrictsQuery { PageNumber = page, PageSize = pageSize };
         var result = await _mediator.Send(query);
+        
+        if (!result.IsSuccess)
+            return BadRequest(result.Error);
         
         return Ok(result.Value);
     }

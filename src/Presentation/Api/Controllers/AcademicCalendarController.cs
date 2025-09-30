@@ -31,25 +31,18 @@ public class AcademicCalendarController : ControllerBase
         _logger.LogInformation("Creating academic calendar for school year {SchoolYearId}", 
             request.SchoolYearId);
         
-        var result = await _calendarService.CreateAcademicCalendarAsync(
+        var calendar = await _calendarService.CreateCalendarAsync(
             request.SchoolYearId,
-            request.SchoolId,
-            request.FirstDayOfSchool,
-            request.LastDayOfSchool);
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
+            User.Identity?.Name ?? "system");
 
         return CreatedAtAction(nameof(GetAcademicCalendar), 
-            new { tenant, id = result.Value }, new { id = result.Value });
+            new { tenant, id = calendar.Id }, new { id = calendar.Id });
     }
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAcademicCalendar(string tenant, Guid id)
+    public IActionResult GetAcademicCalendar(string tenant, Guid id)
     {
         // Placeholder - would need a GetAcademicCalendarQuery
         return NotFound(new { error = "Calendar retrieval not implemented" });
@@ -64,14 +57,10 @@ public class AcademicCalendarController : ControllerBase
         Guid id,
         [FromBody] List<DateTime> dates)
     {
-        var result = await _calendarService.AddInstructionalDaysAsync(id, dates);
-        
-        if (!result.IsSuccess)
-        {
-            return result.Error?.Contains("not found") == true
-                ? NotFound(new { error = result.Error })
-                : BadRequest(new { error = result.Error });
-        }
+        await _calendarService.AddInstructionalDaysAsync(
+            id,
+            dates,
+            User.Identity?.Name ?? "system");
 
         return NoContent();
     }
@@ -85,17 +74,11 @@ public class AcademicCalendarController : ControllerBase
         Guid id,
         [FromBody] AddClosureRequest request)
     {
-        var result = await _calendarService.AddClosureAsync(
+        await _calendarService.AddClosuresAsync(
             id,
-            request.Date,
-            request.Reason);
-        
-        if (!result.IsSuccess)
-        {
-            return result.Error?.Contains("not found") == true
-                ? NotFound(new { error = result.Error })
-                : BadRequest(new { error = result.Error });
-        }
+            new List<DateTime> { request.Date },
+            request.Reason,
+            User.Identity?.Name ?? "system");
 
         return NoContent();
     }
@@ -106,14 +89,9 @@ public class AcademicCalendarController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> PublishCalendar(string tenant, Guid id)
     {
-        var result = await _calendarService.PublishCalendarAsync(id);
-        
-        if (!result.IsSuccess)
-        {
-            return result.Error?.Contains("not found") == true
-                ? NotFound(new { error = result.Error })
-                : BadRequest(new { error = result.Error });
-        }
+        await _calendarService.PublishCalendarAsync(
+            id,
+            User.Identity?.Name ?? "system");
 
         return NoContent();
     }

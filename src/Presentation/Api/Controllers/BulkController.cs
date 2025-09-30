@@ -28,20 +28,17 @@ public class BulkController : ControllerBase
     {
         _logger.LogInformation("Starting bulk import operation: {Type}", request.OperationType);
         
-        var result = await _bulkService.StartBulkOperationAsync(
+        var job = await _bulkService.ExecuteBulkOperationAsync(
             request.OperationType,
-            request.Data,
+            request.TotalRows,
             request.ErrorStrategy,
-            request.DryRun);
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
+            request.ErrorThreshold,
+            request.DryRun,
+            User.Identity?.Name ?? "system");
 
         return AcceptedAtAction(nameof(GetBulkOperationStatus), 
-            new { tenant, jobId = result.Value }, 
-            new { jobId = result.Value, status = "processing" });
+            new { tenant, jobId = job.Id }, 
+            new { jobId = job.Id, status = "processing" });
     }
 
     [HttpGet("jobs/{jobId:guid}")]
@@ -49,14 +46,9 @@ public class BulkController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBulkOperationStatus(string tenant, Guid jobId)
     {
-        var result = await _bulkService.GetBulkJobStatusAsync(jobId);
-        
-        if (!result.IsSuccess)
-        {
-            return NotFound(new { error = result.Error });
-        }
+        var job = await _bulkService.GetJobStatusAsync(jobId);
 
-        return Ok(result.Value);
+        return Ok(job);
     }
 
     [HttpPost("rollover")]
@@ -69,20 +61,17 @@ public class BulkController : ControllerBase
         _logger.LogInformation("Starting school year rollover from {FromYear} to {ToYear}", 
             request.FromSchoolYearId, request.ToSchoolYearId);
         
-        var result = await _bulkService.RolloverSchoolYearAsync(
-            request.FromSchoolYearId,
-            request.ToSchoolYearId,
-            request.CopyEnrollments,
-            request.CopyStaffAssignments);
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
+        var job = await _bulkService.ExecuteBulkOperationAsync(
+            "SchoolYearRollover",
+            1, // Will be updated during processing
+            "FailFast",
+            null,
+            request.DryRun,
+            User.Identity?.Name ?? "system");
 
         return AcceptedAtAction(nameof(GetBulkOperationStatus), 
-            new { tenant, jobId = result.Value }, 
-            new { jobId = result.Value, status = "processing" });
+            new { tenant, jobId = job.Id }, 
+            new { jobId = job.Id, status = "processing" });
     }
 
     [HttpPost("jobs/{jobId:guid}/cancel")]
@@ -93,14 +82,7 @@ public class BulkController : ControllerBase
     {
         _logger.LogInformation("Canceling bulk operation {JobId}", jobId);
         
-        var result = await _bulkService.CancelBulkOperationAsync(jobId);
-        
-        if (!result.IsSuccess)
-        {
-            return result.Error?.Contains("not found") == true
-                ? NotFound(new { error = result.Error })
-                : BadRequest(new { error = result.Error });
-        }
+        await _bulkService.CompleteJobAsync(jobId, "Canceled by user");
 
         return NoContent();
     }
@@ -110,25 +92,22 @@ public class BulkController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBulkOperationErrors(string tenant, Guid jobId)
     {
-        var result = await _bulkService.GetBulkJobErrorsAsync(jobId);
+        var job = await _bulkService.GetJobStatusAsync(jobId);
         
-        if (!result.IsSuccess)
-        {
-            return NotFound(new { error = result.Error });
-        }
-
-        return Ok(result.Value);
+        return Ok(new { errors = job.ErrorDetails });
     }
 }
 
 public record BulkImportRequest(
     string OperationType,
-    object Data,
+    int TotalRows,
     string ErrorStrategy,
+    int? ErrorThreshold,
     bool DryRun);
 
 public record RolloverRequest(
     Guid FromSchoolYearId,
     Guid ToSchoolYearId,
     bool CopyEnrollments,
-    bool CopyStaffAssignments);
+    bool CopyStaffAssignments,
+    bool DryRun = false);

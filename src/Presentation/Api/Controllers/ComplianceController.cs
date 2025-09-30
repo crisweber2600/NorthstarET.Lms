@@ -35,19 +35,14 @@ public class ComplianceController : ControllerBase
         [FromQuery] DateTime? startDate = null,
         [FromQuery] DateTime? endDate = null)
     {
-        var result = await _auditService.QueryAuditRecordsAsync(
+        var records = await _auditService.QueryAuditRecordsAsync(
             entityType,
             entityId,
             actorId,
             startDate,
             endDate);
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
 
-        return Ok(result.Value);
+        return Ok(records);
     }
 
     [HttpPost("audit/verify-integrity")]
@@ -56,14 +51,9 @@ public class ComplianceController : ControllerBase
     {
         _logger.LogInformation("Verifying audit trail integrity for tenant {Tenant}", tenant);
         
-        var result = await _auditService.VerifyAuditIntegrityAsync();
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
+        var isValid = await _auditService.VerifyAuditChainIntegrityAsync(tenant);
 
-        return Ok(new { isValid = result.Value, message = result.Value ? "Audit trail is intact" : "Audit trail has been tampered" });
+        return Ok(new { isValid, message = isValid ? "Audit trail is intact" : "Audit trail has been tampered" });
     }
 
     // Retention and legal hold endpoints
@@ -77,25 +67,21 @@ public class ComplianceController : ControllerBase
         _logger.LogInformation("Applying legal hold on {EntityType} {EntityId}", 
             request.EntityType, request.EntityId);
         
-        var result = await _retentionService.ApplyLegalHoldAsync(
+        var legalHold = await _retentionService.ApplyLegalHoldAsync(
             request.EntityType,
             request.EntityId,
+            request.CaseNumber,
             request.Reason,
-            request.CaseNumber);
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
+            User.Identity?.Name ?? "system");
 
         return CreatedAtAction(nameof(GetLegalHold), 
-            new { tenant, id = result.Value }, new { id = result.Value });
+            new { tenant, id = legalHold.Id }, new { id = legalHold.Id });
     }
 
     [HttpGet("legal-holds/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetLegalHold(string tenant, Guid id)
+    public IActionResult GetLegalHold(string tenant, Guid id)
     {
         // Placeholder - would need a query implementation
         return NotFound(new { error = "Legal hold retrieval not implemented" });
@@ -110,14 +96,7 @@ public class ComplianceController : ControllerBase
         Guid id,
         [FromBody] ReleaseLegalHoldRequest request)
     {
-        var result = await _retentionService.ReleaseLegalHoldAsync(id, request.ReleasedBy);
-        
-        if (!result.IsSuccess)
-        {
-            return result.Error?.Contains("not found") == true
-                ? NotFound(new { error = result.Error })
-                : BadRequest(new { error = result.Error });
-        }
+        await _retentionService.ReleaseLegalHoldAsync(id, request.Reason, User.Identity?.Name ?? "system");
 
         return NoContent();
     }
@@ -125,39 +104,31 @@ public class ComplianceController : ControllerBase
     [HttpPost("retention/purge-eligible")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PurgeEligibleRecords(string tenant)
+    public async Task<IActionResult> PurgeEligibleRecords(string tenant, [FromBody] PurgeRequest request)
     {
         _logger.LogInformation("Starting purge of eligible records for tenant {Tenant}", tenant);
         
-        var result = await _retentionService.PurgeEligibleRecordsAsync();
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
+        var eligibleIds = await _retentionService.IdentifyEntitiesForPurgeAsync(request.EntityType);
+        await _retentionService.ExecutePurgeAsync(request.EntityType, eligibleIds, User.Identity?.Name ?? "system");
 
-        return Ok(new { purgedCount = result.Value });
+        return Ok(new { purgedCount = eligibleIds.Count });
     }
 
     [HttpGet("retention/compliance-report")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetComplianceReport(string tenant)
+    public IActionResult GetComplianceReport(string tenant)
     {
-        var result = await _retentionService.GetComplianceReportAsync();
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
-
-        return Ok(result.Value);
+        // Placeholder - would need service implementation
+        return Ok(new { message = "Compliance report not implemented" });
     }
 }
 
 public record ApplyLegalHoldRequest(
     string EntityType,
     Guid EntityId,
-    string Reason,
-    string CaseNumber);
+    string CaseNumber,
+    string Reason);
 
-public record ReleaseLegalHoldRequest(string ReleasedBy);
+public record ReleaseLegalHoldRequest(string Reason);
+
+public record PurgeRequest(string EntityType);

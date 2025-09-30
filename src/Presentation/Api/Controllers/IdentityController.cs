@@ -29,51 +29,41 @@ public class IdentityController : ControllerBase
     {
         _logger.LogInformation("Mapping external identity from issuer {Issuer}", request.Issuer);
         
-        var result = await _identityService.MapExternalIdentityAsync(
-            request.ExternalId,
+        var mapping = await _identityService.CreateMappingAsync(
             request.Issuer,
-            request.Email,
-            request.DisplayName);
+            request.ExternalId,
+            Guid.NewGuid(), // TODO: Get from user creation service
+            User.Identity?.Name ?? "system");
         
-        if (!result.IsSuccess)
-        {
-            return result.Error?.Contains("already mapped") == true
-                ? Conflict(new { error = result.Error })
-                : BadRequest(new { error = result.Error });
-        }
-
-        return Ok(new { internalUserId = result.Value });
+        return Ok(new { internalUserId = mapping.InternalUserId });
     }
 
-    [HttpGet("lookup/{externalId}")]
+    [HttpGet("lookup/{issuer}/{externalId}")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> LookupInternalUserId(string tenant, string externalId)
+    public async Task<IActionResult> LookupInternalUserId(string tenant, string issuer, string externalId)
     {
-        var result = await _identityService.GetInternalUserIdAsync(externalId);
+        var userId = await _identityService.ResolveInternalUserIdAsync(issuer, externalId);
         
-        if (!result.IsSuccess)
+        if (userId == null)
         {
-            return NotFound(new { error = result.Error });
+            return NotFound(new { error = "Identity mapping not found" });
         }
 
-        return Ok(new { internalUserId = result.Value });
+        return Ok(new { internalUserId = userId.Value });
     }
 
-    [HttpPost("{internalUserId:guid}/suspend")]
+    [HttpPost("{mappingId:guid}/suspend")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> SuspendIdentity(string tenant, Guid internalUserId)
+    public async Task<IActionResult> SuspendIdentity(string tenant, Guid mappingId, [FromBody] SuspendIdentityRequest request)
     {
-        var result = await _identityService.SuspendIdentityMappingAsync(internalUserId);
-        
-        if (!result.IsSuccess)
-        {
-            return result.Error?.Contains("not found") == true
-                ? NotFound(new { error = result.Error })
-                : BadRequest(new { error = result.Error });
-        }
+        await _identityService.SuspendMappingAsync(
+            mappingId,
+            request.SuspendedUntil,
+            request.Reason,
+            User.Identity?.Name ?? "system");
 
         return NoContent();
     }
@@ -81,18 +71,12 @@ public class IdentityController : ControllerBase
     [HttpPost("sync-from-graph")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SyncFromMicrosoftGraph(string tenant)
+    public IActionResult SyncFromMicrosoftGraph(string tenant)
     {
         _logger.LogInformation("Starting Microsoft Graph sync for tenant {Tenant}", tenant);
         
-        var result = await _identityService.SyncFromMicrosoftGraphAsync();
-        
-        if (!result.IsSuccess)
-        {
-            return BadRequest(new { error = result.Error });
-        }
-
-        return Ok(new { syncedCount = result.Value });
+        // TODO: Implement Graph sync logic
+        return Ok(new { syncedCount = 0 });
     }
 }
 
@@ -101,3 +85,7 @@ public record MapExternalIdentityRequest(
     string Issuer,
     string Email,
     string DisplayName);
+
+public record SuspendIdentityRequest(
+    DateTime SuspendedUntil,
+    string Reason);

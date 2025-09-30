@@ -31,9 +31,9 @@ public class EnrollmentController : ControllerBase
         
         var result = await _mediator.Send(command);
         
-        if (!result.IsSuccess)
+        if (!result.IsSuccess || result.Value == null)
         {
-            return BadRequest(new { error = result.Error });
+            return BadRequest(new { error = result.Error ?? "Enrollment failed" });
         }
 
         return CreatedAtAction(nameof(GetEnrollment), 
@@ -43,7 +43,7 @@ public class EnrollmentController : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(EnrollmentDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetEnrollment(string tenant, Guid id)
+    public IActionResult GetEnrollment(string tenant, Guid id)
     {
         // This would need a GetEnrollmentByIdQuery in Application layer
         // For now, return NotFound as placeholder
@@ -85,7 +85,7 @@ public class EnrollmentController : ControllerBase
         Guid id,
         [FromBody] TransferStudentCommand command)
     {
-        if (id != command.EnrollmentId)
+        if (id != command.CurrentEnrollmentId)
         {
             return BadRequest(new { error = "Enrollment ID in URL does not match command" });
         }
