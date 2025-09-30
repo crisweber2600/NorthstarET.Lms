@@ -66,6 +66,12 @@ public static class DependencyInjection
                     errorNumbersToAdd: null);
             }));
 
+        // T115-T116: Database migration and tenant schema provisioning
+        services.AddScoped<NorthstarET.Lms.Infrastructure.Persistence.Migrations.DatabaseMigrator>();
+        
+        // T114: Background services orchestration - Database migration on startup
+        services.AddHostedService<NorthstarET.Lms.Presentation.Api.HostedServices.DatabaseMigrationHostedService>();
+
         // Tenant context accessor
         services.AddScoped<ITenantContext, TenantContextAccessor>();
 
