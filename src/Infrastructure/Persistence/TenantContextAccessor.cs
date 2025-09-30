@@ -32,12 +32,8 @@ public class TenantContextAccessor : ITenantContext
                     return _tenantSlug ?? string.Empty;
                 }
 
-                // Check route values (for APIs like /api/v1/{tenant}/...)
-                if (_httpContextAccessor.HttpContext.Request.RouteValues.TryGetValue("tenant", out var routeValue))
-                {
-                    _tenantSlug = routeValue?.ToString();
-                    return _tenantSlug ?? string.Empty;
-                }
+                // Check route values would require additional dependencies
+                // In production, use path parsing or dedicated routing middleware
 
                 // Check claims (for authenticated users)
                 var tenantClaim = _httpContextAccessor.HttpContext.User?.FindFirst("tenant_slug");

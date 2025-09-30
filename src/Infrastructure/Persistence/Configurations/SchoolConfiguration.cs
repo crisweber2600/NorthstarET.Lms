@@ -20,7 +20,10 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.Property(s => s.Code)
+        builder.Property(s => s.ExternalCode)
+            .HasMaxLength(50);
+
+        builder.Property(s => s.SchoolType)
             .IsRequired()
             .HasMaxLength(50);
 
@@ -34,8 +37,9 @@ public class SchoolConfiguration : IEntityTypeConfiguration<School>
         builder.Property(s => s.Phone)
             .HasMaxLength(20);
 
-        builder.HasIndex(s => new { s.TenantSlug, s.Code })
-            .IsUnique();
+        builder.HasIndex(s => new { s.TenantSlug, s.ExternalCode })
+            .IsUnique()
+            .HasFilter("[ExternalCode] IS NOT NULL");
 
         // Audit fields
         builder.Property(s => s.CreatedBy)

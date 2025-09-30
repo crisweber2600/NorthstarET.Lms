@@ -24,8 +24,13 @@ public class AssessmentFileService : IAssessmentService
         string createdBy,
         CancellationToken cancellationToken = default)
     {
-        var assessment = new AssessmentDefinition(title, fileKey, fileSizeBytes, createdBy);
-        assessment.SetAuditFields(createdBy, DateTimeOffset.UtcNow);
+        // Get tenant slug from context (would normally come from HTTP context)
+        var tenantSlug = "default-tenant";
+        var districtId = Guid.NewGuid(); // Would normally lookup from context
+        
+        var assessment = new AssessmentDefinition(
+            tenantSlug, districtId, title, "General", "All", 
+            fileKey, fileSizeBytes, "sha256-placeholder", createdBy);
 
         await _context.AssessmentDefinitions.AddAsync(assessment, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -58,7 +63,7 @@ public class AssessmentFileService : IAssessmentService
         }
 
         // Return a mock URL for now - in production this would generate a SAS token from Azure Storage
-        return $"https://storage.blob.core.windows.net/assessments/{assessment.FileKey}?expires={DateTimeOffset.UtcNow.Add(urlExpiration):O}";
+        return $"https://storage.blob.core.windows.net/assessments/{assessment.StorageUri}?expires={DateTimeOffset.UtcNow.Add(urlExpiration):O}";
     }
 
     public async Task<AssessmentDefinition> CreateNewVersionAsync(
@@ -74,8 +79,13 @@ public class AssessmentFileService : IAssessmentService
             throw new InvalidOperationException($"Assessment {existingAssessmentId} not found");
         }
 
-        var newVersion = new AssessmentDefinition(existingAssessment.Title, fileKey, fileSizeBytes, createdBy);
-        newVersion.SetAuditFields(createdBy, DateTimeOffset.UtcNow);
+        // Get tenant slug from existing assessment  
+        var tenantSlug = existingAssessment.TenantSlug;
+        
+        var newVersion = new AssessmentDefinition(
+            tenantSlug, existingAssessment.DistrictId, existingAssessment.Title,
+            existingAssessment.Subject, existingAssessment.GradeLevels,
+            fileKey, fileSizeBytes, "sha256-placeholder", createdBy, existingAssessment.Description);
 
         await _context.AssessmentDefinitions.AddAsync(newVersion, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);

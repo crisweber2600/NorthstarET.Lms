@@ -16,7 +16,16 @@ public class DistrictTenantConfiguration : IEntityTypeConfiguration<DistrictTena
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(d => d.DistrictName)
+        // Use OwnsOne for complex type Slug
+        builder.OwnsOne(d => d.Slug, slug =>
+        {
+            slug.Property(s => s.Value)
+                .HasColumnName("TenantSlug")
+                .IsRequired()
+                .HasMaxLength(100);
+        });
+
+        builder.Property(d => d.DisplayName)
             .IsRequired()
             .HasMaxLength(200);
 
@@ -24,17 +33,21 @@ public class DistrictTenantConfiguration : IEntityTypeConfiguration<DistrictTena
             .IsRequired()
             .HasConversion<string>();
 
-        builder.Property(d => d.MaxStudents)
-            .IsRequired();
+        // Use OwnsOne for complex type Quotas
+        builder.OwnsOne(d => d.Quotas, quotas =>
+        {
+            quotas.Property(q => q.Students)
+                .HasColumnName("MaxStudents")
+                .IsRequired();
 
-        builder.Property(d => d.MaxStaff)
-            .IsRequired();
+            quotas.Property(q => q.Staff)
+                .HasColumnName("MaxStaff")
+                .IsRequired();
 
-        builder.Property(d => d.MaxAdmins)
-            .IsRequired();
-
-        builder.Property(d => d.StorageQuotaBytes)
-            .IsRequired();
+            quotas.Property(q => q.Admins)
+                .HasColumnName("MaxAdmins")
+                .IsRequired();
+        });
 
         builder.HasIndex(d => d.TenantSlug)
             .IsUnique();

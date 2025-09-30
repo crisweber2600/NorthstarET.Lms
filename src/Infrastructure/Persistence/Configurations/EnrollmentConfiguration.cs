@@ -22,12 +22,19 @@ public class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
         builder.Property(e => e.ClassId)
             .IsRequired();
 
-        builder.Property(e => e.EnrollmentDate)
+        builder.Property(e => e.SchoolYearId)
             .IsRequired();
 
-        builder.Property(e => e.WithdrawalDate);
+        builder.Property(e => e.EnrollmentStatus)
+            .IsRequired()
+            .HasMaxLength(50);
 
-        builder.Property(e => e.WithdrawalReason)
+        builder.Property(e => e.EntryDate)
+            .IsRequired();
+
+        builder.Property(e => e.ExitDate);
+
+        builder.Property(e => e.ExitReason)
             .HasMaxLength(500);
 
         builder.HasIndex(e => new { e.TenantSlug, e.StudentId, e.ClassId });

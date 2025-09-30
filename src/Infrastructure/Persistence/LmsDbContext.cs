@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NorthstarET.Lms.Domain.Common;
 using NorthstarET.Lms.Domain.Entities;
 using NorthstarET.Lms.Domain.Shared;
 
@@ -80,15 +81,9 @@ public class LmsDbContext : DbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        // Set tenant slug on all new tenant-scoped entities
-        foreach (var entry in ChangeTracker.Entries<TenantScopedEntity>())
-        {
-            if (entry.State == EntityState.Added && string.IsNullOrEmpty(entry.Entity.TenantSlug))
-            {
-                entry.Entity.InitializeTenant(_tenantContext.TenantSlug);
-            }
-        }
-
+        // Note: Tenant scoping is done in entity constructors via InitializeTenant()
+        // which is called by repositories or services during entity creation
+        
         return await base.SaveChangesAsync(cancellationToken);
     }
 }

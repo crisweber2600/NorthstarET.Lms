@@ -1,5 +1,5 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph;
-using Microsoft.Graph.Models;
 using NorthstarET.Lms.Application.Abstractions;
 using NorthstarET.Lms.Domain.Entities;
 using NorthstarET.Lms.Infrastructure.Persistence;
@@ -24,8 +24,7 @@ public class IdentityMappingService : IIdentityMappingService
         string createdBy,
         CancellationToken cancellationToken = default)
     {
-        var mapping = new IdentityMapping(issuer, externalUserId, internalUserId, createdBy);
-        mapping.SetAuditFields(createdBy, DateTimeOffset.UtcNow);
+        var mapping = new IdentityMapping(internalUserId, externalUserId, issuer, createdBy);
 
         await _context.IdentityMappings.AddAsync(mapping, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -39,7 +38,7 @@ public class IdentityMappingService : IIdentityMappingService
         CancellationToken cancellationToken = default)
     {
         return await _context.IdentityMappings
-            .Where(m => m.Issuer == issuer && m.ExternalUserId == externalUserId)
+            .Where(m => m.Issuer == issuer && m.ExternalId == externalUserId)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -62,7 +61,7 @@ public class IdentityMappingService : IIdentityMappingService
         var mapping = await _context.IdentityMappings.FindAsync([mappingId], cancellationToken);
         if (mapping != null)
         {
-            mapping.Suspend(suspendedUntil, reason, suspendedBy);
+            mapping.Suspend(reason, suspendedBy);
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

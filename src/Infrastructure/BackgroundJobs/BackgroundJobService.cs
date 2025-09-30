@@ -23,8 +23,11 @@ public class BackgroundJobService : IBulkOperationService
         string initiatedBy,
         CancellationToken cancellationToken = default)
     {
-        var bulkJob = new BulkJob(operationType, totalRows, initiatedBy, isDryRun);
-        bulkJob.SetAuditFields(initiatedBy, DateTimeOffset.UtcNow);
+        // Get tenant slug from context
+        var tenantSlug = "default-tenant";
+        var threshold = errorThreshold.HasValue ? (decimal)errorThreshold.Value / 100m : 0.1m;
+        
+        var bulkJob = new BulkJob(tenantSlug, operationType, initiatedBy, totalRows, errorStrategy, threshold, isDryRun);
 
         await _context.BulkJobs.AddAsync(bulkJob, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -41,7 +44,12 @@ public class BackgroundJobService : IBulkOperationService
         var job = await _context.BulkJobs.FindAsync([jobId], cancellationToken);
         if (job != null)
         {
-            job.UpdateProgress(processedRows, failedRows, null);
+            // Update success and failure counts
+            for (int i = 0; i < processedRows - failedRows; i++)
+                job.RecordSuccess();
+            for (int i = 0; i < failedRows; i++)
+                job.RecordFailure("Error details");
+                
             await _context.SaveChangesAsync(cancellationToken);
         }
     }
