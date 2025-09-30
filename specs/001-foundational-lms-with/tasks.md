@@ -70,46 +70,46 @@ Based on plan.md structure:
 
 ### BDD Feature Files (from quickstart.md scenarios)
 
-- [ ] T010 [P] Feature file for district provisioning in `tests/Bdd/Features/DistrictProvisioning.feature`
-- [ ] T011 [P] Feature file for identity mapping lifecycle in `tests/Bdd/Features/IdentityLifecycle.feature`
-- [ ] T012 [P] Feature file for academic calendar validation in `tests/Bdd/Features/AcademicCalendar.feature`
-- [ ] T013 [P] Feature file for composite role authorization in `tests/Bdd/Features/RoleAuthorization.feature`
-- [ ] T014 [P] Feature file for bulk student rollover in `tests/Bdd/Features/BulkRollover.feature`
-- [ ] T015 [P] Feature file for legal hold retention in `tests/Bdd/Features/LegalHoldRetention.feature`
-- [ ] T016 [P] Feature file for security anomaly detection in `tests/Bdd/Features/SecurityAnomalyDetection.feature`
+- [x] T010 [P] Feature file for district provisioning in `tests/Bdd/Features/DistrictProvisioning.feature`
+- [x] T011 [P] Feature file for identity mapping lifecycle in `tests/Bdd/Features/IdentityLifecycle.feature`
+- [x] T012 [P] Feature file for academic calendar validation in `tests/Bdd/Features/AcademicCalendar.feature`
+- [x] T013 [P] Feature file for composite role authorization in `tests/Bdd/Features/RoleAuthorization.feature`
+- [x] T014 [P] Feature file for bulk student rollover in `tests/Bdd/Features/BulkRollover.feature`
+- [x] T015 [P] Feature file for legal hold retention in `tests/Bdd/Features/LegalHoldRetention.feature`
+- [x] T016 [P] Feature file for security anomaly detection in `tests/Bdd/Features/SecurityAnomalyDetection.feature`
 
 ### BDD Step Definitions
 
-- [ ] T017 [P] Step definitions for district provisioning in `tests/Bdd/StepDefinitions/DistrictProvisioningSteps.cs`
-- [ ] T018 [P] Step definitions for identity lifecycle in `tests/Bdd/StepDefinitions/IdentityLifecycleSteps.cs`
-- [ ] T019 [P] Step definitions for academic calendar in `tests/Bdd/StepDefinitions/AcademicCalendarSteps.cs`
-- [ ] T020 [P] Step definitions for role authorization in `tests/Bdd/StepDefinitions/RoleAuthorizationSteps.cs`
-- [ ] T021 [P] Step definitions for bulk rollover in `tests/Bdd/StepDefinitions/BulkRolloverSteps.cs`
-- [ ] T022 [P] Step definitions for legal hold retention in `tests/Bdd/StepDefinitions/LegalHoldRetentionSteps.cs`
-- [ ] T023 [P] Step definitions for security anomaly in `tests/Bdd/StepDefinitions/SecurityAnomalySteps.cs`
+- [x] T017 [P] Step definitions for district provisioning in `tests/Bdd/StepDefinitions/DistrictProvisioningSteps.cs`
+- [x] T018 [P] Step definitions for identity lifecycle in `tests/Bdd/StepDefinitions/IdentityLifecycleSteps.cs`
+- [x] T019 [P] Step definitions for academic calendar in `tests/Bdd/StepDefinitions/AcademicCalendarSteps.cs`
+- [x] T020 [P] Step definitions for role authorization in `tests/Bdd/StepDefinitions/RoleAuthorizationSteps.cs`
+- [x] T021 [P] Step definitions for bulk rollover in `tests/Bdd/StepDefinitions/BulkRolloverSteps.cs`
+- [x] T022 [P] Step definitions for legal hold retention in `tests/Bdd/StepDefinitions/LegalHoldRetentionSteps.cs`
+- [x] T023 [P] Step definitions for security anomaly in `tests/Bdd/StepDefinitions/SecurityAnomalySteps.cs`
 
 ### Contract Tests (one per contract file)
 
-- [ ] T024 [P] Contract tests for district provisioning API in `tests/Presentation/DistrictProvisioningContractTests.cs`
-- [ ] T025 [P] Contract tests for identity lifecycle API in `tests/Presentation/IdentityLifecycleContractTests.cs`
-- [ ] T026 [P] Contract tests for academic calendar API in `tests/Presentation/AcademicCalendarContractTests.cs`
-- [ ] T027 [P] Contract tests for RBAC API in `tests/Presentation/RbacContractTests.cs`
-- [ ] T028 [P] Contract tests for enrollment API in `tests/Presentation/EnrollmentContractTests.cs`
-- [ ] T029 [P] Contract tests for assessments API in `tests/Presentation/AssessmentsContractTests.cs`
-- [ ] T030 [P] Contract tests for compliance API in `tests/Presentation/ComplianceContractTests.cs`
+- [x] T024 [P] Contract tests for district provisioning API in `tests/Presentation/DistrictProvisioningContractTests.cs`
+- [x] T025 [P] Contract tests for identity lifecycle API in `tests/Presentation/IdentityLifecycleContractTests.cs`
+- [x] T026 [P] Contract tests for academic calendar API in `tests/Presentation/AcademicCalendarContractTests.cs`
+- [x] T027 [P] Contract tests for RBAC API in `tests/Presentation/RbacContractTests.cs`
+- [x] T028 [P] Contract tests for enrollment API in `tests/Presentation/EnrollmentContractTests.cs`
+- [x] T029 [P] Contract tests for assessments API in `tests/Presentation/AssessmentsContractTests.cs`
+- [x] T030 [P] Contract tests for compliance API in `tests/Presentation/ComplianceContractTests.cs`
 
 ### Unit Tests for Domain Entities
 
-- [ ] T031 [P] Unit tests for DistrictTenant entity in `tests/Domain/Entities/DistrictTenantTests.cs`
-- [ ] T032 [P] Unit tests for SchoolYear entity in `tests/Domain/Entities/SchoolYearTests.cs`
-- [ ] T033 [P] Unit tests for AcademicCalendar entity in `tests/Domain/Entities/AcademicCalendarTests.cs`
+- [x] T031 [P] Unit tests for DistrictTenant entity in `tests/Domain/Entities/DistrictTenantTests.cs`
+- [x] T032 [P] Unit tests for SchoolYear entity in `tests/Domain/Entities/SchoolYearTests.cs`
+- [x] T033 [P] Unit tests for AcademicCalendar entity in `tests/Domain/Entities/AcademicCalendarTests.cs`
 - [ ] T034 [P] Unit tests for School entity in `tests/Domain/Entities/SchoolTests.cs`
 - [ ] T035 [P] Unit tests for Class entity in `tests/Domain/Entities/ClassTests.cs`
 - [ ] T036 [P] Unit tests for Staff entity in `tests/Domain/Entities/StaffTests.cs`
-- [ ] T037 [P] Unit tests for Student entity in `tests/Domain/Entities/StudentTests.cs`
+- [x] T037 [P] Unit tests for Student entity in `tests/Domain/Entities/StudentTests.cs`
 - [ ] T038 [P] Unit tests for Guardian entity in `tests/Domain/Entities/GuardianTests.cs`
 - [ ] T039 [P] Unit tests for RoleDefinition entity in `tests/Domain/Entities/RoleDefinitionTests.cs`
-- [ ] T040 [P] Unit tests for RoleAssignment entity in `tests/Domain/Entities/RoleAssignmentTests.cs`
+- [x] T040 [P] Unit tests for RoleAssignment entity in `tests/Domain/Entities/RoleAssignmentTests.cs`
 - [ ] T041 [P] Unit tests for Enrollment entity in `tests/Domain/Entities/EnrollmentTests.cs`
 - [ ] T042 [P] Unit tests for AssessmentDefinition entity in `tests/Domain/Entities/AssessmentDefinitionTests.cs`
 - [ ] T043 [P] Unit tests for IdentityMapping entity in `tests/Domain/Entities/IdentityMappingTests.cs`
