@@ -12,9 +12,9 @@ public class EnrollmentContractTests : IClassFixture<WebApplicationFactory<Progr
         _client = factory.CreateClient();
     }
 
-    [Fact] public async Task POST_Enrollments_ShouldFail() => Assert.Fail("Enrollment creation endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task GET_Enrollments_ShouldFail() => Assert.Fail("Enrollment query endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task PATCH_EnrollmentStatus_ShouldFail() => Assert.Fail("Enrollment status endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task POST_EnrollmentsBulk_ShouldFail() => Assert.Fail("Bulk enrollment endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task POST_StudentRollover_ShouldFail() => Assert.Fail("Student rollover endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void POST_Enrollments_ShouldFail() => Assert.Fail("Enrollment creation endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void GET_Enrollments_ShouldFail() => Assert.Fail("Enrollment query endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void PATCH_EnrollmentStatus_ShouldFail() => Assert.Fail("Enrollment status endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void POST_EnrollmentsBulk_ShouldFail() => Assert.Fail("Bulk enrollment endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void POST_StudentRollover_ShouldFail() => Assert.Fail("Student rollover endpoint not implemented - expected as per BDD-first requirement");
 }

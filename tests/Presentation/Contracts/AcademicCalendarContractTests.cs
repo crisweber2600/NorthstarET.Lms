@@ -12,9 +12,9 @@ public class AcademicCalendarContractTests : IClassFixture<WebApplicationFactory
         _client = factory.CreateClient();
     }
 
-    [Fact] public async Task POST_AcademicCalendars_ShouldFail() => Assert.Fail("Academic calendar creation endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task GET_AcademicCalendars_ShouldFail() => Assert.Fail("Academic calendar query endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task PUT_AcademicCalendars_ShouldFail() => Assert.Fail("Academic calendar update endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task POST_AcademicCalendarClosures_ShouldFail() => Assert.Fail("Calendar closure endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task GET_InstructionalDays_ShouldFail() => Assert.Fail("Instructional days calculation endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void POST_AcademicCalendars_ShouldFail() => Assert.Fail("Academic calendar creation endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void GET_AcademicCalendars_ShouldFail() => Assert.Fail("Academic calendar query endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void PUT_AcademicCalendars_ShouldFail() => Assert.Fail("Academic calendar update endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void POST_AcademicCalendarClosures_ShouldFail() => Assert.Fail("Calendar closure endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void GET_InstructionalDays_ShouldFail() => Assert.Fail("Instructional days calculation endpoint not implemented - expected as per BDD-first requirement");
 }

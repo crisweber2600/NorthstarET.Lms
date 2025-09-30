@@ -6,7 +6,7 @@ namespace NorthstarET.Lms.Application.Commands.Districts;
 /// <summary>
 /// Command to provision a new district tenant
 /// </summary>
-public record CreateDistrictCommand : Command<DistrictDto>
+public class CreateDistrictCommand : Command<DistrictDto>
 {
     /// <summary>
     /// Unique slug for the district
@@ -27,7 +27,7 @@ public record CreateDistrictCommand : Command<DistrictDto>
 /// <summary>
 /// Command to update district status
 /// </summary>
-public record UpdateDistrictStatusCommand : Command
+public class UpdateDistrictStatusCommand : Command
 {
     /// <summary>
     /// District slug
@@ -48,7 +48,7 @@ public record UpdateDistrictStatusCommand : Command
 /// <summary>
 /// Command to update district quotas
 /// </summary>
-public record UpdateDistrictQuotasCommand : Command
+public class UpdateDistrictQuotasCommand : Command
 {
     /// <summary>
     /// District slug
