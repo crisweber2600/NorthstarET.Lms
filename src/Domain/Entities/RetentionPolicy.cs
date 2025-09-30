@@ -12,8 +12,6 @@ public class RetentionPolicy : Entity
     public int GracePeriodDays { get; private set; }
     public DateTime EffectiveDate { get; private set; }
     public string? OverrideReason { get; private set; }
-    public string CreatedBy { get; private set; } = string.Empty;
-    public DateTime CreatedAt { get; private set; }
 
     protected RetentionPolicy() { }
 
@@ -30,12 +28,11 @@ public class RetentionPolicy : Entity
         if (retentionYears < 0)
             throw new ArgumentException("Retention years cannot be negative", nameof(retentionYears));
 
+        SetAuditFields(createdBy);
         EntityType = entityType;
         RetentionYears = retentionYears;
         GracePeriodDays = gracePeriodDays;
         EffectiveDate = effectiveDate;
         OverrideReason = overrideReason;
-        CreatedBy = createdBy;
-        CreatedAt = DateTime.UtcNow;
     }
 }

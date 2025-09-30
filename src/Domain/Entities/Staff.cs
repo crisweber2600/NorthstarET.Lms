@@ -54,26 +54,6 @@ public class Staff : TenantScopedEntity
     public DateTime? EndDate { get; private set; }
 
     /// <summary>
-    /// Created by (user identifier)
-    /// </summary>
-    public string CreatedBy { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Created at timestamp
-    /// </summary>
-    public DateTime CreatedAt { get; private set; }
-
-    /// <summary>
-    /// Last updated by (user identifier)
-    /// </summary>
-    public string? UpdatedBy { get; private set; }
-
-    /// <summary>
-    /// Last updated at timestamp
-    /// </summary>
-    public DateTime? UpdatedAt { get; private set; }
-
-    /// <summary>
     /// Full name (computed property)
     /// </summary>
     public string FullName => $"{FirstName} {LastName}";
@@ -109,6 +89,7 @@ public class Staff : TenantScopedEntity
             throw new ArgumentException("Created by is required", nameof(createdBy));
 
         InitializeTenant(tenantSlug);
+        SetAuditFields(createdBy);
         UserId = userId;
         FirstName = firstName;
         LastName = lastName;
@@ -116,8 +97,6 @@ public class Staff : TenantScopedEntity
         HireDate = hireDate;
         ExternalId = externalId;
         ExternalIssuer = externalIssuer;
-        CreatedBy = createdBy;
-        CreatedAt = DateTime.UtcNow;
         EmploymentStatus = "Active";
 
         AddDomainEvent(new StaffCreatedEvent(Id, UserId, FullName, Email, createdBy));
@@ -136,8 +115,7 @@ public class Staff : TenantScopedEntity
         var oldStatus = EmploymentStatus;
         EmploymentStatus = newStatus;
         EndDate = endDate;
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
 
         AddDomainEvent(new StaffEmploymentStatusChangedEvent(Id, UserId, oldStatus, newStatus, updatedBy));
     }
@@ -173,7 +151,6 @@ public class Staff : TenantScopedEntity
         if (!string.IsNullOrWhiteSpace(email))
             Email = email;
 
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
     }
 }

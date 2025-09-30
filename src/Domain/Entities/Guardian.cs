@@ -34,26 +34,6 @@ public class Guardian : TenantScopedEntity
     public string? Address { get; private set; }
 
     /// <summary>
-    /// Created by (user identifier)
-    /// </summary>
-    public string CreatedBy { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Created at timestamp
-    /// </summary>
-    public DateTime CreatedAt { get; private set; }
-
-    /// <summary>
-    /// Last updated by (user identifier)
-    /// </summary>
-    public string? UpdatedBy { get; private set; }
-
-    /// <summary>
-    /// Last updated at timestamp
-    /// </summary>
-    public DateTime? UpdatedAt { get; private set; }
-
-    /// <summary>
     /// Full name (computed property)
     /// </summary>
     public string FullName => $"{FirstName} {LastName}";
@@ -83,13 +63,12 @@ public class Guardian : TenantScopedEntity
             throw new ArgumentException("Created by is required", nameof(createdBy));
 
         InitializeTenant(tenantSlug);
+        SetAuditFields(createdBy);
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         Phone = phone;
         Address = address;
-        CreatedBy = createdBy;
-        CreatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new GuardianCreatedEvent(Id, FullName, Email, createdBy));
     }
@@ -116,7 +95,6 @@ public class Guardian : TenantScopedEntity
         Email = email;
         Phone = phone;
         Address = address;
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
     }
 }

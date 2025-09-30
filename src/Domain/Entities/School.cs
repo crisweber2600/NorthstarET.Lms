@@ -43,26 +43,6 @@ public class School : TenantScopedEntity
     /// </summary>
     public string? Phone { get; private set; }
 
-    /// <summary>
-    /// Created by (user identifier)
-    /// </summary>
-    public string CreatedBy { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Created at timestamp
-    /// </summary>
-    public DateTime CreatedAt { get; private set; }
-
-    /// <summary>
-    /// Last updated by (user identifier)
-    /// </summary>
-    public string? UpdatedBy { get; private set; }
-
-    /// <summary>
-    /// Last updated at timestamp
-    /// </summary>
-    public DateTime? UpdatedAt { get; private set; }
-
     // EF Core constructor
     protected School() { }
 
@@ -91,14 +71,13 @@ public class School : TenantScopedEntity
             throw new ArgumentException("Created by is required", nameof(createdBy));
 
         InitializeTenant(tenantSlug);
+        SetAuditFields(createdBy);
         DistrictId = districtId;
         Name = name;
         SchoolType = schoolType;
         ExternalCode = externalCode;
         Address = address;
         Phone = phone;
-        CreatedBy = createdBy;
-        CreatedAt = DateTime.UtcNow;
         Status = "Active";
     }
 
@@ -114,8 +93,7 @@ public class School : TenantScopedEntity
 
         var oldStatus = Status;
         Status = newStatus;
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
 
         // Raise domain event for RBAC recalculation
         AddDomainEvent(new SchoolStatusChangedEvent(Id, oldStatus, newStatus, updatedBy));
@@ -141,7 +119,6 @@ public class School : TenantScopedEntity
 
         Address = address;
         Phone = phone;
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
     }
 }

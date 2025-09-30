@@ -19,8 +19,6 @@ public class AssessmentDefinition : TenantScopedEntity
     public long FileSize { get; private set; }
     public string UploadDigest { get; private set; } = string.Empty;
     public bool IsPublished { get; private set; }
-    public string CreatedBy { get; private set; } = string.Empty;
-    public DateTime CreatedAt { get; private set; }
 
     protected AssessmentDefinition() { }
 
@@ -46,6 +44,7 @@ public class AssessmentDefinition : TenantScopedEntity
             throw new ArgumentException("File size exceeds 100MB limit", nameof(fileSize));
 
         InitializeTenant(tenantSlug);
+        SetAuditFields(createdBy);
         DistrictId = districtId;
         Title = title;
         Version = 1;
@@ -55,8 +54,6 @@ public class AssessmentDefinition : TenantScopedEntity
         StorageUri = storageUri;
         FileSize = fileSize;
         UploadDigest = uploadDigest;
-        CreatedBy = createdBy;
-        CreatedAt = DateTime.UtcNow;
         IsPublished = false;
 
         AddDomainEvent(new AssessmentDefinitionCreatedEvent(Id, DistrictId, Title, Subject, createdBy));

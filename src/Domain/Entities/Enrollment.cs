@@ -43,26 +43,6 @@ public class Enrollment : TenantScopedEntity
     /// </summary>
     public string? ExitReason { get; private set; }
 
-    /// <summary>
-    /// Created by (user identifier)
-    /// </summary>
-    public string CreatedBy { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Created at timestamp
-    /// </summary>
-    public DateTime CreatedAt { get; private set; }
-
-    /// <summary>
-    /// Last updated by (user identifier)
-    /// </summary>
-    public string? UpdatedBy { get; private set; }
-
-    /// <summary>
-    /// Last updated at timestamp
-    /// </summary>
-    public DateTime? UpdatedAt { get; private set; }
-
     // EF Core constructor
     protected Enrollment() { }
 
@@ -89,12 +69,11 @@ public class Enrollment : TenantScopedEntity
             throw new ArgumentException("Created by is required", nameof(createdBy));
 
         InitializeTenant(tenantSlug);
+        SetAuditFields(createdBy);
         StudentId = studentId;
         ClassId = classId;
         SchoolYearId = schoolYearId;
         EntryDate = entryDate;
-        CreatedBy = createdBy;
-        CreatedAt = DateTime.UtcNow;
         EnrollmentStatus = "Active";
 
         AddDomainEvent(new EnrollmentCreatedEvent(Id, StudentId, ClassId, SchoolYearId, EntryDate, createdBy));
@@ -117,8 +96,7 @@ public class Enrollment : TenantScopedEntity
         EnrollmentStatus = "Withdrawn";
         ExitDate = exitDate;
         ExitReason = reason;
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
 
         AddDomainEvent(new EnrollmentWithdrawnEvent(Id, StudentId, ClassId, ExitDate.Value, reason, updatedBy));
     }
@@ -140,8 +118,7 @@ public class Enrollment : TenantScopedEntity
         EnrollmentStatus = "Transferred";
         ExitDate = exitDate;
         ExitReason = reason;
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
 
         AddDomainEvent(new EnrollmentTransferredEvent(Id, StudentId, ClassId, ExitDate.Value, reason, updatedBy));
     }

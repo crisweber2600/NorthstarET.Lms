@@ -13,7 +13,6 @@ public class IdentityMapping : Entity
     public string Issuer { get; private set; } = string.Empty;
     public DateTime MappedAt { get; private set; }
     public string Status { get; private set; } = "Active";
-    public string CreatedBy { get; private set; } = string.Empty;
 
     protected IdentityMapping() { }
 
@@ -30,11 +29,11 @@ public class IdentityMapping : Entity
         if (string.IsNullOrWhiteSpace(issuer))
             throw new ArgumentException("Issuer is required", nameof(issuer));
 
+        SetAuditFields(createdBy);
         InternalUserId = internalUserId;
         ExternalId = externalId;
         Issuer = issuer;
         MappedAt = DateTime.UtcNow;
-        CreatedBy = createdBy;
         Status = "Active";
 
         AddDomainEvent(new IdentityMappingCreatedEvent(Id, InternalUserId, ExternalId, Issuer, createdBy));

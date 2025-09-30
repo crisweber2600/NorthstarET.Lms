@@ -48,26 +48,6 @@ public class Class : TenantScopedEntity
     /// </summary>
     public bool CapacityOverrideEnabled { get; private set; }
 
-    /// <summary>
-    /// Created by (user identifier)
-    /// </summary>
-    public string CreatedBy { get; private set; } = string.Empty;
-
-    /// <summary>
-    /// Created at timestamp
-    /// </summary>
-    public DateTime CreatedAt { get; private set; }
-
-    /// <summary>
-    /// Last updated by (user identifier)
-    /// </summary>
-    public string? UpdatedBy { get; private set; }
-
-    /// <summary>
-    /// Last updated at timestamp
-    /// </summary>
-    public DateTime? UpdatedAt { get; private set; }
-
     // EF Core constructor
     protected Class() { }
 
@@ -100,14 +80,13 @@ public class Class : TenantScopedEntity
             throw new ArgumentException("Created by is required", nameof(createdBy));
 
         InitializeTenant(tenantSlug);
+        SetAuditFields(createdBy);
         SchoolId = schoolId;
         SchoolYearId = schoolYearId;
         Name = name;
         Code = code;
         Capacity = capacity;
         GradeBand = gradeBand;
-        CreatedBy = createdBy;
-        CreatedAt = DateTime.UtcNow;
         Status = "Active";
         CapacityOverrideEnabled = false;
 
@@ -126,8 +105,7 @@ public class Class : TenantScopedEntity
 
         var oldStatus = Status;
         Status = newStatus;
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
 
         AddDomainEvent(new ClassStatusChangedEvent(Id, oldStatus, newStatus, updatedBy));
     }
@@ -141,8 +119,7 @@ public class Class : TenantScopedEntity
             throw new ArgumentException("Updated by is required", nameof(updatedBy));
 
         CapacityOverrideEnabled = enabled;
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
     }
 
     /// <summary>
@@ -156,7 +133,6 @@ public class Class : TenantScopedEntity
             throw new ArgumentException("Updated by is required", nameof(updatedBy));
 
         Capacity = newCapacity;
-        UpdatedBy = updatedBy;
-        UpdatedAt = DateTime.UtcNow;
+        UpdateAuditFields(updatedBy);
     }
 }
