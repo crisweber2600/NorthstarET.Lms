@@ -9,8 +9,10 @@ public class IdentityLifecycleSteps
 {
     private readonly TestContext _context;
     private readonly IdentityMappingService _identityService;
+#pragma warning disable CS0169 // Field is never used - placeholder for future implementation
     private string? _lastError;
     private IdentityMapping? _createdMapping;
+#pragma warning restore CS0169
 
     public IdentityLifecycleSteps(TestContext context)
     {

@@ -1,3 +1,6 @@
+// Aspire AppHost entry point - orchestrates the LMS application services
+// This file is auto-generated and should not be modified directly
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 var sqlServer = builder.AddSqlServer("sqlserver")

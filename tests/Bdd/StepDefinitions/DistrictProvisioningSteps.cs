@@ -9,8 +9,10 @@ public class DistrictProvisioningSteps
 {
     private readonly TestContext _context;
     private readonly DistrictProvisioningService _districtService;
+#pragma warning disable CS0169 // Field is never used - placeholder for future implementation
     private string? _lastError;
     private DistrictTenant? _createdDistrict;
+#pragma warning restore CS0169
 
     public DistrictProvisioningSteps(TestContext context)
     {

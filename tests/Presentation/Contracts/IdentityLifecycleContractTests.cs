@@ -12,9 +12,9 @@ public class IdentityLifecycleContractTests : IClassFixture<WebApplicationFactor
         _client = factory.CreateClient();
     }
 
-    [Fact] public async Task POST_IdentityMappings_ShouldFail() => Assert.Fail("Identity mapping endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task GET_IdentityMappings_ShouldFail() => Assert.Fail("Identity mapping query endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task PATCH_IdentityMappingStatus_ShouldFail() => Assert.Fail("Identity mapping status endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task DELETE_IdentityMappings_ShouldFail() => Assert.Fail("Identity mapping deletion endpoint not implemented - expected as per BDD-first requirement");
-    [Fact] public async Task POST_IdentityMappingsBulk_ShouldFail() => Assert.Fail("Bulk identity mapping endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void POST_IdentityMappings_ShouldFail() => Assert.Fail("Identity mapping endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void GET_IdentityMappings_ShouldFail() => Assert.Fail("Identity mapping query endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void PATCH_IdentityMappingStatus_ShouldFail() => Assert.Fail("Identity mapping status endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void DELETE_IdentityMappings_ShouldFail() => Assert.Fail("Identity mapping deletion endpoint not implemented - expected as per BDD-first requirement");
+    [Fact] public void POST_IdentityMappingsBulk_ShouldFail() => Assert.Fail("Bulk identity mapping endpoint not implemented - expected as per BDD-first requirement");
 }
