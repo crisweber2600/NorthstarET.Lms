@@ -108,7 +108,7 @@ public class Staff : TenantScopedEntity
         if (string.IsNullOrWhiteSpace(createdBy))
             throw new ArgumentException("Created by is required", nameof(createdBy));
 
-        TenantSlug = tenantSlug;
+        InitializeTenant(tenantSlug);
         UserId = userId;
         FirstName = firstName;
         LastName = lastName;
