@@ -146,14 +146,14 @@ _Gate_: Before proceeding to Phase 3.3, run a full solution build and execute th
 
 ### Domain Layer - Core Entities
 
-- [ ] T061 [P] TenantScopedEntity base class in `src/Domain/Entities/TenantScopedEntity.cs`
-- [ ] T062 [P] DistrictTenant aggregate in `src/Domain/Entities/DistrictTenant.cs`
-- [ ] T063 [P] SchoolYear aggregate in `src/Domain/Entities/SchoolYear.cs`
+- [x] T061 [P] TenantScopedEntity base class in `src/Domain/Entities/TenantScopedEntity.cs`
+- [x] T062 [P] DistrictTenant aggregate in `src/Domain/Entities/DistrictTenant.cs`
+- [x] T063 [P] SchoolYear aggregate in `src/Domain/Entities/SchoolYear.cs`
 - [ ] T064 [P] AcademicCalendar aggregate in `src/Domain/Entities/AcademicCalendar.cs`
 - [ ] T065 [P] School aggregate in `src/Domain/Entities/School.cs`
 - [ ] T066 [P] Class aggregate in `src/Domain/Entities/Class.cs`
 - [ ] T067 [P] Staff aggregate in `src/Domain/Entities/Staff.cs`
-- [ ] T068 [P] Student aggregate in `src/Domain/Entities/Student.cs`
+- [x] T068 [P] Student aggregate in `src/Domain/Entities/Student.cs`
 - [ ] T069 [P] Guardian aggregate in `src/Domain/Entities/Guardian.cs`
 - [ ] T070 [P] RoleDefinition aggregate in `src/Domain/Entities/RoleDefinition.cs`
 - [ ] T071 [P] RoleAssignment aggregate in `src/Domain/Entities/RoleAssignment.cs`
@@ -167,8 +167,8 @@ _Gate_: Before proceeding to Phase 3.3, run a full solution build and execute th
 
 ### Domain Layer - Value Objects and Events
 
-- [ ] T079 [P] Value objects (TenantSlug, Quota, etc.) in `src/Domain/ValueObjects/`
-- [ ] T080 [P] Domain events in `src/Domain/Events/`
+- [x] T079 [P] Value objects (TenantSlug, Quota, etc.) in `src/Domain/ValueObjects/`
+- [x] T080 [P] Domain events in `src/Domain/Events/`
 - [ ] T081 [P] Domain interfaces in `src/Domain/Interfaces/`
 
 ### Application Layer
