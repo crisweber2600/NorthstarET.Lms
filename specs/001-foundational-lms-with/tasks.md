@@ -50,15 +50,15 @@ Based on plan.md structure:
 
 ## Phase 3.1: Setup
 
-- [ ] T001 Create .NET 9 solution structure per implementation plan in repository root
-- [ ] T002 Initialize Domain project with zero external dependencies
-- [ ] T003 [P] Initialize Application project referencing only Domain
-- [ ] T004 [P] Initialize Infrastructure project referencing Application and Domain
-- [ ] T005 [P] Initialize Presentation.Api project with ASP.NET Core Minimal APIs
-- [ ] T006 [P] Initialize Presentation.Aspire.AppHost project for orchestration
-- [ ] T007 [P] Initialize test projects (Domain, Application, Infrastructure, Presentation, Bdd)
-- [ ] T008 [P] Configure EditorConfig and Directory.Build.props for code formatting
-- [ ] T009 [P] Configure NuGet packages: EF Core 9, MediatR, FluentAssertions, Reqnroll, xUnit, Testcontainers
+- [x] T001 Create .NET 9 solution structure per implementation plan in repository root
+- [x] T002 Initialize Domain project with zero external dependencies
+- [x] T003 [P] Initialize Application project referencing only Domain
+- [x] T004 [P] Initialize Infrastructure project referencing Application and Domain
+- [x] T005 [P] Initialize Presentation.Api project with ASP.NET Core Minimal APIs
+- [x] T006 [P] Initialize Presentation.Aspire.AppHost project for orchestration
+- [x] T007 [P] Initialize test projects (Domain, Application, Infrastructure, Presentation, Bdd)
+- [x] T008 [P] Configure EditorConfig and Directory.Build.props for code formatting
+- [x] T009 [P] Configure NuGet packages: EF Core 9, MediatR, FluentAssertions, Reqnroll, xUnit, Testcontainers
 
 ## Phase 3.2: BDD Features & Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
 
